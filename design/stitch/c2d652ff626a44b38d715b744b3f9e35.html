@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create — Plan | Explainova Studio</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#ededfb",
+            "primary-container": "#3157ff",
+            "error-container": "#ffdad6",
+            "surface-variant": "#e1e1f0",
+            "inverse-surface": "#2e303b",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "on-error-container": "#93000a",
+            "on-tertiary-container": "#e0f972",
+            "tertiary-container": "#617300",
+            "on-secondary-fixed": "#3a0a00",
+            "surface-bright": "#fbf8ff",
+            "secondary": "#a83915",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "on-background": "#191b25",
+            "on-surface-variant": "#444656",
+            "tertiary-fixed": "#d5ee69",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdbd1",
+            "on-surface": "#191b25",
+            "background": "#fbf8ff",
+            "outline-variant": "#c4c5d9",
+            "on-primary-container": "#ebebff",
+            "inverse-primary": "#bac3ff",
+            "error": "#ba1a1a",
+            "primary-fixed": "#dee1ff",
+            "surface-container-highest": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "on-primary-fixed-variant": "#0031c6",
+            "surface-container-low": "#f3f2ff",
+            "primary-fixed-dim": "#bac3ff",
+            "tertiary-fixed-dim": "#b9d14f",
+            "on-secondary-container": "#6b1a00",
+            "tertiary": "#4b5900",
+            "surface-dim": "#d9d9e7",
+            "primary": "#003ae4",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary-fixed": "#001159",
+            "surface-tint": "#1c48f2",
+            "on-secondary-fixed-variant": "#862300",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f0effe",
+            "surface-container-high": "#e7e7f5",
+            "on-primary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-lg": "6.25rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "gutter-lg": "2rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin-md": "3rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "interface-label": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "headline-sm": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "body-lg": ["Manrope"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-surface text-on-surface antialiased flex h-screen overflow-hidden selection:bg-primary-fixed selection:text-primary">
+<!-- ========================================================= -->
+<!-- SIDE NAVIGATION (Shared Component: SideNavBar)            -->
+<!-- ========================================================= -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50">
+<div class="flex flex-col justify-between h-full p-4 w-64">
+<!-- Top Brand Anchor & Creation Trigger -->
+<div class="flex flex-col gap-6">
+<!-- Logo & Header -->
+<div class="flex items-center gap-3 px-2 py-1">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[18px]">draw</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface block leading-none">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[10px] mt-0.5 block">Studio Bench</span>
+</div>
+</div>
+<!-- Primary Studio CTA -->
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-on-primary px-4 py-2.5 rounded-lg text-interface-label font-interface-label shadow-sm transition-all duration-150 active:scale-[0.99]">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Create video</span>
+</button>
+<!-- Navigation Links Stack -->
+<nav class="flex flex-col gap-1">
+<!-- Item 1: Projects (Active Intent mapped from creation flow) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder">folder</span>
+<span>Projects</span>
+</a>
+<!-- Item 2: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Item 3: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Item 4: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Footer Elements -->
+<div class="pt-4 border-t border-outline-variant/60 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 text-meta-mono font-meta-mono text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container" data-icon="cloud_done">cloud_done</span>
+<span class="text-[11px]">Workspace Status</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================= -->
+<!-- MAIN WORKSPACE FRAME (Offset by Left Sidebar 256px)       -->
+<!-- ========================================================= -->
+<div class="ml-64 flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- TopNavBar (Shared Component) -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest dark:bg-surface-container-low border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb / Product Name -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-semibold">Projects / Untitled explanation</span>
+<span class="text-outline-variant">/</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-meta-mono bg-surface-container text-primary font-semibold uppercase tracking-wider">Concept Phase</span>
+</div>
+<!-- Trailing Actions & Identity -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Indicator -->
+<div class="flex items-center gap-1.5 text-meta-mono font-meta-mono text-outline text-[12px]">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>
+<span>Autosaved</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<!-- Trailing Notifications -->
+<button class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high p-1.5 rounded-lg transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<!-- User Studio Avatar -->
+<div class="flex items-center gap-2 pl-1 cursor-pointer">
+<div class="w-7 h-7 rounded-full bg-surface-variant border border-outline-variant flex items-center justify-center font-interface-label text-[12px] font-bold text-on-surface">
+              DA
+            </div>
+</div>
+</div>
+</div>
+</header>
+<!-- Studio Planning Canvas Content Container -->
+<main class="flex-1 max-w-[1240px] w-full mx-auto px-8 py-8 flex flex-col gap-8 pb-32">
+<!-- Studio Stepper Subheader -->
+<section class="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-outline-variant/60">
+<div>
+<h1 class="text-headline-sm font-headline-sm text-on-surface tracking-tight">Create — Plan</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-0.5">Start with an idea. Shape it into a clear explanation.</p>
+</div>
+<!-- Connected 3-Step Stepper -->
+<nav aria-label="Creation Steps" class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-surface-dim">
+<!-- Step 1: Active -->
+<div class="flex items-center gap-2 px-3 py-1 bg-primary text-on-primary rounded-full shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+<span class="text-interface-label font-interface-label text-[13px]">1. Plan</span>
+</div>
+<div class="w-6 h-px bg-outline-variant"></div>
+<!-- Step 2: Upcoming -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 text-on-surface-variant text-[13px] font-interface-label">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span>2. Storyboard</span>
+</div>
+<div class="w-6 h-px bg-outline-variant"></div>
+<!-- Step 3: Upcoming -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 text-on-surface-variant text-[13px] font-interface-label">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span>3. Video</span>
+</div>
+</nav>
+</section>
+<!-- Grid Drafting Area: Editorial Bento Composition -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Left 8 Columns: Topic Prompting & educational Angles -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+<!-- Primary Input Drafting Block -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-dim p-6 shadow-sm relative focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all">
+<div class="flex justify-between items-baseline mb-2">
+<label class="text-interface-label font-interface-label text-on-surface font-semibold flex items-center gap-2" for="topic-prompt">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+                What concept or idea do you want to explain?
+              </label>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">70 / 240 chars</span>
+</div>
+<div class="relative mt-2">
+<textarea class="w-full text-headline-sm font-headline-sm text-on-surface bg-transparent border-0 p-0 focus:ring-0 resize-none font-semibold leading-relaxed tracking-tight placeholder:text-outline-variant" id="topic-prompt" placeholder="Enter an inquiry, theorem, or systemic phenomenon..." rows="3">How active noise cancelling headphones reduce unwanted noise near your ear</textarea>
+</div>
+<!-- Kinetic AI educational Angles Section -->
+<div class="mt-6 pt-5 border-t border-outline-variant/40">
+<div class="flex items-center justify-between mb-3">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">auto_fix_high</span>
+                  Suggested angles
+                </span>
+<span class="text-meta-mono font-meta-mono text-primary text-[11px] hover:underline cursor-pointer">Regenerate angles</span>
+</div>
+<!-- Angle Chips Array -->
+<div class="flex flex-col gap-2"><button class="w-full text-left flex items-start justify-between p-3 rounded-lg border-2 border-primary bg-primary-fixed/20 transition-all group" type="button"><div class="flex items-start gap-3"><span class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center mt-0.5 flex-shrink-0"><span class="w-2 h-2 rounded-full bg-primary"></span></span><div><div class="flex items-center gap-2"><span class="text-interface-label font-interface-label text-on-surface font-semibold text-[13px]">How opposing sound waves cancel noise</span><span class="px-2 py-0.5 rounded text-[10px] font-meta-mono bg-tertiary-container text-on-tertiary font-bold tracking-tight">Recommended</span></div><p class="text-body-md font-body-md text-on-surface-variant text-[13px] mt-0.5">1 notes file attached (480 words)</p></div></div><span class="text-meta-mono font-meta-mono text-outline text-[11px] pt-1">01</span></button><button class="w-full text-left flex items-start justify-between p-3 rounded-lg border border-surface-dim bg-surface hover:bg-surface-container-low transition-all group" type="button"><div class="flex items-start gap-3"><span class="w-4 h-4 rounded-full border border-outline-variant mt-0.5 flex-shrink-0"></span><div><span class="text-interface-label font-interface-label text-on-surface font-medium text-[13px] group-hover:text-primary transition-colors">Passive vs. active noise isolation</span><p class="text-body-md font-body-md text-on-surface-variant text-[13px] mt-0.5">1 notes file attached (480 words)</p></div></div><span class="text-meta-mono font-meta-mono text-outline text-[11px] pt-1">02</span></button><button class="w-full text-left flex items-start justify-between p-3 rounded-lg border border-surface-dim bg-surface hover:bg-surface-container-low transition-all group" type="button"><div class="flex items-start gap-3"><span class="w-4 h-4 rounded-full border border-outline-variant mt-0.5 flex-shrink-0"></span><div><span class="text-interface-label font-interface-label text-on-surface font-medium text-[13px] group-hover:text-primary transition-colors">Everyday sounds ANC handles best</span><p class="text-body-md font-body-md text-on-surface-variant text-[13px] mt-0.5">1 notes file attached (480 words)</p></div></div><span class="text-meta-mono font-meta-mono text-outline text-[11px] pt-1">03</span></button></div>
+</div>
+</div>
+<!-- Collapsible Reference Drawer (Lecture Text / Research) -->
+<div class="bg-surface-container-lowest rounded-xl border border-surface-dim overflow-hidden shadow-sm">
+<button class="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-surface-container-low transition-colors" type="button">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-[20px]">attach_file</span>
+<div>
+<span class="text-interface-label font-interface-label text-on-surface font-semibold text-[14px]">Paste reference notes (optional)</span>
+<p class="text-body-md font-body-md text-on-surface-variant text-[12px]">1 notes file attached (480 words)</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant rounded text-[11px] font-meta-mono">480 words</span>
+<span class="material-symbols-outlined text-outline text-[20px]">expand_more</span>
+</div>
+</button>
+<!-- Expanded preview excerpt card -->
+<div class="px-6 pb-4 pt-1 bg-surface-container-low/40 border-t border-surface-dim flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">description</span>
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface truncate max-w-md">Notes_on_Active_Noise_Cancellation.txt</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-interface-label text-[12px] text-primary hover:underline font-semibold">Edit notes</button>
+<button class="text-interface-label text-[12px] text-error hover:underline">Remove</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 4 Columns: Inline Concrete Parameters Array -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-xl border border-surface-dim p-6 shadow-sm flex flex-col gap-6">
+<h2 class="text-interface-label font-interface-label text-on-surface font-bold uppercase tracking-wider text-[12px] pb-2 border-b border-outline-variant/40 flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-primary">tune</span> Video Settings</h2>
+<!-- Target Duration: Segmented Control -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-interface-label font-interface-label text-[13px] text-on-surface font-semibold">Target duration</label>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">~145 spoken words</span>
+</div>
+<div class="grid grid-cols-3 gap-1 p-1 bg-surface-container-low rounded-lg border border-surface-dim">
+<button class="py-1.5 text-center text-interface-label font-interface-label text-[13px] text-on-surface-variant hover:text-on-surface transition-colors rounded" type="button">30s</button>
+<button class="py-1.5 text-center text-interface-label font-interface-label text-[13px] bg-surface-container-lowest text-primary font-bold shadow-xs rounded border border-outline-variant/60" type="button">60s</button>
+<button class="py-1.5 text-center text-interface-label font-interface-label text-[13px] text-on-surface-variant hover:text-on-surface transition-colors rounded" type="button">90s</button>
+</div>
+</div>
+<!-- Audience Level: Segmented Pill Selector -->
+<div>
+<label class="text-interface-label font-interface-label text-[13px] text-on-surface font-semibold block mb-2">Audience level</label>
+<div class="flex flex-col gap-1.5"><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border border-surface-dim text-on-surface-variant hover:bg-surface-container-low transition-colors" type="button">Beginner</button><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border-2 border-primary bg-primary-fixed/20 text-on-surface font-bold flex items-center justify-between" type="button"><span>Intermediate</span><span class="material-symbols-outlined text-primary text-[16px]">check</span></button><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border border-surface-dim text-on-surface-variant hover:bg-surface-container-low transition-colors" type="button">Advanced</button></div>
+</div>
+<!-- Tone Selector -->
+<div>
+<label class="text-interface-label font-interface-label text-[13px] text-on-surface font-semibold block mb-2">Tone</label>
+<div class="flex flex-col gap-1.5"><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border-2 border-primary bg-primary-fixed/20 text-on-surface font-bold flex items-center justify-between" type="button"><span>Friendly &amp; clear</span><span class="material-symbols-outlined text-primary text-[16px]">check</span></button><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border border-surface-dim text-on-surface-variant hover:bg-surface-container-low transition-colors" type="button">Conversational</button><button class="w-full text-left px-3 py-2 rounded-lg text-interface-label font-interface-label text-[12px] border border-surface-dim text-on-surface-variant hover:bg-surface-container-low transition-colors" type="button">Direct</button></div>
+</div>
+<!-- Narration Voice & Audio Preview -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-interface-label font-interface-label text-[13px] text-on-surface font-semibold">Narration Voice</label>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Available voices</span>
+</div>
+<div class="flex flex-col gap-2"><div class="p-2.5 rounded-lg border-2 border-primary bg-primary-fixed/15 flex flex-col gap-2"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="text-interface-label font-interface-label text-[13px] text-on-surface font-bold">Alice</span><span class="text-meta-mono font-meta-mono text-outline text-[11px]">Female</span></div><span class="px-1.5 py-0.5 bg-surface text-primary rounded text-[10px] font-meta-mono font-bold">ACTIVE</span></div><div class="flex items-center justify-between bg-surface-container-lowest px-2 py-1 rounded border border-surface-dim"><button class="flex items-center gap-1.5 text-primary hover:text-on-primary-fixed-variant text-interface-label text-[12px] font-semibold" type="button"><span class="material-symbols-outlined text-[16px]">volume_up</span><span>Preview sample</span></button><span class="text-meta-mono font-meta-mono text-outline text-[10px]">0:03 sample</span></div></div><div class="p-2.5 rounded-lg border border-surface-dim bg-surface hover:bg-surface-container-low flex flex-col gap-2 transition-colors cursor-pointer"><div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="text-interface-label font-interface-label text-[13px] text-on-surface font-medium">David</span><span class="text-meta-mono font-meta-mono text-outline text-[11px]">Male voice</span></div></div><div class="flex items-center justify-between bg-surface-container-lowest px-2 py-1 rounded border border-surface-dim"><button class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary text-interface-label text-[12px] font-semibold" type="button"><span class="material-symbols-outlined text-[16px]">play_arrow</span><span>Preview sample</span></button><span class="text-meta-mono font-meta-mono text-outline text-[10px]">0:03 sample</span></div></div></div>
+</div>
+<!-- Topic Visual Theme Swatch -->
+<div>
+<label class="text-interface-label font-interface-label text-[13px] text-on-surface font-semibold block mb-2">Topic Visual Theme</label>
+<div class="p-3 rounded-lg border border-surface-dim bg-surface-container-low flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-[#191b25] flex items-center justify-center border border-outline-variant/60 shadow-xs relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-[#191b25] via-[#21356e] to-[#3157ff] opacity-80"></div>
+<div class="w-2 h-2 rounded-full bg-tertiary-container relative z-10"></div>
+</div>
+<div class="flex-1 min-w-0">
+<span class="text-interface-label font-interface-label text-[13px] font-bold text-on-surface block truncate">Acoustics &amp; Waves</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] block truncate">Midnight slate &amp; cyan harmonics</span>
+</div>
+<button class="text-primary hover:text-on-primary-fixed-variant text-[12px] font-interface-label font-semibold" type="button">Change</button>
+</div>
+</div>
+</div>
+<!-- Studio Drafting Hint Callout -->
+<div class="p-4 rounded-xl bg-surface-container-low/60 border border-surface-dim flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">lightbulb</span>
+<p class="text-body-md font-body-md text-on-surface-variant text-[12px] leading-relaxed">Choosing <strong>Friendly &amp; clear</strong> generates storyboard sequences emphasizing phase cancellation animations, inverted wave comparisons, and clear everyday sound scenarios.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- ========================================================= -->
+<!-- STICKY BOTTOM EXECUTIVE ACTION BAR                        -->
+<!-- ========================================================= -->
+<footer class="sticky bottom-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/60 py-3.5 px-8 shadow-sm">
+<div class="max-w-[1240px] mx-auto flex items-center justify-between">
+<!-- Left: Status and Autosave state -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 text-meta-mono font-meta-mono text-outline text-[12px]">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>Autosaved draft #1</span>
+</div>
+<span class="text-outline-variant">·</span>
+<span class="text-meta-mono font-meta-mono text-on-surface-variant text-[12px]">Estimated scenes: 6 scenes</span>
+</div>
+<!-- Right Action Cluster -->
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 rounded-lg text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors text-[13px]" type="button">
+            Cancel draft
+          </button>
+<button class="flex items-center gap-2 bg-primary-container hover:bg-primary text-on-primary px-6 py-2.5 rounded-lg text-interface-label font-interface-label font-semibold shadow-sm transition-all duration-150 active:scale-95" type="button">
+<span>Create storyboard</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

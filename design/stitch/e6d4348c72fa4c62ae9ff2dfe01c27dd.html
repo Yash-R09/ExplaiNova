@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova — Generation Recovery</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased flex min-h-screen">
+<!-- SHARED COMPONENT: SideNavBar (Anchored Desktop Left Dock) -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest border-r border-outline-variant shadow-sm z-50 flex flex-col justify-between p-4">
+<!-- Top Brand & Atelier Identity -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-headline-sm text-headline-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="polyline">polyline</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm tracking-tight text-on-surface leading-none">Explainova</div>
+<div class="text-meta-mono font-meta-mono text-outline text-[11px] tracking-wider mt-1">Studio Bench</div>
+</div>
+</div>
+<!-- Action CTA -->
+<button class="w-full bg-primary text-on-primary font-interface-label text-interface-label py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-sm active:scale-[0.99]">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>Create video</span>
+</button>
+<!-- Primary Navigation Links -->
+<nav class="space-y-1">
+<!-- Tab 0: Projects (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary bg-primary-fixed rounded-lg border-l-2 border-primary active:scale-[0.99] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>Projects</span>
+</a>
+<!-- Tab 1: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Tab 2: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Tab 3: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Atelier Utility Footer -->
+<div class="border-t border-outline-variant pt-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 text-meta-mono font-meta-mono text-outline text-[11px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container" data-icon="cloud_done">cloud_done</span>
+<span>Workspace Status</span>
+</div>
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary-fixed border border-tertiary"></span>
+</div>
+</div>
+</aside>
+<!-- MAIN WORKSPACE VIEW (Offset by side navigation width) -->
+<div class="flex-1 ml-64 flex flex-col min-w-0">
+<!-- SHARED COMPONENT: TopNavBar -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex justify-between items-center px-6 py-3">
+<!-- Breadcrumb & Context Label -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="folder">folder</span>
+<div class="text-interface-label font-interface-label text-on-surface-variant font-semibold flex items-center gap-1.5">
+<span class="hover:text-primary transition-colors cursor-pointer">Projects</span>
+<span class="text-outline">/</span>
+<span class="text-on-surface hover:text-primary transition-colors cursor-pointer">The science of quiet</span>
+<span class="text-outline">/</span>
+<span class="text-primary font-bold">Generation status</span>
+</div>
+</div>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Pill -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low border border-outline-variant text-meta-mono font-meta-mono text-on-surface-variant text-[11px]">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Autosaved</span>
+</div>
+<!-- Notification Bell Icon -->
+<button aria-label="Notifications" class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<div class="h-4 w-px bg-outline-variant"></div>
+<!-- Creator Portrait Avatar -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer">
+<img alt="Creator studio portrait avatar" class="w-7 h-7 rounded-full object-cover ring-1 ring-outline-variant" data-alt="An editorial film director studio portrait photograph in high contrast monochromatic daylight against an architectural backdrop, looking directly at the camera with quiet creative authority and sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDfb98QCK2DOrraJjFSBH-bR2KAdFqm0_E7yM5p3yxQpGZUTT6UhxSiNBGqDaIEK5NRPQQxTMkjD51MdVvNJxckATn721141l4tbMkv9na2lcHhoOvNyzomMU6nf26ENUu1UbPV8eLSruJtig5FqtPhXnOBSgo4-52ltVHeQzxvyfwLh6XQmDwzmY9KqiDrWaZTwDz5SCUq_0-z7d47mH_9erFUaYmJc0rJUOqx8Q32vRJ_KqpdDihBtotKxAMdPlC02I5FFUO2a4"/>
+<span class="text-interface-label font-interface-label font-medium text-on-surface text-sm">Elena S.</span>
+</div>
+</div>
+</header>
+<!-- CONTENT CANVAS: Structured Recovery Flow -->
+<main class="flex-1 px-8 py-8 max-w-[1240px] mx-auto w-full">
+<!-- STEPPER BAR & PROJECT CONTEXT -->
+<div class="mb-8 pb-6 border-b border-outline-variant flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<!-- Structural Stepper -->
+<div class="inline-flex items-center gap-3 bg-surface-container-low px-3.5 py-1.5 rounded-full border border-outline-variant text-meta-mono font-meta-mono text-xs mb-3">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-[15px] text-tertiary" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+              1. Plan (Completed)
+            </span>
+<span class="text-outline">→</span>
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-[15px] text-tertiary" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+              2. Storyboard (Completed)
+            </span>
+<span class="text-outline">→</span>
+<span class="flex items-center gap-1 text-secondary-container font-bold">
+<span class="material-symbols-outlined text-[15px] text-secondary animate-spin" data-icon="sync">sync</span>
+              3. Video (In progress)
+            </span>
+</div>
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">The science of quiet</h1>
+<p class="text-meta-mono font-meta-mono text-outline text-xs mt-1 flex items-center gap-2">
+<span>TARGET FORMAT: 0:53</span>
+<span>•</span>
+<span>9:16 VERTICAL REEL</span>
+<span>•</span>
+<span>3 SCENES TOTAL</span>
+</p>
+</div>
+<div class="flex items-center gap-2">
+<a class="px-3 py-1.5 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface bg-surface-container-lowest border border-outline-variant rounded-lg text-xs flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_back">arrow_back</span>
+            Back to project library
+          </a>
+</div>
+</div>
+<!-- MAIN RECOVERY CONTAINER: Tasteful, Architectural, Calm -->
+<div class="space-y-6">
+<!-- PRIMARY RECOVERY PANEL (Surface Level 1 & 2 layered) -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-7 shadow-sm relative overflow-hidden">
+<!-- Subtle Calibrated Amber Edge Line for Calm State Notice -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-secondary-fixed-dim"></div>
+<div class="flex flex-col lg:flex-row gap-8 items-start justify-between">
+<!-- Left Info Block -->
+<div class="flex-1 space-y-4">
+<div class="flex items-start gap-4">
+<!-- Calm Amber Warning Icon Shield -->
+<div class="w-12 h-12 rounded-2xl bg-secondary-fixed/50 border border-secondary-fixed-dim flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[26px]" data-icon="refresh">refresh</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">We couldn’t finish the animation</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1.5 max-w-2xl leading-relaxed">
+                    A rendering interruption occurred while calculating vector frame transitions. Your storyboard, voice narration, and synchronized captions are completely safe and saved.
+                  </p>
+</div>
+</div>
+<!-- PROGRESS SUMMARY OF SAVED ASSETS (Discrete Checklist) -->
+<div class="mt-6 pt-5 border-t border-outline-variant space-y-3 max-w-2xl">
+<div class="text-meta-mono font-meta-mono text-outline text-xs uppercase tracking-wider mb-2">Preserved Session Artifacts</div>
+<!-- Asset Item 1: Audio -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/60">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<div class="text-interface-label font-interface-label text-on-surface font-semibold text-sm">Narration audio generated (Alice · Female)</div>
+<div class="text-meta-mono font-meta-mono text-outline text-[11px]">Neural voice synthesis · 48kHz WAV buffer</div>
+</div>
+</div>
+<span class="px-2.5 py-0.5 rounded-full text-meta-mono font-meta-mono text-[11px] bg-tertiary-fixed text-on-tertiary-fixed font-semibold">
+                    Saved &amp; ready
+                  </span>
+</div>
+<!-- Asset Item 2: Captions -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/60">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<div class="text-interface-label font-interface-label text-on-surface font-semibold text-sm">Caption synchronization (0:53 SRT)</div>
+<div class="text-meta-mono font-meta-mono text-outline text-[11px]">Timecode accurate to ±12ms · 18 kinetic text cues</div>
+</div>
+</div>
+<span class="px-2.5 py-0.5 rounded-full text-meta-mono font-meta-mono text-[11px] bg-tertiary-fixed text-on-tertiary-fixed font-semibold">
+                    Saved &amp; ready
+                  </span>
+</div>
+<!-- Asset Item 3: Interrupted Phase -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container border border-secondary-fixed-dim">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[14px]" data-icon="priority_high">priority_high</span>
+</div>
+<div>
+<div class="text-interface-label font-interface-label text-on-surface font-semibold text-sm">Animation rendering</div>
+<div class="text-meta-mono font-meta-mono text-outline text-[11px]">Interrupted at scene 2 of 3 (Frame #742)</div>
+</div>
+</div>
+<span class="px-2.5 py-0.5 rounded-full text-meta-mono font-meta-mono text-[11px] bg-secondary-fixed text-secondary font-semibold">
+                    Interrupted
+                  </span>
+</div>
+</div>
+</div>
+<!-- Right Action Box & Dispatch -->
+<div class="w-full lg:w-72 bg-surface-container-low rounded-xl p-5 border border-outline-variant flex flex-col justify-between shrink-0">
+<div class="space-y-3">
+<div class="text-interface-label font-interface-label font-semibold text-on-surface text-sm">Recommended Action</div>
+<p class="text-meta-mono font-meta-mono text-outline text-xs leading-relaxed">
+                  Retry will re-link cached vector assets and resume synthesis from Scene 2 without recalculating audio tracks.
+                </p>
+</div>
+<div class="space-y-2.5 pt-6">
+<!-- Primary Action: Retry animation -->
+<button class="w-full bg-primary-container text-on-primary-container font-interface-label text-interface-label font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:bg-primary transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+<span>Retry animation</span>
+</button>
+<!-- Secondary Action: Back to storyboard -->
+<button class="w-full bg-surface-container-lowest text-on-surface font-interface-label text-interface-label font-semibold py-2.5 px-4 rounded-xl border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="view_carousel">view_carousel</span>
+<span>Back to storyboard</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- SECONDARY STRATUM: Retained Previous Version & Voice-Unavailable Guidance -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- CARD: Previous Successful Version Retained (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="history">history</span>
+<h3 class="text-interface-label font-interface-label font-bold text-on-surface">Previous version available: Version 1 (0:56)</h3>
+</div>
+<span class="text-meta-mono font-meta-mono text-outline text-xs">Rendered 2h ago</span>
+</div>
+<!-- Thumbnail & Detail Row -->
+<div class="flex items-center gap-5 my-5">
+<!-- 9:16 Mini Preview Frame -->
+<div class="w-20 h-36 rounded-xl bg-surface-container-highest border border-outline-variant overflow-hidden shrink-0 relative group shadow-sm">
+<img alt="Thumbnail of Version 1 animation preview" class="w-full h-full object-cover" data-alt="A vertical 9:16 animation storyboard frame depicting modern minimalist line drawings of an acoustic sound chamber with warm cream tones, cobalt blue vectors, and geometric sound waves." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlthBZ0rzXT8G9q9BAi4q2h2bZJh7hjThtPEWoFck4pKRo106I-YoGt2vACgtyXDk2GnMR9uKIrCuAi2AlC1kkyD6gZk0hTLR5W4xidJ0nru1LU7Mjq6_tzAh-hCNA4osz_pCaEmu4O_IJbpQFSA5LgIj3QIJ4EMgHKGIXLYeDxVVjAvqM2kJwl57ch3CAZ0brPDlnipIC6_Hpl8ucjsy95RGoL9HKj5L5Xrvyy61mfGDJMhzoDqFFehCOA3J46Oi8JMpZSNqUh7o"/>
+<div class="absolute inset-0 bg-inverse-surface/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[24px]" data-icon="play_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="text-interface-label font-interface-label font-semibold text-on-surface">Production Master V1</div>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs leading-relaxed">
+                    This build passed all motion thresholds and has complete audiovisual synchronization. You can deploy or store it right away while re-generating the updated cut.
+                  </p>
+<div class="flex items-center gap-3 text-meta-mono font-meta-mono text-outline text-[11px] pt-1">
+<span>1080 × 1920 MP4</span>
+<span>•</span>
+<span>24.8 MB</span>
+<span>•</span>
+<span>H.264 High</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons for V1 -->
+<div class="flex flex-wrap items-center gap-3 pt-4 border-t border-outline-variant">
+<button class="bg-surface-container text-on-surface font-interface-label text-interface-label px-4 py-2 rounded-xl border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+<span>Download Version 1 MP4</span>
+</button>
+<button class="bg-surface-container-lowest text-primary font-interface-label text-interface-label px-4 py-2 rounded-xl border border-primary/30 hover:bg-primary-fixed transition-colors flex items-center gap-2 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="podcasts">podcasts</span>
+<span>Publish Version 1</span>
+</button>
+</div>
+</div>
+<!-- CARD: Voice-Unavailable Guidance Callout (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-low border border-outline-variant rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="record_voice_over">record_voice_over</span>
+</div>
+<div class="text-interface-label font-interface-label font-bold text-on-surface">Voice synthesis guidance</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs leading-relaxed">
+                If voice generation ever encounters service delays, you can choose another available free voice (Alice or Male voice) in your storyboard settings without losing any written script.
+              </p>
+<!-- Voice Pill status preview -->
+<div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant space-y-2">
+<div class="text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Active Script Allocation</div>
+<div class="flex items-center justify-between text-xs">
+<span class="font-semibold text-on-surface">Voice Selected: Alice (Warm Tone)</span>
+<span class="text-tertiary font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Ready
+                  </span>
+</div>
+</div>
+</div>
+<div class="pt-5 border-t border-outline-variant mt-4">
+<button class="w-full bg-surface-container-lowest text-on-surface font-interface-label text-interface-label py-2.5 px-4 rounded-xl border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="tune">tune</span>
+<span>Choose available voice</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

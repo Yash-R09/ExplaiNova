@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Connected accounts — Explainova Studio</title>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased h-full flex overflow-hidden selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ======================================================== -->
+<!-- LEFT SIDEBAR (SideNavBar JSON execution)                 -->
+<!-- ======================================================== -->
+<aside class="docked full-height left-0 w-64 fixed h-screen border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none bg-surface-container-lowest dark:bg-surface-container-low flex flex-col justify-between p-4 z-30">
+<div class="flex flex-col gap-6">
+<!-- Brand & Studio Header -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="polyline">polyline</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[10px]">Studio Bench</span>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<div class="px-1">
+<button class="w-full py-2.5 px-4 bg-primary-container text-on-primary rounded-xl font-interface-label text-interface-label shadow-sm hover:bg-primary active:scale-[0.99] transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>Create video</span>
+</button>
+</div>
+<!-- Navigation Hierarchy (Matches Shared Components JSON) -->
+<nav aria-label="Main Navigation" class="flex flex-col gap-1 px-1">
+<!-- Inactive: Projects -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#projects">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder">folder</span>
+<span>Projects</span>
+</a>
+<!-- Inactive: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#publishing">
+<span class="material-symbols-outlined text-[20px]" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Active: Connected accounts (Intent match for current screen) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary active:scale-[0.99] transition-transform duration-150" href="#connected-accounts">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Inactive: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#settings">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom: Meta Actions & Creator Anchor -->
+<div class="flex flex-col gap-4 border-t border-outline-variant/60 pt-4">
+<div class="flex flex-col gap-1 px-1">
+<button class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors text-left w-full" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</button>
+<div class="flex items-center gap-3 px-3 py-1.5 text-meta-mono font-meta-mono text-outline text-[11px]">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="cloud_done">cloud_done</span>
+<span>Workspace Status</span>
+</div>
+</div>
+<!-- Creator Identity Profile Footer -->
+<div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-xl border border-outline-variant/50">
+<img class="w-9 h-9 rounded-full object-cover border border-outline-variant/80 shrink-0" data-alt="Close-up studio portrait of Dr. Aris Thorne, a distinguished academic and science essayist in his late forties with wireframe glasses, soft lighting, and sharp tailored dark workwear against a warm ivory drafting wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJb9sJi-05OVRBr7rQdGjyz_ZHtwvZ1dNScwLrFCDrai4836Rq-ibJCUsJ39wnEO_EPQdh1QBR4znMiyPOPPfT3-oKvWz67dbf2OV2sv_8TVaUN41nu7qGvPDu3D0JaRZ3exGYKYkAxxdsPdOnbCsgDa9Y9IxDPNpESWp4Ih6nlQuuFBeD5r4_QA5SErCI78NuuJirA1hHqUzvuzDSQdcnvB6WkKhPIgVpSWAgMFSZzo9fwiukmCNVv1-7QNNu2Zn0d6KRf7fvsZw"/>
+<div class="flex flex-col min-w-0">
+<span class="text-interface-label font-interface-label text-on-surface truncate">Dr. Aris Thorne</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] truncate">Senior Essayist</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ======================================================== -->
+<!-- MAIN WORKSPACE FRAME (Offset by w-64 Sidebar)            -->
+<!-- ======================================================== -->
+<div class="flex-1 flex flex-col ml-64 min-w-0 h-full overflow-y-auto">
+<!-- TopNavBar (TopNavBar JSON execution) -->
+<header class="docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none bg-surface-container-lowest dark:bg-surface-container-low flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb Anchor -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-semibold">Settings &amp; Accounts</span>
+<span class="text-outline text-xs">/</span>
+<span class="text-on-surface dark:text-inverse-on-surface font-semibold text-interface-label font-interface-label">Connected accounts</span>
+</div>
+<!-- Trailing Controls -->
+<div class="flex items-center gap-4">
+<!-- Status indicator (trailing_primary_action) -->
+<div class="flex items-center gap-2 px-2.5 py-1 bg-surface-container rounded-md border border-outline-variant/60">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant font-medium">Autosaved</span>
+</div>
+<!-- Notification action -->
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-1.5 h-1.5 bg-secondary-container rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<div class="h-4 w-px bg-outline-variant"></div>
+<!-- Creator Mini Badge -->
+<div class="flex items-center gap-2 pl-1">
+<img class="w-7 h-7 rounded-full object-cover border border-outline-variant" data-alt="Editorial portrait thumbnail of a creative director in natural window lighting, wearing a minimalist black turtleneck, clean composition, warm neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAICL7iMCg645pVyee0pWYy5bRmRSxZQ0LwhsdzgEkMpmCRBXOMzUsi2-mk2EQF_Bh8AxuCRlb0Gg7IXDHBNiSSpZJLiP9uG0ZjGwYeDmYkVK5reN7ESIkgPfr71fsQW7RlGn3Pmp02bzc5KDTv2mTNZfwg3oAyHxoYwABV_Y3Zjhjnux5wPlP2mZVtqDvk5qdV5U_WfutQgjfo4PjZokqCtGB0NQYODBQ1vRepdtOnB7DPF3dKRj44ZRWMlb6bc5cVNQmpW35eDaE"/>
+<span class="text-meta-mono font-meta-mono text-xs text-on-surface font-semibold">A. Thorne</span>
+</div>
+</div>
+</header>
+<!-- Content Stage: Capped 1240px container -->
+<main class="flex-1 w-full max-w-[1240px] mx-auto px-6 py-8 flex flex-col gap-8">
+<!-- Screen Header & Context -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Connected accounts</h1>
+<span class="px-2.5 py-0.5 rounded-full text-meta-mono font-meta-mono text-[11px] bg-surface-container text-on-surface-variant border border-outline-variant">Single-Creator Studio</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-3xl">
+          Connect your personal social accounts to publish approved explainer videos directly. Connecting is optional—you can always download your MP4 directly.
+        </p>
+</div>
+<!-- Reassurance Banner: Clear explanations & Rigor -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant p-4 flex items-start gap-3.5 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0 mt-0.5 border border-outline-variant/60">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified_user">verified_user</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-interface-label font-interface-label text-on-surface font-semibold">Nothing publishes without your review.</span>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm">
+            Each post requires explicit approval before sending. Explainova never schedules behind your back or alters your channel metadata without preview confirmation.
+          </p>
+</div>
+</div>
+<!-- Asymmetric Bento Account Architecture -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- ============================================== -->
+<!-- 1. YOUTUBE ACCOUNT CARD (Primary Connected)    -->
+<!-- ============================================== -->
+<article class="lg:col-span-12 xl:col-span-7 bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm p-6 flex flex-col justify-between gap-6 transition-all hover:border-outline">
+<div class="flex flex-col gap-5">
+<!-- Header Row: Platform Icon + Channel + State Badge -->
+<div class="flex items-start justify-between gap-4">
+<div class="flex items-center gap-4">
+<!-- YouTube Icon Badge -->
+<div class="w-12 h-12 rounded-xl bg-[#FFF0F0] border border-[#FFD2D2] flex items-center justify-center text-[#E02424] shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[28px]" data-icon="smart_display">smart_display</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="text-headline-sm font-headline-sm text-on-surface text-[18px] leading-6">Dr. Aris Thorne · Physics Explanations</h2>
+</div>
+<span class="text-meta-mono font-meta-mono text-outline text-xs">@aristhorne-edu</span>
+</div>
+</div>
+<!-- Status Badge: Connected -->
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-meta-mono font-meta-mono text-[11px] bg-[#E7F8E8] text-[#1E5628] border border-[#BDE7C1] shrink-0 font-bold">
+<span class="w-2 h-2 rounded-full bg-[#28A745] animate-pulse"></span>
+                Connected
+              </span>
+</div>
+<!-- Precision Spec Matrix (No vanity metrics, pure structural state) -->
+<div class="grid grid-cols-2 gap-3 p-4 bg-surface-container-low rounded-xl border border-outline-variant/60">
+<div class="flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline uppercase tracking-wider">Target Destination</span>
+<span class="text-interface-label font-interface-label text-on-surface font-medium mt-0.5">Primary Creator Channel</span>
+</div>
+<div class="flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline uppercase tracking-wider">Default Visibility</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="text-interface-label font-interface-label text-on-surface font-medium">Unlisted / Draft</span>
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<!-- educational Rule Note -->
+<div class="flex items-start gap-2.5 text-on-surface-variant text-sm bg-background p-3.5 rounded-lg border border-outline-variant/50">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5" data-icon="info">info</span>
+<p class="font-body-md text-xs leading-relaxed text-on-surface-variant">
+                Videos publish as scheduled drafts or public uploads only when you approve them in <a class="text-primary font-semibold underline underline-offset-2" href="#publishing">Publishing</a>. Raw source timelines remain strictly in your local project vault.
+              </p>
+</div>
+</div>
+<!-- Card Actions Footer -->
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/60">
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Authorized via Google OAuth 2.0</span>
+<button class="px-3.5 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:text-error hover:border-error text-interface-label font-interface-label text-xs transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="link_off">link_off</span>
+<span>Disconnect</span>
+</button>
+</div>
+</article>
+<!-- ============================================== -->
+<!-- 2. INSTAGRAM ACCOUNT CARD (Needs Reconnection) -->
+<!-- ============================================== -->
+<article class="lg:col-span-12 xl:col-span-5 bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm p-6 flex flex-col justify-between gap-6 transition-all hover:border-outline">
+<div class="flex flex-col gap-5">
+<!-- Header Row: Instagram Platform Badge + Handle -->
+<div class="flex items-start justify-between gap-4">
+<div class="flex items-center gap-3.5">
+<!-- Instagram Icon Badge -->
+<div class="w-12 h-12 rounded-xl bg-[#FDF0F8] border border-[#F6CEE8] flex items-center justify-center text-[#B81F78] shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[28px]" data-icon="photo_camera">photo_camera</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-headline-sm font-headline-sm text-on-surface text-[18px] leading-6">@aris.thorne.explains</h2>
+<span class="text-meta-mono font-meta-mono text-outline text-xs">Meta Creator Protocol</span>
+</div>
+</div>
+<!-- Status Badge: Needs Reconnection -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-meta-mono font-meta-mono text-[11px] bg-secondary-fixed text-on-secondary-fixed-variant border border-secondary-fixed-dim shrink-0 font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Token expired
+              </span>
+</div>
+<!-- Interruption Advisory / Disconnect Notice Callout -->
+<div class="rounded-xl border border-secondary-fixed-dim bg-secondary-fixed/25 p-4 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-secondary font-semibold text-xs tracking-tight">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+<span>Action required · Auth refresh needed</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs leading-relaxed">
+                Disconnecting or delaying renewal will pause <strong>1 scheduled post</strong> for Instagram until reconnected. Your drafted media will remain completely safe.
+              </p>
+</div>
+<!-- Parameter specs -->
+<div class="flex items-center justify-between p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/60 text-xs">
+<span class="text-meta-mono font-meta-mono text-outline">Queued Explainer Reel</span>
+<span class="text-interface-label font-interface-label text-on-surface font-semibold">"Quantum Coherence #04"</span>
+</div>
+</div>
+<!-- Reconnection Action Module -->
+<div class="flex flex-col gap-3 pt-4 border-t border-outline-variant/60">
+<div class="flex items-center gap-3">
+<button class="flex-1 py-2 px-4 bg-primary-container text-on-primary rounded-xl font-interface-label text-interface-label text-xs shadow-sm hover:bg-primary active:scale-[0.99] transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="sync">sync</span>
+<span>Reconnect Instagram</span>
+</button>
+<button class="py-2 px-3 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:text-error hover:border-error font-interface-label text-xs transition-colors" type="button">
+                Disconnect account
+              </button>
+</div>
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline text-center">Last session active 14 days ago</span>
+</div>
+</article>
+</div>
+<!-- ============================================== -->
+<!-- WORKSPACE POLICIES & INTEGRITY NOTICE          -->
+<!-- ============================================== -->
+<section class="mt-4 rounded-2xl bg-surface-container-low border border-outline-variant p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+<div class="flex items-start gap-4 max-w-2xl">
+<div class="w-10 h-10 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-primary shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]" data-icon="shield">shield</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-interface-label font-interface-label text-on-surface font-bold text-base">Private single-creator workspace</h3>
+<p class="text-body-md font-body-md text-on-surface-variant text-sm">
+              Explainova connects to one personal account per platform. We never ask for passwords, and we never publish without your confirmation. Your media stays under your singular ownership at every phase.
+            </p>
+</div>
+</div>
+<!-- Secondary Utility Actions -->
+<div class="flex items-center gap-3 shrink-0 self-end md:self-center">
+<button class="px-4 py-2 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface font-interface-label text-interface-label text-xs hover:bg-surface-container-high transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+<span>Direct MP4 export settings</span>
+</button>
+<a class="text-meta-mono font-meta-mono text-primary text-xs underline underline-offset-4 hover:text-on-primary-fixed-variant" href="#audit-log">
+            View publishing log
+          </a>
+</div>
+</section>
+<!-- Additional Channels Dock (Educational Expanders) -->
+<section class="border-t border-outline-variant/60 pt-6 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-xs">Available Standalone Integrations</span>
+<span class="text-meta-mono font-meta-mono text-xs text-outline">Need custom RTMP or CDN? Contact bench support</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- TikTok placeholder -->
+<div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/80 flex items-center justify-between hover:border-outline transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="movie">movie</span>
+</div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-on-surface text-xs font-semibold">TikTok</span>
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline">Short-form draft desk</span>
+</div>
+</div>
+<button class="px-2.5 py-1 text-meta-mono font-meta-mono text-[11px] text-primary hover:bg-primary-fixed rounded-md transition-colors font-semibold" type="button">Connect</button>
+</div>
+<!-- Substack / Web Video placeholder -->
+<div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/80 flex items-center justify-between hover:border-outline transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="article">article</span>
+</div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-on-surface text-xs font-semibold">Substack Video</span>
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline">Post-embed asset link</span>
+</div>
+</div>
+<button class="px-2.5 py-1 text-meta-mono font-meta-mono text-[11px] text-primary hover:bg-primary-fixed rounded-md transition-colors font-semibold" type="button">Connect</button>
+</div>
+<!-- LinkedIn Video placeholder -->
+<div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/80 flex items-center justify-between hover:border-outline transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="work">work</span>
+</div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-on-surface text-xs font-semibold">LinkedIn Creator</span>
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline">Professional essayist</span>
+</div>
+</div>
+<button class="px-2.5 py-1 text-meta-mono font-meta-mono text-[11px] text-primary hover:bg-primary-fixed rounded-md transition-colors font-semibold" type="button">Connect</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

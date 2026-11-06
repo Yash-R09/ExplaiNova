@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create — Storyboard | Explainova</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Sora & Manrope Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#ededfb",
+            "primary-container": "#3157ff",
+            "error-container": "#ffdad6",
+            "surface-variant": "#e1e1f0",
+            "inverse-surface": "#2e303b",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "on-error-container": "#93000a",
+            "on-tertiary-container": "#e0f972",
+            "tertiary-container": "#617300",
+            "on-secondary-fixed": "#3a0a00",
+            "surface-bright": "#fbf8ff",
+            "secondary": "#a83915",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "on-background": "#191b25",
+            "on-surface-variant": "#444656",
+            "tertiary-fixed": "#d5ee69",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdbd1",
+            "on-surface": "#191b25",
+            "background": "#fbf8ff",
+            "outline-variant": "#c4c5d9",
+            "on-primary-container": "#ebebff",
+            "inverse-primary": "#bac3ff",
+            "error": "#ba1a1a",
+            "primary-fixed": "#dee1ff",
+            "surface-container-highest": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "on-primary-fixed-variant": "#0031c6",
+            "surface-container-low": "#f3f2ff",
+            "primary-fixed-dim": "#bac3ff",
+            "tertiary-fixed-dim": "#b9d14f",
+            "on-secondary-container": "#6b1a00",
+            "tertiary": "#4b5900",
+            "surface-dim": "#d9d9e7",
+            "primary": "#003ae4",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary-fixed": "#001159",
+            "surface-tint": "#1c48f2",
+            "on-secondary-fixed-variant": "#862300",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f0effe",
+            "surface-container-high": "#e7e7f5",
+            "on-primary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-lg": "6.25rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "gutter-lg": "2rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin-md": "3rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "interface-label": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "headline-sm": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "body-lg": ["Manrope"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: SideNavBar                                             -->
+<!-- ========================================================================= -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50 flex flex-col justify-between p-4">
+<!-- Top Brand & Action -->
+<div class="flex flex-col gap-5">
+<!-- Atelier Header -->
+<div class="flex items-center gap-3 px-2 py-1">
+<div class="w-9 h-9 rounded-lg bg-primary-container text-white flex items-center justify-center font-headline-sm text-headline-sm font-bold shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_stories">auto_stories</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] leading-tight">Studio Bench</span>
+</div>
+</div>
+<!-- Mandatory CTA -->
+<button class="w-full bg-primary-container text-white font-interface-label text-interface-label rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 shadow-sm hover:bg-primary transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>Create video</span>
+</button>
+<!-- Main Navigation Items (Active State: Projects) -->
+<nav class="flex flex-col gap-1">
+<!-- Projects (Active based on context: Projects / The science of quiet) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>Projects</span>
+</a>
+<!-- Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- SideNavBar Footer -->
+<div class="flex flex-col gap-1 pt-4 border-t border-surface-container-high">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 text-meta-mono font-meta-mono text-outline rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container" data-icon="cloud_done">cloud_done</span>
+<span>Workspace Status</span>
+</div>
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN APP CONTAINER                                                        -->
+<!-- ========================================================================= -->
+<div class="flex-1 ml-64 flex flex-col min-w-0 pb-28">
+<!-- SHARED COMPONENT: TopNavBar -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest dark:bg-surface-container-low border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb / Brand Logo Slot -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-semibold">Projects / The science of quiet</span>
+</div>
+<!-- Trailing Actions & Profile -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Indicator Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-meta-mono font-meta-mono border border-surface-variant">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+</span>
+<span>Autosaved</span>
+</div>
+<!-- Notification Bell -->
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<!-- Avatar -->
+<div class="w-8 h-8 rounded-full ring-2 ring-surface-variant overflow-hidden flex items-center justify-center bg-primary-fixed text-primary font-interface-label text-[13px] font-bold">
+<img class="w-full h-full object-cover" data-alt="A refined studio headshot portrait of a creative director in an architectural studio setting. Soft natural overhead lighting casts crisp subtle contours against minimalist concrete and warm archival cream surfaces. The subject exhibits thoughtful poise fitting an educational essayist atelier." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUS0ooiDUgWMxxy2tzaoVUROhbh6HcdY_CZL09N_gubQGQp169xzoyYH77s8XAYu2Hif5DQja_mRFrqtCZ2i8rFDvgmq8lSvWv_0IjAr6vxXf2D3X223OzvvrmJ72pMraBJLlTVeh9Hi3scgp-2sKAmi0JEpQLkV2U1_ywyaGbDOToZu7Q7_9VFvO6XIjkAr4jC6Qaut4klcwFhdR1uvkepdz81Jqs2wVasoilbgSKzu1nC4nxW1wemlfHcJesNeFMAkSiCBp9EV8"/>
+</div>
+</div>
+</div>
+</header>
+<!-- CONTENT CANVAS -->
+<main class="w-full max-w-[1240px] mx-auto px-6 py-6 flex flex-col gap-6">
+<!-- STEPPER BAR -->
+<section class="w-full bg-surface-container-lowest rounded-xl border border-surface-dim p-3.5 shadow-sm">
+<div class="flex items-center justify-center max-w-2xl mx-auto">
+<!-- Step 1: Completed -->
+<div class="flex items-center gap-2 text-on-surface">
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-outline-variant text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-tertiary font-bold" data-icon="check">check</span>
+</div>
+<span class="font-interface-label text-interface-label text-on-surface-variant">1. Plan</span>
+</div>
+<!-- Connecting Hairline 1 -->
+<div class="flex-1 h-[2px] bg-primary-container mx-4"></div>
+<!-- Step 2: Storyboard (Active Cobalt Pill) -->
+<div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-container text-white shadow-sm">
+<span class="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center font-meta-mono text-[11px] font-bold">2</span>
+<span class="font-interface-label text-interface-label font-semibold text-white tracking-wide">Storyboard</span>
+</div>
+<!-- Connecting Hairline 2 -->
+<div class="flex-1 h-[2px] bg-surface-dim mx-4"></div>
+<!-- Step 3: Upcoming -->
+<div class="flex items-center gap-2 text-outline">
+<div class="w-6 h-6 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center font-meta-mono text-[11px] text-outline">
+              3
+            </div>
+<span class="font-interface-label text-interface-label text-outline">3. Video</span>
+</div>
+</div>
+</section>
+<!-- SUBHEADER / METADATA SUMMARY -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2 border-b border-surface-dim">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<h1 class="text-headline-sm font-headline-sm text-on-surface">The science of quiet</h1>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-meta-mono text-meta-mono">In Draft</span>
+</div>
+<div class="flex items-center gap-4 text-meta-mono font-meta-mono text-on-surface-variant text-[12px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="schedule">schedule</span>
+              0:53 total runtime · 3 scenes
+            </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]" data-icon="record_voice_over">record_voice_over</span>
+              Alice (Female)</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]" data-icon="palette">palette</span>
+              Physics of Sound</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-surface-dim bg-surface-container-lowest font-interface-label text-[13px] text-on-surface flex items-center gap-1.5 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="tune">tune</span>
+<span>Settings &amp; Voice</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg border border-surface-dim bg-surface-container-lowest font-interface-label text-[13px] text-on-surface flex items-center gap-1.5 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+<span>History</span>
+</button>
+</div>
+</section>
+<!-- GLOBAL DIRECTIVE PROMPT BAR -->
+<section class="bg-surface-container-lowest rounded-xl border border-surface-dim p-2.5 shadow-sm flex items-center gap-3">
+<div class="flex items-center justify-center pl-2 text-primary-container">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+</div>
+<div class="flex-1 relative">
+<input class="w-full bg-transparent border-0 py-1.5 px-0 text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0" placeholder="Direct the script narrative or visual tone across all scenes..." type="text" value="Make the explanation simpler and emphasize how opposing waves cancel out"/>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container text-primary font-interface-label text-[13px] border border-primary-fixed hover:bg-primary-fixed transition-colors flex items-center gap-1.5 whitespace-nowrap">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_fix_high">auto_fix_high</span>
+<span>Apply to all scenes</span>
+</button>
+</section>
+<!-- SCENE LIST / CARDS -->
+<section class="flex flex-col gap-6">
+<!-- CARD 1 -->
+<article class="bg-surface-container-lowest rounded-2xl border border-surface-dim shadow-sm hover:border-outline-variant transition-all overflow-hidden">
+<!-- Card Header Bar -->
+<div class="px-5 py-3 bg-surface-container-low/60 border-b border-surface-dim flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-meta-mono text-meta-mono text-on-surface uppercase tracking-wider font-bold">Scene 01</span>
+<span class="text-outline-variant text-[12px]">•</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">0:00 - 0:18</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-primary-fixed-variant text-[11px] font-interface-label font-semibold">Sound Wave Detection</span>
+</div>
+<!-- Card Quick Actions -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Reorder scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="drag_indicator">drag_indicator</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Duplicate scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+</button>
+<button class="p-1.5 rounded hover:bg-error-container hover:text-error transition-colors" title="Delete scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card Body: 9:16 Preview on Left, Editors on Right -->
+<div class="p-5 flex flex-col md:flex-row gap-6">
+<!-- Left: 9:16 Vertical Preview Frame -->
+<div class="w-full md:w-[190px] flex-shrink-0 flex flex-col gap-2">
+<div class="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-[#0F111A] border border-surface-dim group cursor-pointer shadow-inner">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-300" data-alt="A clean architectural vector diagram of the human ear and cochlea illuminated by fine violet resonance lines in deep slate space. The artwork features precision Swiss educational drafting with razor-sharp geometric wave contours and warm paper accents in high contrast minimal light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDisyJBZx2lSFc3F9kOX161-OxY4-iaW2VvfdPQhJG9Mrn9evnqa2sWZl2nuRBAIKumv01foLYw8jwvNETF1fMjhcTwDUl23Kle1sikcd_tEOmmgnJDmV31S3A_8ZGe0LwcA6srdHHFLY3LUKQ3iGy3NW-qCEcrPoweDXt7BFSEeEN91OE1GU5wrROHdsBRov7MYCULOpncO4Itk5JJOqG4X-wzHh7CkNFrjFVBvd8bwtaCktjFz1zn2BfPkTVpta7H_ogbXl7g2ug"/>
+<!-- Play Preview Overlay -->
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+<div class="w-10 h-10 rounded-full bg-white/90 text-primary-container flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 px-1.5 py-0.5 rounded bg-black/70 backdrop-blur-sm text-[10px] font-meta-mono text-white/90">
+                  9:16 HD
+                </div>
+</div>
+<button class="text-meta-mono font-meta-mono text-[11px] text-primary hover:underline text-center flex items-center justify-center gap-1 py-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="refresh">refresh</span>
+                Regenerate frame
+              </button>
+</div>
+<!-- Right: Narration and Motion Notes -->
+<div class="flex-1 flex flex-col gap-4">
+<!-- Narration Script Area -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-interface-label font-interface-label text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary-container" data-icon="mic">mic</span>
+                    Narration Script
+                  </label>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">18s estimated · 11 words</span>
+</div>
+<div class="relative">
+<textarea class="w-full rounded-xl border border-surface-dim bg-white p-3 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" rows="3">Tiny exterior microphones constantly measure ambient sound waves around your headphones.</textarea>
+</div>
+</div>
+<!-- Motion & Visual Cue Area -->
+<div class="flex flex-col gap-1.5">
+<label class="text-interface-label font-interface-label text-on-surface-variant flex items-center gap-1.5 text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary-container" data-icon="animation">animation</span>
+                  Motion / Visual Cue
+                </label>
+<div class="rounded-xl border border-surface-dim bg-surface-container-low/50 p-2.5 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="videocam">videocam</span>
+<input class="w-full bg-transparent border-0 p-0 font-body-md text-body-md text-on-surface-variant focus:ring-0" type="text" value="External microphones detect incoming sound frequency and amplitude."/>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 2 -->
+<article class="bg-surface-container-lowest rounded-2xl border border-surface-dim shadow-sm hover:border-outline-variant transition-all overflow-hidden">
+<!-- Card Header Bar -->
+<div class="px-5 py-3 bg-surface-container-low/60 border-b border-surface-dim flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-meta-mono text-meta-mono text-on-surface uppercase tracking-wider font-bold">Scene 02</span>
+<span class="text-outline-variant text-[12px]">•</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">0:18 - 0:38</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-primary-fixed-variant text-[11px] font-interface-label font-semibold">Inverted Waveform Generation</span>
+</div>
+<!-- Card Quick Actions -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Reorder scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="drag_indicator">drag_indicator</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Duplicate scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+</button>
+<button class="p-1.5 rounded hover:bg-error-container hover:text-error transition-colors" title="Delete scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card Body: 9:16 Preview on Left, Editors on Right -->
+<div class="p-5 flex flex-col md:flex-row gap-6">
+<!-- Left: 9:16 Vertical Preview Frame -->
+<div class="w-full md:w-[190px] flex-shrink-0 flex flex-col gap-2">
+<div class="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-[#0F111A] border border-surface-dim group cursor-pointer shadow-inner">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-300" data-alt="A sophisticated scientific vector illustration of neural pathways and synapses firing in bioluminescent cyan and electric cobalt against a deep midnight slate backdrop. Crisp linear drafting reveals brain auditory networks expanding in sharp radial concentric patterns." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNxBAbFfxnnhTFdkgHCMmxnJhU4qaFl3hxKIgxz2FQkxOkUc298sxBSg4P2HXKFDV2CTOOdwKB8VrooOPqIkNayRVVXDZYk1uS_cCF1NTdMsH7eCJstpERmJAk5_MidIkQX6pnLMVlCq8jAP6bF7ykvD9gaT7p7OQUcrmktb9ykfpOo3ds3ndRKEZcnAaIcGRzPk8ubQRHjbPR69WVKp1ESZWmVIzbEVdjwtsFvovswbkPwuoKIcoDPg4-_El-MN2nnJ4OADMi8ds"/>
+<!-- Play Preview Overlay -->
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+<div class="w-10 h-10 rounded-full bg-white/90 text-primary-container flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 px-1.5 py-0.5 rounded bg-black/70 backdrop-blur-sm text-[10px] font-meta-mono text-white/90">
+                  9:16 HD
+                </div>
+</div>
+<button class="text-meta-mono font-meta-mono text-[11px] text-primary hover:underline text-center flex items-center justify-center gap-1 py-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="refresh">refresh</span>
+                Regenerate frame
+              </button>
+</div>
+<!-- Right: Narration and Motion Notes -->
+<div class="flex-1 flex flex-col gap-4">
+<!-- Narration Script Area -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-interface-label font-interface-label text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary-container" data-icon="mic">mic</span>
+                    Narration Script
+                  </label>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">20s estimated · 15 words</span>
+</div>
+<div class="relative">
+<textarea class="w-full rounded-xl border border-surface-dim bg-white p-3 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" rows="3">An internal amplifier creates an opposing, inverted sound wave that plays simultaneously through the speakers.</textarea>
+</div>
+</div>
+<!-- Motion & Visual Cue Area -->
+<div class="flex flex-col gap-1.5">
+<label class="text-interface-label font-interface-label text-on-surface-variant flex items-center gap-1.5 text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary-container" data-icon="animation">animation</span>
+                  Motion / Visual Cue
+                </label>
+<div class="rounded-xl border border-surface-dim bg-surface-container-low/50 p-2.5 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="videocam">videocam</span>
+<input class="w-full bg-transparent border-0 p-0 font-body-md text-body-md text-on-surface-variant focus:ring-0" type="text" value="Animated sound wave collides with exact inverse inverted waveform."/>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- CARD 3 -->
+<article class="bg-surface-container-lowest rounded-2xl border border-surface-dim shadow-sm hover:border-outline-variant transition-all overflow-hidden">
+<!-- Card Header Bar -->
+<div class="px-5 py-3 bg-surface-container-low/60 border-b border-surface-dim flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="font-meta-mono text-meta-mono text-on-surface uppercase tracking-wider font-bold">Scene 03</span>
+<span class="text-outline-variant text-[12px]">•</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">0:38 - 0:53</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-primary-fixed-variant text-[11px] font-interface-label font-semibold">Phase Cancellation</span>
+</div>
+<!-- Card Quick Actions -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Reorder scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="drag_indicator">drag_indicator</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container transition-colors" title="Duplicate scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+</button>
+<button class="p-1.5 rounded hover:bg-error-container hover:text-error transition-colors" title="Delete scene">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card Body: 9:16 Preview on Left, Editors on Right -->
+<div class="p-5 flex flex-col md:flex-row gap-6">
+<!-- Left: 9:16 Vertical Preview Frame -->
+<div class="w-full md:w-[190px] flex-shrink-0 flex flex-col gap-2">
+<div class="relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-[#0F111A] border border-surface-dim group cursor-pointer shadow-inner">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-300" data-alt="A stylized minimalist vector diagram depicting an acoustic resonance equilibrium line in soft lavender and electric blue tones against a dark charcoal matte background. Clean mathematical typography and subtle frequency harmonics evoke an educational documentary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2MOluIzo4k3S1ebh7AKzXP6JKSnFsZ5x2NDXxD1W-b6bc8l0x9S1deJFAOeKQIG-qQClv9IJLI0xalM6tV7xo4e2ylYxUFIzLYR7kbA-OaWAITAWTa0AVN4Zr6sZZglap27p7x-27XuAAGHe0bAX7Q9Ji33sOIeCirozj9VDtCo9BOnTR-qjCaLKnwhKn7QALme0FNhVk_oNhaUtnSX-rBPUFL2d0KztGkdk-1Qxb-_kRiPo0iZfMxaWS56Aq6LCOUWpE37KDI7g"/>
+<!-- Play Preview Overlay -->
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+<div class="w-10 h-10 rounded-full bg-white/90 text-primary-container flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 px-1.5 py-0.5 rounded bg-black/70 backdrop-blur-sm text-[10px] font-meta-mono text-white/90">
+                  9:16 HD
+                </div>
+</div>
+<button class="text-meta-mono font-meta-mono text-[11px] text-primary hover:underline text-center flex items-center justify-center gap-1 py-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="refresh">refresh</span>
+                Regenerate frame
+              </button>
+</div>
+<!-- Right: Narration and Motion Notes -->
+<div class="flex-1 flex flex-col gap-4">
+<!-- Narration Script Area -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="text-interface-label font-interface-label text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary-container" data-icon="mic">mic</span>
+                    Narration Script
+                  </label>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">15s estimated · 15 words</span>
+</div>
+<div class="relative">
+<textarea class="w-full rounded-xl border border-surface-dim bg-white p-3 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" rows="3">The two sound waves collide and cancel each other out, leaving peaceful quiet at your ears.</textarea>
+</div>
+</div>
+<!-- Motion & Visual Cue Area -->
+<div class="flex flex-col gap-1.5">
+<label class="text-interface-label font-interface-label text-on-surface-variant flex items-center gap-1.5 text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary-container" data-icon="animation">animation</span>
+                  Motion / Visual Cue
+                </label>
+<div class="rounded-xl border border-surface-dim bg-surface-container-low/50 p-2.5 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="videocam">videocam</span>
+<input class="w-full bg-transparent border-0 p-0 font-body-md text-body-md text-on-surface-variant focus:ring-0" type="text" value="Waveforms flatten out near the listener ear, showing noise cancellation."/>
+</div>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- ADD SCENE ACTION -->
+<section class="flex justify-center pt-2">
+<button class="px-5 py-2.5 rounded-xl border-2 border-dashed border-outline-variant hover:border-primary text-on-surface-variant hover:text-primary font-interface-label text-interface-label flex items-center gap-2 bg-surface-container-low/30 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_circle">add_circle</span>
+<span>+ Add scene</span>
+</button>
+</section>
+</main>
+<!-- ========================================================================= -->
+<!-- BOTTOM STICKY FOOTER / ACTION BAR                                         -->
+<!-- ========================================================================= -->
+<footer class="fixed bottom-0 right-0 left-64 bg-surface-container-lowest/95 backdrop-blur-md border-t border-surface-dim py-3.5 px-8 z-40 shadow-lg">
+<div class="max-w-[1240px] mx-auto flex items-center justify-between">
+<!-- Left: Status Summary -->
+<div class="flex items-center gap-3">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">3 scenes · 0:53 total · All changes autosaved</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+</div>
+<!-- Right: Primary Actions -->
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 rounded-xl border border-surface-dim bg-white hover:bg-surface-container-low text-on-surface font-interface-label text-interface-label transition-colors flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="volume_up">volume_up</span>
+<span>Preview storyboard audio</span>
+</button>
+<button class="px-5 py-2.5 rounded-xl bg-primary-container text-white font-interface-label text-interface-label font-semibold hover:bg-primary transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+<span>Approve &amp; create video</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

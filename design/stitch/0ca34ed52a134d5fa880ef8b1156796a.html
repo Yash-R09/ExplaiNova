@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mobile — Publishing agenda | Explainova</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bac3ff",
+            "inverse-surface": "#2e303b",
+            "secondary": "#a83915",
+            "surface-bright": "#fbf8ff",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003ae4",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "outline": "#747688",
+            "secondary-fixed-dim": "#ffb59f",
+            "surface-tint": "#1c48f2",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "secondary-container": "#ff784f",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-fixed": "#d5ee69",
+            "on-tertiary-fixed": "#181e00",
+            "on-secondary-fixed-variant": "#862300",
+            "on-primary-container": "#ebebff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#3157ff",
+            "inverse-primary": "#bac3ff",
+            "secondary-fixed": "#ffdbd1",
+            "surface-variant": "#e1e1f0",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-secondary-container": "#6b1a00",
+            "on-background": "#191b25",
+            "on-tertiary-container": "#e0f972",
+            "surface-container-high": "#e7e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-surface-variant": "#444656",
+            "error": "#ba1a1a",
+            "background": "#fbf8ff",
+            "surface": "#fbf8ff",
+            "surface-container": "#ededfb",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "on-error": "#ffffff",
+            "tertiary-container": "#617300",
+            "surface-container-highest": "#e1e1f0",
+            "tertiary-fixed-dim": "#b9d14f",
+            "tertiary": "#4b5900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1.5rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "meta-mono": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-sm": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-md": ["Sora"]
+          },
+          "fontSize": {
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom subtle scrollbar & touch safety */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md min-h-screen flex flex-col justify-between selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ================= TOP APP BAR (Shared Components Token) ================= -->
+<header class="sticky top-0 z-40 bg-surface-bright shadow-sm flex flex-col w-full">
+<!-- Primary App Bar Row -->
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-full">
+<div class="flex items-center gap-2.5">
+<button aria-label="Open navigation menu" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-surface-container active:scale-95 transition-transform duration-100 ease-out text-on-surface" type="button">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">Explainova</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Notifications" class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-surface-container active:scale-95 transition-transform duration-100 ease-out text-on-surface" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<!-- Director Avatar -->
+<div class="w-9 h-9 rounded-full ring-1 ring-outline-variant overflow-hidden flex-shrink-0 bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Close-up editorial portrait of an academic creative director wearing archival tortoiseshell spectacles in a modern studio environment bathed in natural warm sunlight, with balanced tones of ivory, cobalt, and slate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJLAhuocfI2BDEeUBMFrQ2tdHAV6RQCzOHZa09PnBkK_rfSyRtbGMoFkqeekWar0rcdcopJObxyOocXf4uB7lJJW1-I5l3RF4B-3ZinlRRGjZed3BVSccy-pqO3poR_2nZWhCr3b-R13piyKKHn18BUE8WvcUaKhjxVOh_5Mzn0ralyUh-5NGulTZjUxi_ANfh5FDk1MS3ANT-sat5z3a_nNFHevVNTb853W8Sj18ue1eJM6gpE-jJXuFcrteBiEAZJD6R7NDUoes"/>
+</div>
+</div>
+</div>
+<!-- Title & Timezone Row -->
+<div class="px-4 pb-3 pt-1 flex items-baseline justify-between gap-2 border-b border-outline-variant">
+<div>
+<h1 class="font-headline-sm text-headline-sm font-semibold text-on-surface tracking-tight">Publishing Agenda</h1>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant font-meta-mono text-meta-mono">
+<span class="material-symbols-outlined text-[14px] leading-none" data-icon="schedule">schedule</span>
+<span>India (UTC+05:30)</span>
+</div>
+</div>
+</header>
+<!-- ================= SUBHEADER: CONTROLS & FILTER ROW ================= -->
+<section class="bg-surface-bright px-4 py-3 border-b border-outline-variant space-y-3">
+<!-- Month/Week Switcher & Action CTA -->
+<div class="flex items-center justify-between gap-3">
+<!-- Month Pill Switcher -->
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-surface-container-lowest text-on-surface font-interface-label text-interface-label shadow-sm min-h-[36px]" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_month">calendar_month</span>
+<span>October 2024</span>
+</button>
+<button aria-label="Previous month" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button aria-label="Next month" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Schedule Video Primary Button -->
+<button class="h-11 px-3.5 rounded-xl bg-primary-container text-on-primary font-interface-label text-interface-label flex items-center gap-1.5 shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:bg-primary active:scale-95 transition-transform flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>Schedule video</span>
+</button>
+</div>
+<!-- Filter Pills (Horizontal scrollable) -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-0.5 pb-1">
+<!-- Active Pill -->
+<button class="flex-shrink-0 px-3 py-1.5 rounded-md bg-on-background text-surface-bright font-interface-label text-interface-label min-h-[36px] flex items-center gap-1.5 border border-on-background" type="button">
+<span>All posts</span>
+<span class="px-1.5 py-0.2 rounded-full bg-white/20 text-[11px] font-meta-mono">4</span>
+</button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-interface-label text-interface-label min-h-[36px] flex items-center gap-1.5 border border-outline-variant" type="button">
+<span>Scheduled</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-[11px] font-meta-mono text-primary">2</span>
+</button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-interface-label text-interface-label min-h-[36px] flex items-center gap-1.5 border border-outline-variant" type="button">
+<span>Published</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-[11px] font-meta-mono">1</span>
+</button>
+<button class="flex-shrink-0 px-3 py-1.5 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-interface-label text-interface-label min-h-[36px] flex items-center gap-1.5 border border-outline-variant" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span>Needs attention</span>
+<span class="px-1.5 py-0.2 rounded-full bg-error-container text-on-error-container text-[11px] font-meta-mono">1</span>
+</button>
+</div>
+</section>
+<!-- ================= MAIN CONTENT: AGENDA STREAM ================= -->
+<main class="flex-1 px-4 py-4 space-y-6 max-w-md mx-auto w-full pb-32">
+<!-- 1. DATE GROUP: TODAY -->
+<section class="space-y-2.5">
+<!-- Date Section Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<h2 class="font-meta-mono text-meta-mono tracking-wider text-on-surface">TODAY · MON, OCT 14</h2>
+</div>
+<span class="font-meta-mono text-[11px] text-primary bg-primary-fixed px-2 py-0.5 rounded-md font-semibold">1 release today</span>
+</div>
+<!-- Card: The science of quiet -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-3.5 shadow-sm space-y-3 relative overflow-hidden">
+<div class="flex gap-3">
+<!-- 9:16 Aspect Thumbnail with Audio Wave Art -->
+<div class="w-20 aspect-[9/16] rounded-xl bg-inverse-surface border border-outline-variant overflow-hidden relative flex-shrink-0 flex flex-col justify-between p-2 shadow-inner">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="Abstract microscopic visualization of sound waves dying down in acoustic foam studio chamber, delicate linear geometric waves rendered in electric cobalt and deep ivory paper texture." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJTVB0vwIY4HjnXwhTJdYH8RM6IJQ3jWrkj7_GZzbKz-1U8p3yqJARWxrAIA3LEeZIur-oGKeqziuYK8hx1mqtPU_Cr-uc6LyDIOGtY1hLt595L93n0nJPc1kJx3MnKcB3POOKZ1G26xxHHUuzhegRNlmNRPdY8SP52nGGExB4tjMgfoPFsYMgFah9rdK2LijAaDp0_bY8EBraLFuVRS5AwZlQrNPJbhD2Nwz9U-Mj22xQFXJX0jkYtM5DVWwvo6KNh5magy0nXqQ')"></div>
+<!-- Format badge -->
+<span class="relative z-10 self-start px-1.5 py-0.5 rounded bg-black/70 text-white font-meta-mono text-[10px]">Shorts</span>
+<!-- Audio waveform simulation graphic -->
+<div class="relative z-10 flex items-end justify-center gap-0.5 h-6 w-full">
+<span class="w-1 bg-tertiary-fixed h-2 rounded-full"></span>
+<span class="w-1 bg-tertiary-fixed h-5 rounded-full"></span>
+<span class="w-1 bg-tertiary-fixed h-3 rounded-full"></span>
+<span class="w-1 bg-tertiary-fixed h-6 rounded-full"></span>
+<span class="w-1 bg-tertiary-fixed h-4 rounded-full"></span>
+<span class="w-1 bg-tertiary-fixed h-1 rounded-full"></span>
+</div>
+</div>
+<!-- Card Content Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="space-y-1.5">
+<div class="flex items-start justify-between gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed font-meta-mono text-meta-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                  Scheduled
+                </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">18:30 IST</span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-snug font-semibold text-on-surface truncate">The science of quiet</h3>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-md text-[13px] leading-tight">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="movie">movie</span>
+<span class="truncate">YouTube Shorts (@aristhorne-edu)</span>
+</div>
+</div>
+<!-- Card Bottom Meta / Subline -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between">
+<span class="font-meta-mono text-[11px] text-outline">Queue ID: #SQ-8902</span>
+<!-- Action Button / Drawer affordance trigger -->
+<button class="min-h-[44px] px-3 -mr-2 text-primary font-interface-label text-interface-label inline-flex items-center gap-1 active:scale-95 transition-transform" onclick="document.getElementById('peek-sheet').classList.toggle('translate-y-full')" type="button">
+<span>Reschedule or cancel</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- 2. DATE GROUP: WED, OCT 16 -->
+<section class="space-y-2.5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<h2 class="font-meta-mono text-meta-mono tracking-wider text-on-surface">WED, OCT 16</h2>
+</div>
+<!-- Card: Why satellites stay in orbit -->
+<article class="bg-surface-container-lowest rounded-2xl border-2 border-secondary-container/40 p-3.5 shadow-sm space-y-3">
+<div class="flex gap-3">
+<!-- 9:16 Aspect Thumbnail -->
+<div class="w-20 aspect-[9/16] rounded-xl bg-inverse-surface border border-outline-variant overflow-hidden relative flex-shrink-0 flex flex-col justify-between p-2">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="Minimalist technical diagram of low Earth orbit physics, white planetary curved trajectory on deep graphite background with geometric vector notation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjBZS3dj1mh3YtnZhITiGFKWvQyfHV0qT5D4lqdQ1Kzxq0RYDHQ-5PKYAG25F01ptkC0NRKM9Korg01VWeWhnY3V90qZMMHexrg84nSVnm3EpT85xfMH7O8DGhjrAiX5yla1YQ9rF212LzFrzNRfTDjfXFf86f_2BtjpLuieZqnVLgAF-DvyHIeviImIx8ICYvtp6qHr0syU_TBFyWMu3KHrOZl4JJ-tHxXdJofVnox25U5xHgntq9rKjOy5Ya74zBo2SBnAN-rI4')"></div>
+<span class="relative z-10 self-start px-1.5 py-0.5 rounded bg-black/70 text-white font-meta-mono text-[10px]">Reels</span>
+<div class="relative z-10 self-center bg-secondary-container text-white p-1 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]" data-icon="link_off">link_off</span>
+</div>
+</div>
+<!-- Card Content Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="space-y-1.5">
+<div class="flex items-start justify-between gap-1 flex-wrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-secondary-fixed text-on-secondary-container font-meta-mono text-meta-mono font-semibold">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="warning">warning</span>
+                  Needs attention
+                </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">20:00 IST</span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-snug font-semibold text-on-surface truncate">Why satellites stay in orbit</h3>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-md text-[13px] leading-tight">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="send">send</span>
+<span class="truncate">Instagram Reels (@aris.thorne.explains)</span>
+</div>
+<!-- Attention notice callout -->
+<p class="font-meta-mono text-[11px] text-secondary bg-surface-container px-2 py-1 rounded">
+                Token expired. Reconnect required.
+              </p>
+</div>
+<!-- Action Button -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between">
+<span class="font-meta-mono text-[11px] text-outline">Queue ID: #ST-4411</span>
+<button class="min-h-[44px] px-3.5 py-1.5 rounded-lg bg-secondary-container text-white font-interface-label text-interface-label inline-flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="sync">sync</span>
+<span>Fix connection</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- 3. DATE GROUP: SAT, OCT 19 -->
+<section class="space-y-2.5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<h2 class="font-meta-mono text-meta-mono tracking-wider text-on-surface">SAT, OCT 19</h2>
+</div>
+<!-- Card: How rain returns to the sky -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-3.5 shadow-sm space-y-3">
+<div class="flex gap-3">
+<!-- 9:16 Aspect Thumbnail -->
+<div class="w-20 aspect-[9/16] rounded-xl bg-inverse-surface border border-outline-variant overflow-hidden relative flex-shrink-0 flex flex-col justify-between p-2">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="Technical architectural diagram style illustration of evaporation cycles, subtle water vapor particles moving upward against an archival ivory grid line backdrop." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtMbOj3Vol8TUhNVickXCw4gmDtaay2tiB2_RVerCE_BduDUEgULb1Gl0jRKj1uhIshvCxNUL0dXxAJ0LcXVmH7IxSac_kCtGvUL3r0owkomLrC2b4-p5jfOcp9LxNMJhcShcT70aUuv5mvsf0sQ0p9MPumtidR4xJXojJt881Ga7a8-ny-7ZzqRQE1HjmiGba94IrieVGoab_-Qj1xw2J_EYcWkzIqmPm5VYH__6GCUhPgK6jztluyIOF9PdKarhV4Yeko80WbYo')"></div>
+<span class="relative z-10 self-start px-1.5 py-0.5 rounded bg-black/70 text-white font-meta-mono text-[10px]">Shorts</span>
+<div class="relative z-10 self-center">
+<span class="material-symbols-outlined text-white/80 text-[20px]" data-icon="cloud_upload">cloud_upload</span>
+</div>
+</div>
+<!-- Card Content Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="space-y-1.5">
+<div class="flex items-start justify-between gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed font-meta-mono text-meta-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                  Scheduled
+                </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">10:00 IST</span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-snug font-semibold text-on-surface truncate">How rain returns to the sky</h3>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-md text-[13px] leading-tight">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="movie">movie</span>
+<span class="truncate">YouTube Shorts (@aristhorne-edu)</span>
+</div>
+</div>
+<!-- Action Button -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between">
+<span class="font-meta-mono text-[11px] text-outline">Queue ID: #RN-1109</span>
+<button class="min-h-[44px] px-3 -mr-2 text-on-surface font-interface-label text-interface-label inline-flex items-center gap-1 active:scale-95 transition-transform" type="button">
+<span>View details</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- 4. DATE GROUP: PAST -->
+<section class="space-y-2.5 opacity-90">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<h2 class="font-meta-mono text-meta-mono tracking-wider text-on-surface-variant">TUE, OCT 08 (PAST)</h2>
+</div>
+<span class="font-meta-mono text-[11px] text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-md font-semibold">Completed</span>
+</div>
+<!-- Card: The science of quiet (v1) -->
+<article class="bg-surface-container-low rounded-2xl border border-outline-variant p-3.5 space-y-3">
+<div class="flex gap-3">
+<!-- 9:16 Thumbnail -->
+<div class="w-20 aspect-[9/16] rounded-xl bg-inverse-surface border border-outline-variant overflow-hidden relative flex-shrink-0 flex flex-col justify-between p-2">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 grayscale" data-alt="Monochrome still frame from educational animation explaining sound pressure acoustics, charcoal pencil texture, clean Swiss structural design." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBh5VItABgRU9vIey2z5heLHK6rDRChBHicyiwgWty6M6-qzpFHpKHxUJ3F4uakWQz1ya95iUlqLKmv3oeyRvm0qThL2pSw508BvhvJjQk56NuNasD_TC0c2mXGgzsUblYrGnmU_Suo4vMJPgrXVvQ41ZGIPYY_rvf2WKMjheVYQ0FuWTd3qmKzM68bItdr2U8_5IWyLdIg2M34v4IpZOBGFNlft6e3EOTElZY4c-X3PCJsQDYTpvt_xI0jisEhZOAV5tqQ7kEAvO8')"></div>
+<span class="relative z-10 self-start px-1.5 py-0.5 rounded bg-black/70 text-white font-meta-mono text-[10px]">Shorts</span>
+<div class="relative z-10 self-center text-tertiary-fixed">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<!-- Card Content Info -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="space-y-1.5">
+<div class="flex items-start justify-between gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-container-high text-tertiary font-meta-mono text-meta-mono font-semibold">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+                  Published
+                </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">18:00 IST</span>
+</div>
+<h3 class="font-headline-sm text-[17px] leading-snug font-semibold text-on-surface truncate">The science of quiet (v1)</h3>
+<div class="text-on-surface-variant font-body-md text-[13px] leading-tight">
+                Published at 18:00 IST
+              </div>
+</div>
+<!-- Action Button -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between">
+<span class="font-meta-mono text-[11px] text-outline">v1.4 Archive</span>
+<a class="min-h-[44px] px-3 -mr-2 text-primary font-interface-label text-interface-label inline-flex items-center gap-1 active:scale-95 transition-transform" href="#yt-link">
+<span>View on YouTube -&gt;</span>
+</a>
+</div>
+</div>
+</div>
+</article>
+</section>
+</main>
+<!-- ================= DRAWER AFFORDANCE / SLIDE-UP SHEET PREVIEW (PEEK STATE) ================= -->
+<!-- Positioned above the BottomNavBar, interactive peek sheet -->
+<aside class="fixed bottom-[58px] left-0 right-0 z-45 bg-surface-bright rounded-t-3xl border-t border-x border-outline-variant shadow-[0_-8px_24px_-4px_rgba(23,25,35,0.12)] transition-transform duration-300 ease-in-out" id="peek-sheet">
+<div class="max-w-md mx-auto px-4 pt-2.5 pb-3">
+<!-- Handle grab bar -->
+<div class="w-10 h-1 rounded-full bg-outline-variant mx-auto mb-2.5"></div>
+<!-- Peek Header -->
+<div class="flex items-start justify-between gap-3 mb-3">
+<div class="space-y-0.5 min-w-0">
+<span class="font-meta-mono text-[11px] text-primary uppercase tracking-wider block">Active Slot Inspector</span>
+<h4 class="font-headline-sm text-[16px] leading-tight font-semibold text-on-surface truncate">Scheduled slot · The science of quiet</h4>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-meta-mono text-[11px] flex-shrink-0">
+          18:30 IST
+        </span>
+</div>
+<!-- Action Affordances (Touch Targets >= 44px) -->
+<div class="grid grid-cols-2 gap-2.5">
+<button class="min-h-[46px] px-3 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant font-interface-label text-interface-label text-on-surface flex items-center justify-center gap-2 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit_calendar">edit_calendar</span>
+<span>Reschedule time</span>
+</button>
+<button class="min-h-[46px] px-3 rounded-xl bg-surface-container-lowest hover:bg-error-container text-error border border-error-container font-interface-label text-interface-label flex items-center justify-center gap-2 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
+<span>Cancel schedule</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ================= BOTTOM NAVIGATION BAR (Shared Components Token) ================= -->
+<!-- Fully mapped to JSON: labels: ["Projects", "Publishing", "Accounts", "Settings"], active: "Publishing" -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 pb-safe bg-surface-bright dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-[0_-1px_3px_rgba(23,25,35,0.04)]">
+<!-- Tab 1: Projects (Inactive) -->
+<a class="min-h-[44px] min-w-[56px] flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 active:scale-95 transition-transform duration-100 hover:text-primary" href="#projects">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+<span>Projects</span>
+</a>
+<!-- Tab 2: Publishing (ACTIVE TAB - Exactly matched to page intent) -->
+<a class="min-h-[44px] min-w-[56px] flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-meta-mono text-meta-mono gap-1 active:scale-95 transition-transform duration-100" href="#publishing">
+<span class="material-symbols-outlined" data-icon="send" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span>
+<span>Publishing</span>
+</a>
+<!-- Tab 3: Accounts (Inactive) -->
+<a class="min-h-[44px] min-w-[56px] flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 active:scale-95 transition-transform duration-100 hover:text-primary" href="#accounts">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span>Accounts</span>
+</a>
+<!-- Tab 4: Settings (Inactive) -->
+<a class="min-h-[44px] min-w-[56px] flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 active:scale-95 transition-transform duration-100 hover:text-primary" href="#settings">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</body></html>

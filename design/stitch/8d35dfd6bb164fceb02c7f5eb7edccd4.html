@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Explainova — Plan Video</title>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bac3ff",
+            "inverse-surface": "#2e303b",
+            "secondary": "#a83915",
+            "surface-bright": "#fbf8ff",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003ae4",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "outline": "#747688",
+            "secondary-fixed-dim": "#ffb59f",
+            "surface-tint": "#1c48f2",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "secondary-container": "#ff784f",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-fixed": "#d5ee69",
+            "on-tertiary-fixed": "#181e00",
+            "on-secondary-fixed-variant": "#862300",
+            "on-primary-container": "#ebebff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#3157ff",
+            "inverse-primary": "#bac3ff",
+            "secondary-fixed": "#ffdbd1",
+            "surface-variant": "#e1e1f0",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-secondary-container": "#6b1a00",
+            "on-background": "#191b25",
+            "on-tertiary-container": "#e0f972",
+            "surface-container-high": "#e7e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-surface-variant": "#444656",
+            "error": "#ba1a1a",
+            "background": "#fbf8ff",
+            "surface": "#fbf8ff",
+            "surface-container": "#ededfb",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "on-error": "#ffffff",
+            "tertiary-container": "#617300",
+            "surface-container-highest": "#e1e1f0",
+            "tertiary-fixed-dim": "#b9d14f",
+            "tertiary": "#4b5900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1.5rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "meta-mono": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-sm": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-md": ["Sora"]
+          },
+          "fontSize": {
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Safe padding bottom for iOS / gesture handles */
+    .pb-safe {
+      padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col justify-between">
+<!-- Canvas Shell Container (Constrained strictly for Mobile Viewport) -->
+<div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-surface relative">
+<!-- Top App Bar (Task-Focused: Back to Projects, Title, Autosaved Badge) -->
+<!-- Follows rule: Shell Border Ban, subtle drop shadow/tonal boundary, header typography anchor -->
+<header class="sticky top-0 z-40 bg-surface-bright/95 backdrop-blur px-4 h-14 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<!-- Back Navigation Target to Projects (>=44px touch target) -->
+<a class="w-11 h-11 flex items-center justify-center -ml-2 rounded-lg text-on-surface hover:bg-surface-container active:scale-95 transition-all" href="#projects">
+<span class="material-symbols-outlined text-[22px]" data-icon="arrow_back">arrow_back</span>
+</a>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface leading-tight">Create video</h1>
+</div>
+</div>
+<!-- Autosaved Indicator Badge -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high border border-outline-variant/60">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-meta-mono text-meta-mono text-[11px] text-on-surface-variant font-bold tracking-wide">Autosaved</span>
+</div>
+</header>
+<!-- Main Scrollable Flow -->
+<main class="flex-1 px-4 pt-3 pb-32 flex flex-col gap-5">
+<!-- Creation Progress Stepper (3 Explicit Steps: 1. Plan (Active) -> 2. Storyboard -> 3. Video) -->
+<nav aria-label="Creation Progress" class="w-full bg-surface-container-lowest p-3 rounded-xl border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="flex items-center justify-between relative">
+<!-- Step 1: Active -->
+<div class="flex items-center gap-2 z-10">
+<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-meta-mono text-[11px] font-bold flex items-center justify-center shadow-xs">1</span>
+<span class="font-interface-label text-interface-label text-primary font-bold">1. Plan (Active)</span>
+</div>
+<!-- Divider 1 -->
+<div class="flex-1 h-[1.5px] mx-2 bg-outline-variant/60"></div>
+<!-- Step 2 -->
+<div class="flex items-center gap-1.5 z-10 opacity-70">
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface-variant font-meta-mono text-[10px] font-bold flex items-center justify-center border border-outline-variant">2</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant font-medium">Storyboard</span>
+</div>
+<!-- Divider 2 -->
+<div class="flex-1 h-[1.5px] mx-2 bg-outline-variant/40"></div>
+<!-- Step 3 -->
+<div class="flex items-center gap-1.5 z-10 opacity-50">
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface-variant font-meta-mono text-[10px] font-bold flex items-center justify-center border border-outline-variant">3</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant font-medium">Video</span>
+</div>
+</div>
+</nav>
+<!-- Section: Main Idea Input -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-baseline justify-between">
+<label class="font-headline-sm text-[16px] leading-tight font-bold text-on-surface" for="idea-entry">
+            What idea do you want to explain?
+          </label>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">Core Concept</span>
+</div>
+<!-- Generous Textarea with drafting bench aesthetics -->
+<div class="relative bg-surface-container-lowest rounded-xl border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all shadow-[0_1px_3px_rgba(23,25,35,0.03)]">
+<textarea class="w-full bg-transparent px-3.5 py-3 font-body-md text-body-md text-on-surface resize-none focus:outline-none placeholder:text-outline-variant/80" id="idea-entry" placeholder="Type your premise, thesis, or question..." rows="4">How active noise cancelling headphones reduce unwanted noise near your ear</textarea>
+<div class="flex justify-between items-center px-3.5 pb-2.5 pt-1 text-on-surface-variant">
+<span class="font-meta-mono text-meta-mono text-[11px] text-tertiary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span> Idea ready
+            </span>
+<span class="font-meta-mono text-meta-mono text-[11px]">71 chars</span>
+</div>
+</div>
+<!-- Quick Prompt Angles / Suggestions -->
+<div class="flex flex-col gap-1.5 pt-1">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">Suggested angles &amp; hooks:</span>
+<div class="flex flex-col gap-2">
+<!-- Angle 1 (Selected) -->
+<button class="w-full text-left min-h-[44px] px-3.5 py-2.5 rounded-lg bg-surface-container-high border-2 border-primary flex items-start gap-2.5 active:scale-[0.99] transition-all" type="button">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="radio_button_checked">radio_button_checked</span>
+<div class="flex-1">
+<p class="font-interface-label text-interface-label text-on-surface font-bold">How opposing sound waves cancel noise (Selected)</p>
+<p class="font-body-md text-[13px] text-on-surface-variant leading-tight mt-0.5">Explores antiphase compression and phase cancellation mechanics.</p>
+</div>
+</button>
+<!-- Angle 2 -->
+<button class="w-full text-left min-h-[44px] px-3.5 py-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant hover:bg-surface-container active:scale-[0.99] transition-all flex items-start gap-2.5" type="button">
+<span class="material-symbols-outlined text-outline text-[18px] mt-0.5" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<div class="flex-1">
+<p class="font-interface-label text-interface-label text-on-surface font-semibold">Everyday sounds ANC handles best</p>
+<p class="font-body-md text-[13px] text-on-surface-variant leading-tight mt-0.5">Contrasts continuous drone engines vs. sudden unpredictable chatter.</p>
+</div>
+</button>
+</div>
+</div>
+</section>
+<!-- Settings Cards: Compact & Touch-Friendly -->
+<section class="flex flex-col gap-3 pt-1">
+<h2 class="font-meta-mono text-meta-mono text-on-surface-variant tracking-wider uppercase">Pacing &amp; Presentation Archetype</h2>
+<!-- Card 1: Target Duration Selector -->
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.03)] flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-interface-label text-interface-label font-bold text-on-surface">Target duration</span>
+<span class="font-meta-mono text-meta-mono text-secondary font-bold">~145 words estimated</span>
+</div>
+<!-- Segmented Pills: '30s', '60s' (Selected), '90s' (Touch Target >= 44px) -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container p-1 rounded-lg">
+<!-- 30s -->
+<button class="min-h-[44px] flex flex-col items-center justify-center rounded-md font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+<span class="font-bold text-[14px]">30s</span>
+<span class="font-meta-mono text-[10px] text-outline opacity-80">Micro (~75w)</span>
+</button>
+<!-- 60s (Selected) -->
+<button class="min-h-[44px] flex flex-col items-center justify-center rounded-md bg-surface-container-lowest text-primary font-interface-label text-interface-label shadow-xs border border-outline-variant/50 active:scale-95 transition-all" type="button">
+<span class="font-bold text-[14px]">60s</span>
+<span class="font-meta-mono text-[10px] text-primary font-bold">Standard (~145w)</span>
+</button>
+<!-- 90s -->
+<button class="min-h-[44px] flex flex-col items-center justify-center rounded-md font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+<span class="font-bold text-[14px]">90s</span>
+<span class="font-meta-mono text-[10px] text-outline opacity-80">Deep (~220w)</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Audience Level Selector -->
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.03)] flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-interface-label text-interface-label font-bold text-on-surface">Audience level</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">Conceptual depth</span>
+</div>
+<!-- Segmented Pills: 'Beginner' (Selected), 'Intermediate', 'Advanced' -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container p-1 rounded-lg">
+<!-- Beginner (Selected) -->
+<button class="min-h-[44px] flex items-center justify-center rounded-md bg-surface-container-lowest text-primary font-interface-label text-interface-label font-bold shadow-xs border border-outline-variant/50 active:scale-95 transition-all" type="button">
+              Beginner
+            </button>
+<!-- Intermediate -->
+<button class="min-h-[44px] flex items-center justify-center rounded-md font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+              Intermediate
+            </button>
+<!-- Advanced -->
+<button class="min-h-[44px] flex items-center justify-center rounded-md font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+              Advanced
+            </button>
+</div>
+</div>
+<!-- Card 3: Voice Selection Card (Explicit Male / Female with Sample Player) -->
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.03)] flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="record_voice_over">record_voice_over</span>
+<span class="font-interface-label text-interface-label font-bold text-on-surface">Narrator voice</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline">Standard Library</span>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Female Choice: Alice (Selected) -->
+<div class="p-3 rounded-lg border-2 border-primary bg-primary-fixed/20 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-[12px]">A</div>
+<div>
+<h3 class="font-interface-label text-interface-label font-bold text-on-surface leading-snug">Alice (Female)</h3>
+<p class="font-meta-mono text-meta-mono text-[11px] text-on-surface-variant">Clear &amp; friendly · Studio diction</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle">check_circle</span>
+</div>
+<!-- Playable Audio Preview Affordance (Preview sample button) -->
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/40">
+<button class="min-h-[44px] px-3 py-1.5 rounded-md bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-on-surface flex items-center gap-2 active:scale-95 transition-all" id="previewVoiceBtn" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="play_arrow" id="previewIcon">play_arrow</span>
+<span class="font-interface-label text-[13px] font-bold" id="previewText">Preview sample</span>
+</button>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="graphic_eq">graphic_eq</span>
+<span class="font-meta-mono text-meta-mono text-[11px]">0:04 test</span>
+</div>
+</div>
+</div>
+<!-- Male Voice Option -->
+<div class="p-3 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container-low transition-colors flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold text-[12px]">M</div>
+<div>
+<h3 class="font-interface-label text-interface-label font-semibold text-on-surface leading-snug">Male voice</h3>
+<p class="font-meta-mono text-meta-mono text-[11px] text-on-surface-variant">Warm tone · Grounded rhythm</p>
+</div>
+</div>
+<button class="min-h-[44px] px-3 rounded-md font-interface-label text-[13px] text-primary font-bold hover:bg-surface-container active:scale-95 transition-all" type="button">
+                Select
+              </button>
+</div>
+</div>
+</div>
+<!-- Card 4: Optional Reference Notes (Accordion Toggle) -->
+<details class="group bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-[0_1px_3px_rgba(23,25,35,0.03)]" open="">
+<summary class="min-h-[48px] px-3.5 py-3 flex items-center justify-between cursor-pointer list-none select-none hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="attachment">attachment</span>
+<span class="font-interface-label text-interface-label font-bold text-on-surface">Attach reference notes (Optional)</span>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200 group-open:rotate-180" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-3.5 pb-3.5 pt-1 border-t border-outline-variant/40 flex flex-col gap-2">
+<!-- Attached file capsule -->
+<div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="description">description</span>
+<div class="truncate">
+<p class="font-interface-label text-[13px] font-bold text-on-surface truncate">Notes_on_Active_Noise_Cancellation.txt</p>
+<p class="font-meta-mono text-meta-mono text-[11px] text-on-surface-variant">480 words · Pre-digested by editor</p>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-outline hover:text-error active:scale-95 transition-all" title="Remove attachment" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+</button>
+</div>
+<p class="font-body-md text-[12px] text-on-surface-variant">The AI will strictly synthesize points from these notes into storyboard keyframes.</p>
+</div>
+</details>
+</section>
+</main>
+<!-- Sticky Bottom Action Bar (with Safe Area) -->
+<!-- Prohibits bottom navbar shell since user is in a focused creation journey -->
+<footer class="fixed bottom-0 left-0 right-0 z-50 bg-surface-bright/95 backdrop-blur-md px-4 pt-3 pb-safe shadow-[0_-4px_16px_rgba(23,25,35,0.06)] border-t border-outline-variant/60">
+<div class="max-w-md mx-auto flex flex-col items-center gap-1.5">
+<!-- Primary Action Button: 'Create storyboard ->' (electric cobalt #3157ff, 48px height, full width) -->
+<a class="w-full h-12 bg-primary-container hover:bg-primary text-on-primary rounded-xl font-interface-label text-interface-label font-bold flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(49,87,255,0.25)] active:scale-[0.98] transition-all" href="#storyboard">
+<span>Create storyboard</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<!-- Subtext indicator -->
+<p class="font-meta-mono text-meta-mono text-[11px] text-on-surface-variant text-center">
+          Autosaved draft · Generates 3-6 scenes
+        </p>
+</div>
+</footer>
+</div>
+<!-- Micro-interaction script for preview sample audio affordance -->
+<script>
+    const previewBtn = document.getElementById('previewVoiceBtn');
+    const previewIcon = document.getElementById('previewIcon');
+    const previewText = document.getElementById('previewText');
+    let isPlaying = false;
+    let timer = null;
+
+    if (previewBtn) {
+      previewBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          previewIcon.textContent = 'pause';
+          previewText.textContent = 'Playing (4s)...';
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            isPlaying = false;
+            previewIcon.textContent = 'play_arrow';
+            previewText.textContent = 'Preview sample';
+          }, 4000);
+        } else {
+          clearTimeout(timer);
+          previewIcon.textContent = 'play_arrow';
+          previewText.textContent = 'Preview sample';
+        }
+      });
+    }
+  </script>
+</body></html>

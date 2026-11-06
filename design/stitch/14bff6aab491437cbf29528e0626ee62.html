@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova — Notifications &amp; Activity</title>
+<!-- Material Symbols Outlined font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ========================================================================= -->
+<!-- LEFT SIDEBAR (Derived from Shared Components JSON 'SideNavBar')           -->
+<!-- ========================================================================= -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest border-r border-outline-variant shadow-sm z-30 flex flex-col justify-between p-4">
+<!-- Brand & Top Actions -->
+<div>
+<!-- Brand Anchor Header -->
+<div class="flex items-center gap-3 px-2 py-3 mb-4">
+<div class="w-9 h-9 rounded-lg bg-on-surface text-surface flex items-center justify-center font-headline-sm text-headline-sm">
+          E
+        </div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[10px]">Studio Bench</span>
+</div>
+</div>
+<!-- CTA Action Button -->
+<div class="mb-6">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary py-2.5 px-4 rounded-xl font-interface-label text-interface-label shadow-sm hover:bg-primary active:scale-[0.99] transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Create video</span>
+</button>
+</div>
+<!-- Primary Navigation Tabs (JSON: Projects, Publishing, Connected accounts, Settings) -->
+<nav class="space-y-1">
+<!-- Projects -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span>Projects</span>
+</a>
+<!-- Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[20px]">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer & Studio Avatar Profile -->
+<div class="pt-4 border-t border-outline-variant space-y-3">
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[18px]">rate_review</span>
+<span>Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-[18px]">cloud_done</span>
+<span>Workspace Status</span>
+</a>
+</div>
+<!-- Studio Identity Card -->
+<div class="flex items-center gap-3 p-2 bg-surface-container-low rounded-xl border border-outline-variant/60">
+<div class="relative w-9 h-9 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A refined black-and-white studio portrait photograph of an editorial creative director in architectural glasses with neutral lighting against an ivory linen backdrop, reflecting minimalist craftsmanship and poise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjh3exVBJeBHMjLGHbfU7t_7yAkIJVwirNodEqT5UUM3jvYkHHrbMUZS9cEOrS_vrX537F7g22LCJIrTvXrE-_y-k0LBSZCNtzxqUuKaR_QZifB4EYVNQsueiLglaGPq7ruZLKaivUJmJqZLq9xlf2Pj5QIa5XhNpCshaiKowZhnkTXNVu-1HJv0Xnm4hBuryz74aCkFS4BSgRyb0ZmimDd44mCd9k9KRAES2OKBdBAXPbpiJd21fP3p7db_NmM-hBNsy9U7D2Ris"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-interface-label font-interface-label text-on-surface truncate">Ari Thorne</p>
+<p class="text-meta-mono font-meta-mono text-outline text-[11px] truncate">Senior Educator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE WRAPPER (Offset by docked 256px sidebar)                    -->
+<!-- ========================================================================= -->
+<div class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- Top Navigation Bar (Shared Component Style Blueprint) -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex justify-between items-center px-8 py-3">
+<!-- Breadcrumb Identity -->
+<div class="flex items-center gap-2">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">Workspace</span>
+<span class="text-outline-variant">/</span>
+<h1 class="text-interface-label font-interface-label text-on-surface font-semibold flex items-center gap-2">
+          Notifications &amp; Activity
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-meta-mono font-meta-mono text-[11px]">2 pending</span>
+</h1>
+</div>
+<!-- Trailing Utility Cluster -->
+<div class="flex items-center gap-3">
+<!-- Render status indicator -->
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-md bg-surface-container-low border border-outline-variant/50 text-meta-mono font-meta-mono text-outline text-[11px]">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span>Engine Idle</span>
+</div>
+<!-- Notification Bell (Active Highlighted) -->
+<button class="relative p-2 rounded-lg bg-primary-fixed text-on-primary-fixed border border-primary/20 transition-all scale-95" title="Notifications active view">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary-container rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- Studio Profile Trigger -->
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait shot of an editorial director wearing black turtleneck and horn-rimmed eyeglasses against a soft cream studio wall, high key lighting, subtle texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0oHuphNv8SBCLsum0k-SvxzAwzVLtruxUWj2xuABqwL8GTvVwRaVGvm7SJGPG9Bay_LeNM6mC2sk39NM0LOdDqMzMjfO6Ixr-NrhaAWfhki-shLVoyLpyAPnGD9T5lbyiI3f6iv4vak2ySyBMs7VZ-DG0zT21guOjb_RkPTv_oQkIkXwQaHWjbEorv4wAeeCAhwGLTcbUrHMeOZlJaOsKaal0uJT2GuOQ2RRv0QtZ12mq0z86YGG48UmHeRMfslQ7La39ASNMfKE"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas Content Grid -->
+<main class="flex-1 p-8 max-w-[1440px] w-full mx-auto">
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- ================================================================= -->
+<!-- LEFT / CENTER SECTION: Activity & Notification Feed (7 Columns)  -->
+<!-- ================================================================= -->
+<section class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+<!-- Section Headline & Subtitle -->
+<div class="border-b border-outline-variant/60 pb-5">
+<h2 class="text-headline-md font-headline-md text-on-surface tracking-tight">Notifications &amp; Activity</h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+              Recent updates on your explainer videos, rendering, and publishing schedules.
+            </p>
+<!-- Filter Pills Array -->
+<div class="flex items-center gap-2 mt-5">
+<button class="px-3.5 py-1.5 rounded-lg text-interface-label font-interface-label bg-on-surface text-surface flex items-center gap-1.5 shadow-sm">
+<span>All</span>
+<span class="text-meta-mono font-meta-mono text-[11px] opacity-80">(6)</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg text-interface-label font-interface-label bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-1.5">
+<span>Unread</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-secondary font-bold">(2)</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg text-interface-label font-interface-label bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-1.5">
+<span>Publishing</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">(2)</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg text-interface-label font-interface-label bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-1.5">
+<span>Videos</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">(2)</span>
+</button>
+</div>
+</div>
+<!-- Notification Items Feed -->
+<div class="space-y-3.5">
+<!-- ITEM 1: Unread, Amber Alert -->
+<div class="bg-surface-container-lowest border-l-4 border-l-secondary-container border border-outline-variant/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start gap-4">
+<!-- Icon badge -->
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<h3 class="text-interface-label font-interface-label text-on-surface font-semibold">Instagram needs reconnection</h3>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] shrink-0">10 minutes ago</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+                    Your scheduled post for <span class="text-on-surface font-medium italic">Why satellites stay in orbit</span> is paused until your Instagram account is reconnected.
+                  </p>
+<div class="mt-3 flex items-center gap-3">
+<button class="bg-secondary-container text-on-primary py-1.5 px-3.5 rounded-lg text-interface-label font-interface-label font-semibold hover:bg-secondary transition-colors text-[13px] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span>Reconnect now</span>
+</button>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Channel: @explainova.studio</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 2: Unread, Green Success -->
+<div class="bg-surface-container-lowest border-l-4 border-l-tertiary-container border border-outline-variant/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start gap-4">
+<!-- Icon badge -->
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<h3 class="text-interface-label font-interface-label text-on-surface font-semibold">Video ready: The science of quiet</h3>
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+</div>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] shrink-0">1 hour ago</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+                    Version 2 has finished rendering in 1080p 30 fps (0:53). Ready for review and export.
+                  </p>
+<div class="mt-3 flex items-center gap-3">
+<button class="bg-primary-container text-on-primary py-1.5 px-3.5 rounded-lg text-interface-label font-interface-label font-semibold hover:bg-primary transition-colors text-[13px] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">play_circle</span>
+<span>Review video</span>
+</button>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Rendered in 2m 14s</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 3: Read (YouTube) -->
+<div class="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-4 opacity-90 hover:opacity-100 transition-opacity">
+<div class="flex items-start gap-4">
+<!-- Icon badge -->
+<div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 border border-outline-variant/40">
+<span class="material-symbols-outlined text-[22px]">smart_display</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h3 class="text-interface-label font-interface-label text-on-surface font-semibold">Post published to YouTube</h3>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] shrink-0">Yesterday at 18:30</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+<span class="text-on-surface font-medium italic">How rain returns to the sky</span> was published to your channel @aristhorne-edu.
+                  </p>
+<div class="mt-3 flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline text-on-surface py-1.5 px-3 rounded-lg text-interface-label font-interface-label hover:bg-surface-container-low transition-colors text-[13px] flex items-center gap-1">
+<span>View post ↗</span>
+</button>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Duration: 1:12</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 4: Read (Event attention) -->
+<div class="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-4 opacity-90 hover:opacity-100 transition-opacity">
+<div class="flex items-start gap-4">
+<!-- Icon badge -->
+<div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 border border-outline-variant/40">
+<span class="material-symbols-outlined text-[22px]">event</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h3 class="text-interface-label font-interface-label text-on-surface font-semibold">Schedule needs attention</h3>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] shrink-0">2 days ago</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+                    Post scheduled for tomorrow has missing synthetic-media confirmation.
+                  </p>
+<div class="mt-3 flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline text-on-surface py-1.5 px-3 rounded-lg text-interface-label font-interface-label hover:bg-surface-container-low transition-colors text-[13px] flex items-center gap-1">
+<span>Fix details</span>
+</button>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Due before 09:00 EST</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom subtle note -->
+<div class="text-center pt-2">
+<p class="text-meta-mono font-meta-mono text-outline text-[11px]">
+              Showing notifications from the past 14 days • Studio storage auto-archived
+            </p>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- RIGHT SECTION: Project Deletion Pattern Callout (5 Columns)        -->
+<!-- ================================================================= -->
+<section class="col-span-12 lg:col-span-5 flex flex-col gap-4">
+<!-- Architectural Pattern Meta Label -->
+<div class="flex items-center justify-between">
+<div>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider block">Interactive Pattern</span>
+<h2 class="text-interface-label font-interface-label text-on-surface font-bold">Project Deletion Confirmation (Pattern Example)</h2>
+</div>
+<span class="px-2 py-0.5 rounded text-meta-mono font-meta-mono text-[10px] bg-surface-container text-on-surface-variant border border-outline-variant">Safety Gate</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant text-[13px]">
+            Shown when deleting an explainer project from Library or Settings.
+          </p>
+<!-- Contained Modal Card Component -->
+<div class="relative bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-md transition-all">
+<!-- Modal Header / Alert Token -->
+<div class="flex items-start gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0 border border-error/20">
+<span class="material-symbols-outlined text-[26px]">delete_outline</span>
+</div>
+<div class="flex-1">
+<h3 class="text-headline-sm font-headline-sm text-on-surface tracking-tight leading-snug">
+                  Delete “Why satellites stay in orbit”?
+                </h3>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] mt-0.5 block">PROJECT ID: EXP-8402-ORBIT</span>
+</div>
+</div>
+<!-- Modal Body Copy -->
+<div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/50 mb-5">
+<p class="text-body-md font-body-md text-on-surface-variant text-[14px] leading-relaxed">
+                This will permanently delete this project, all storyboard scenes, and generated video files. Any videos already published to your YouTube or Instagram channels will remain untouched.
+              </p>
+</div>
+<!-- Kinetic Checkbox Gate -->
+<div class="mb-6">
+<label class="flex items-start gap-3 cursor-pointer select-none group">
+<input class="mt-0.5 w-4 h-4 rounded border-on-surface text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+<span class="text-interface-label font-interface-label text-on-surface text-[13px] leading-tight group-hover:text-primary transition-colors">
+                  I understand this action cannot be undone
+                </span>
+</label>
+</div>
+<!-- Modal Action Buttons Bar -->
+<div class="flex items-center justify-end gap-3 pt-4 border-t border-outline-variant/60">
+<button class="bg-surface-container-lowest border border-outline text-on-surface py-2 px-4 rounded-xl text-interface-label font-interface-label hover:bg-surface-container-low active:scale-95 transition-all text-[13px]">
+                Cancel
+              </button>
+<button class="bg-error text-on-error py-2 px-4 rounded-xl text-interface-label font-interface-label font-semibold hover:bg-error/90 active:scale-95 transition-all shadow-sm text-[13px] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+<span>Delete project</span>
+</button>
+</div>
+</div>
+<!-- Technical Design System Annotation Panel -->
+<div class="bg-surface-container-low/70 border border-outline-variant/60 rounded-xl p-4 space-y-2">
+<div class="flex items-center gap-2 text-meta-mono font-meta-mono text-on-surface text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Your content stays in your control</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant text-[12px] leading-relaxed">
+              Explainer content requires deliberate confirmation before destruction. Destruction triggers synchronous revocation across working timelines while respecting public distribution records.
+            </p>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

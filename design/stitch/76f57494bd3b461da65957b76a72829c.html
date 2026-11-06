@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Explainova</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Brand Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bac3ff",
+            "inverse-surface": "#2e303b",
+            "secondary": "#a83915",
+            "surface-bright": "#fbf8ff",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003ae4",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "outline": "#747688",
+            "secondary-fixed-dim": "#ffb59f",
+            "surface-tint": "#1c48f2",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "secondary-container": "#ff784f",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-fixed": "#d5ee69",
+            "on-tertiary-fixed": "#181e00",
+            "on-secondary-fixed-variant": "#862300",
+            "on-primary-container": "#ebebff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#3157ff",
+            "inverse-primary": "#bac3ff",
+            "secondary-fixed": "#ffdbd1",
+            "surface-variant": "#e1e1f0",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-secondary-container": "#6b1a00",
+            "on-background": "#191b25",
+            "on-tertiary-container": "#e0f972",
+            "surface-container-high": "#e7e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-surface-variant": "#444656",
+            "error": "#ba1a1a",
+            "background": "#fbf8ff",
+            "surface": "#fbf8ff",
+            "surface-container": "#ededfb",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "on-error": "#ffffff",
+            "tertiary-container": "#617300",
+            "surface-container-highest": "#e1e1f0",
+            "tertiary-fixed-dim": "#b9d14f",
+            "tertiary": "#4b5900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1.5rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "meta-mono": [
+              "Manrope"
+            ],
+            "headline-lg": [
+              "Sora"
+            ],
+            "headline-lg-mobile": [
+              "Sora"
+            ],
+            "interface-label": [
+              "Manrope"
+            ],
+            "body-lg": [
+              "Manrope"
+            ],
+            "headline-sm": [
+              "Sora"
+            ],
+            "display-hero-mobile": [
+              "Sora"
+            ],
+            "body-xl": [
+              "Manrope"
+            ],
+            "display-hero": [
+              "Sora"
+            ],
+            "body-md": [
+              "Manrope"
+            ],
+            "headline-md": [
+              "Sora"
+            ]
+          },
+          "fontSize": {
+            "meta-mono": [
+              "12px",
+              {
+                "lineHeight": "16px",
+                "letterSpacing": "0.06em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-lg": [
+              "48px",
+              {
+                "lineHeight": "54px",
+                "letterSpacing": "-0.03em",
+                "fontWeight": "700"
+              }
+            ],
+            "headline-lg-mobile": [
+              "32px",
+              {
+                "lineHeight": "38px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "interface-label": [
+              "14px",
+              {
+                "lineHeight": "18px",
+                "letterSpacing": "0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "body-lg": [
+              "18px",
+              {
+                "lineHeight": "28px",
+                "letterSpacing": "-0.005em",
+                "fontWeight": "400"
+              }
+            ],
+            "headline-sm": [
+              "22px",
+              {
+                "lineHeight": "28px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "display-hero-mobile": [
+              "48px",
+              {
+                "lineHeight": "52px",
+                "letterSpacing": "-0.03em",
+                "fontWeight": "800"
+              }
+            ],
+            "body-xl": [
+              "20px",
+              {
+                "lineHeight": "30px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "400"
+              }
+            ],
+            "display-hero": [
+              "88px",
+              {
+                "lineHeight": "94px",
+                "letterSpacing": "-0.04em",
+                "fontWeight": "800"
+              }
+            ],
+            "body-md": [
+              "15px",
+              {
+                "lineHeight": "22px",
+                "fontWeight": "400"
+              }
+            ],
+            "headline-md": [
+              "32px",
+              {
+                "lineHeight": "38px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "600"
+              }
+            ]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Touch optimization */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    /* Sound wave simulated bars */
+    @keyframes wave-pulse {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+    .wave-bar-1 { animation: wave-pulse 0.9s ease-in-out infinite; }
+    .wave-bar-2 { animation: wave-pulse 0.7s ease-in-out infinite 0.15s; }
+    .wave-bar-3 { animation: wave-pulse 1.1s ease-in-out infinite 0.3s; }
+    .wave-bar-4 { animation: wave-pulse 0.8s ease-in-out infinite 0.45s; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-surface-bright text-on-surface antialiased min-h-screen pb-44 flex flex-col font-body-md text-body-md selection:bg-primary selection:text-on-primary">
+<!-- Top App Bar (Shared Component Anchor) -->
+<header class="bg-surface-bright dark:bg-inverse-surface shadow-sm dark:shadow-none sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center w-full px-4 h-14 max-w-full">
+<div class="flex items-center gap-3">
+<button aria-label="Menu" class="touch-target flex items-center justify-center rounded-lg hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-150 active:scale-95 transition-transform duration-100 ease-out text-on-surface" type="button">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface dark:text-inverse-on-surface leading-none">Explainova</span>
+<span class="font-meta-mono text-meta-mono text-primary font-bold px-1.5 py-0.5 rounded bg-primary-fixed leading-tight">STUDIO</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant leading-none mt-0.5">Settings</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Notifications" class="touch-target flex items-center justify-center rounded-lg hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-150 active:scale-95 transition-transform duration-100 ease-out text-on-surface" type="button">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="relative w-8 h-8 rounded-full overflow-hidden ring-1 ring-outline-variant bg-surface-container-high flex items-center justify-center ml-1">
+<img class="w-full h-full object-cover" data-alt="Close up editorial portrait of Dr. Aris Thorne, a distinguished university educator and director, wearing minimalist tortoiseshell glasses and an ivory studio collared shirt, set against a calm warm archival architectural interior with soft directional diffused studio daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm3-dTRV30Z0YWoPD_xJDUKMNwZm_9rLPNMNKk0XwJh_Z_-LmEuZew6fZ1k-IhXljhRybXeMfa3qkcNhM2q48mFflr4xqKmMoBNTHlyLWQncq_fKJq4CtoULe1PRDQJg3vDGdSeAQrbtSeT185KWzBI6Ur0roybcGLTTK6xpISlCJS6WB3INKV1F9Cc1FBpdwSmizfuFyu1WO0av_zxRMHiOccRslCCqPg_CE8up0_jQh_PXGe7vuxYxQrLjIqGuJ9VNcR_a0zGHQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Mobile Canvas Container -->
+<main class="w-full max-w-[430px] mx-auto px-4 pt-3 space-y-4">
+<!-- Subnavigation Tabs (Segmented Control) -->
+<div class="p-1 rounded-xl bg-surface-container flex items-center gap-1">
+<button class="flex-1 py-2 px-3 text-center rounded-lg font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface transition-colors duration-150 touch-target flex items-center justify-center" type="button">
+        Profile &amp; Security
+      </button>
+<button class="flex-1 py-2 px-3 text-center rounded-lg font-interface-label text-interface-label bg-surface-container-lowest text-on-surface shadow-sm transition-all duration-150 touch-target flex items-center justify-center" type="button">
+        Visual defaults
+      </button>
+</div>
+<!-- Notice Callout (educational Studio Framing) -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start gap-3">
+<div class="w-5 h-5 rounded-full bg-primary-container/10 text-primary-container flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</div>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant leading-relaxed">
+        New projects inherit these starting settings. Existing projects in your library remain unchanged.
+      </p>
+</div>
+<!-- Section 1: Default Narration Voice -->
+<section class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/60 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<h2 class="font-interface-label text-interface-label text-on-surface">Default Narration Voice</h2>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline font-semibold">STUDIO VOICES</span>
+</div>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant">
+        Default narrator profile for rapid project readouts.
+      </p>
+<!-- Voice Cards Stack -->
+<div class="space-y-2.5 pt-1">
+<!-- Voice A (Selected) -->
+<div class="p-3 rounded-lg border-2 border-primary-container bg-surface-container-low/50 flex items-center justify-between gap-3 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full border-2 border-primary-container flex items-center justify-center flex-shrink-0">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+</div>
+<div>
+<p class="font-interface-label text-interface-label text-on-surface flex items-center gap-1.5">
+                Alice (Female)
+                <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-meta-mono text-meta-mono text-outline font-normal">Clear &amp; neutral</span>
+</p>
+<div class="flex items-center gap-1 mt-1 text-primary-container">
+<span class="wave-bar-1 w-0.5 bg-primary-container rounded-full"></span>
+<span class="wave-bar-2 w-0.5 bg-primary-container rounded-full"></span>
+<span class="wave-bar-3 w-0.5 bg-primary-container rounded-full"></span>
+<span class="wave-bar-4 w-0.5 bg-primary-container rounded-full"></span>
+<span class="font-meta-mono text-[10px] tracking-wider ml-1 uppercase font-semibold">Sample Playing</span>
+</div>
+</div>
+</div>
+<button aria-label="Play Alice sample" class="touch-target px-3 py-1.5 rounded-lg bg-surface-container text-primary-container hover:bg-surface-container-high transition-colors flex items-center gap-1.5 font-meta-mono text-meta-mono" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+<span>0:04</span>
+</button>
+</div>
+<!-- Voice B (Unselected) -->
+<div class="p-3 rounded-lg border border-outline-variant/70 bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center flex-shrink-0"></div>
+<div>
+<p class="font-interface-label text-interface-label text-on-surface">Male voice</p>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant font-normal">Warm &amp; resonant</p>
+</div>
+</div>
+<button aria-label="Play Male voice sample" class="touch-target px-3 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1.5 font-meta-mono text-meta-mono" type="button">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Sample</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-1.5 pt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">verified</span>
+<p class="font-meta-mono text-meta-mono text-outline">Free standard studio voices included. No cloned or premium voices.</p>
+</div>
+</section>
+<!-- Section 2: Topic Color Palette & Style -->
+<section class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/60 shadow-sm space-y-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<h2 class="font-interface-label text-interface-label text-on-surface">Topic Color Palette &amp; Style</h2>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline">HEX ATELIER</span>
+</div>
+<!-- Accent Color Swatches Container -->
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/40 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">Primary Accent</span>
+<span class="font-meta-mono text-meta-mono font-bold text-on-surface">Cobalt Precision</span>
+</div>
+<div class="flex items-center gap-2">
+<!-- Cobalt Swatch -->
+<div class="flex-1 p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/70 flex items-center gap-2">
+<div class="w-6 h-6 rounded-md bg-primary-container shadow-inner"></div>
+<div>
+<p class="font-meta-mono text-[11px] font-bold text-on-surface leading-none">#3157FF</p>
+<p class="font-meta-mono text-[10px] text-outline leading-none mt-1">Cobalt</p>
+</div>
+</div>
+<!-- Tangerine Chip -->
+<div class="flex-1 p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/70 flex items-center gap-2">
+<div class="w-6 h-6 rounded-md bg-secondary-container shadow-inner"></div>
+<div>
+<p class="font-meta-mono text-[11px] font-bold text-on-surface leading-none">#FF784F</p>
+<p class="font-meta-mono text-[10px] text-outline leading-none mt-1">Tangerine</p>
+</div>
+</div>
+<!-- Acid Lime Chip -->
+<div class="flex-1 p-2 rounded-lg bg-surface-container-lowest border border-outline-variant/70 flex items-center gap-2">
+<div class="w-6 h-6 rounded-md bg-tertiary-fixed shadow-inner"></div>
+<div>
+<p class="font-meta-mono text-[11px] font-bold text-on-surface leading-none">#D9F26C</p>
+<p class="font-meta-mono text-[10px] text-outline leading-none mt-1">Acid Lime</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Style Presets (Segmented Pills) -->
+<div>
+<label class="font-meta-mono text-meta-mono text-on-surface-variant block mb-2">Style preset profile</label>
+<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="touch-target px-3.5 py-2 rounded-full bg-on-background text-surface-bright font-interface-label text-interface-label whitespace-nowrap shadow-sm" type="button">
+            Kinetic Technical
+          </button>
+<button class="touch-target px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/60 font-interface-label text-interface-label whitespace-nowrap hover:bg-surface-container-high transition-colors" type="button">
+            Earth &amp; Nature
+          </button>
+<button class="touch-target px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/60 font-interface-label text-interface-label whitespace-nowrap hover:bg-surface-container-high transition-colors" type="button">
+            Astrophysics
+          </button>
+</div>
+</div>
+</section>
+<!-- Section 3: Typography & Fonts -->
+<section class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/60 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<h2 class="font-interface-label text-interface-label text-on-surface">Typography &amp; Fonts</h2>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline">SWISS RIGOR</span>
+</div>
+<div class="space-y-2.5">
+<!-- Headline Font Setting -->
+<div class="p-3 rounded-lg border border-outline-variant/70 bg-surface-container-lowest flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-meta-mono text-meta-mono text-outline">Headline typeface</span>
+<p class="font-headline-sm text-[16px] text-on-surface leading-tight">Sora (Primary Brand)</p>
+</div>
+<span class="font-meta-mono text-meta-mono text-primary font-bold px-2 py-1 bg-surface-container rounded">LOCKED</span>
+</div>
+<!-- Body Font Setting -->
+<div class="p-3 rounded-lg border border-outline-variant/70 bg-surface-container-lowest flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-meta-mono text-meta-mono text-outline">Body &amp; script typeface</span>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Manrope (Calibrated)</p>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline px-2 py-1 bg-surface-container rounded">400 / 600</span>
+</div>
+</div>
+</section>
+<!-- Section 4: Captions & Kinetic Text -->
+<section class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<h2 class="font-interface-label text-interface-label text-on-surface">Captions &amp; Kinetic Text</h2>
+</div>
+<span class="font-meta-mono text-meta-mono text-outline">FRAME CELL</span>
+</div>
+<!-- Placement: Segmented Control -->
+<div>
+<label class="font-meta-mono text-meta-mono text-on-surface-variant block mb-1.5">Caption placement</label>
+<div class="p-1 rounded-lg bg-surface-container flex items-center gap-1">
+<button class="touch-target flex-1 py-1.5 px-3 rounded-md bg-surface-container-lowest text-on-surface shadow-sm font-interface-label text-interface-label flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">vertical_align_bottom</span>
+<span>Lower-third</span>
+</button>
+<button class="touch-target flex-1 py-1.5 px-3 rounded-md text-on-surface-variant font-interface-label text-interface-label flex items-center justify-center gap-1.5 hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">vertical_align_center</span>
+<span>Center</span>
+</button>
+</div>
+</div>
+<!-- Word Highlighting: 3-way Segmented Control -->
+<div>
+<label class="font-meta-mono text-meta-mono text-on-surface-variant block mb-1.5">Word highlighting color</label>
+<div class="grid grid-cols-3 gap-1.5">
+<button class="touch-target py-2 px-2 rounded-lg border-2 border-primary-container bg-surface-container-low flex flex-col items-center justify-center text-center" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-tertiary-fixed border border-on-surface mb-1"></span>
+<span class="font-meta-mono text-[11px] font-bold text-on-surface leading-tight">Highlight Gold</span>
+</button>
+<button class="touch-target py-2 px-2 rounded-lg border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low flex flex-col items-center justify-center text-center transition-colors" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-primary-container mb-1"></span>
+<span class="font-meta-mono text-[11px] text-on-surface-variant leading-tight">Cobalt Line</span>
+</button>
+<button class="touch-target py-2 px-2 rounded-lg border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low flex flex-col items-center justify-center text-center transition-colors" type="button">
+<span class="w-3.5 h-3.5 rounded-full bg-outline-variant mb-1"></span>
+<span class="font-meta-mono text-[11px] text-on-surface-variant leading-tight">None</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 5: Creator Profile & Password link -->
+<section class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/60 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-interface-label text-interface-label text-on-surface">Creator Profile</h2>
+<span class="font-meta-mono text-meta-mono text-outline">TIER 1</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low/70 border border-outline-variant/50 flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary-container/20">
+<img class="w-full h-full object-cover" data-alt="Portrait photography of Dr. Aris Thorne, seasoned academic author and creative studio director with thoughtful expression, sharp monochrome wardrobe, soft textured studio light backdrop, high editorial quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkYQu4sTEboAvx-n-LDMSuFyvYJgz_5J9BTsB8hqXOPkPP3-ifoCzegLwlVHaCZ4-9fTgixKTwIjn75cCV3FvQAEUvhklyGWMVphNhe_jQNUZZ-hmPDaC6LebxdszX7wA8rvLiDACV3nXDotrUL_DIdNoMYK9zTCpA8FdyL-JxmufDmqOYNreOlfe7ZuCnz1vL_jnE_umlnXT6q5j9F5mL3kKXahk3k0kBaZqq1rt2Mzr5-BW6MdfZ6xRNsl0LJ_7wwQdfuCcA0Ao"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-interface-label text-interface-label text-on-surface font-bold truncate">Dr. Aris Thorne</p>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant truncate">aris.thorne@university.edu</p>
+<p class="font-meta-mono text-[10px] text-primary font-semibold uppercase tracking-wider mt-0.5">Faculty Creator Pass</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="touch-target inline-flex items-center gap-1 font-interface-label text-interface-label text-primary hover:underline" href="#edit-profile">
+<span class="material-symbols-outlined text-[18px]">badge</span>
+<span>Edit profile</span>
+</a>
+<a class="touch-target inline-flex items-center gap-1 font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface hover:underline" href="#change-password">
+<span class="material-symbols-outlined text-[18px]">key</span>
+<span>Change password</span>
+</a>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Bar (Save Defaults Primary Action) -->
+<div class="fixed bottom-[56px] left-0 w-full z-40 bg-surface-bright/95 backdrop-blur-md px-4 py-2.5 border-t border-outline-variant/40 flex justify-center">
+<div class="w-full max-w-[430px]">
+<button class="w-full h-12 rounded-xl bg-primary-container text-on-primary font-interface-label text-interface-label font-bold shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:bg-[#2143DB] active:scale-[0.99] transition-all flex items-center justify-center gap-2 touch-target" type="button">
+<span class="material-symbols-outlined text-[20px]">check</span>
+<span>Save defaults</span>
+</button>
+</div>
+</div>
+<!-- Bottom Navigation Bar (Shared Component Anchor) -->
+<!-- Contextual Lock: Active tab strictly mapped to 'Settings' -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 pb-safe bg-surface-bright dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-[0_-1px_3px_rgba(23,25,35,0.04)]">
+<!-- Tab 1: Projects (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 active:scale-95 transition-transform duration-100 touch-target py-1" href="#projects">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+<span>Projects</span>
+</a>
+<!-- Tab 2: Publishing (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 active:scale-95 transition-transform duration-100 touch-target py-1" href="#publishing">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+<span>Publishing</span>
+</a>
+<!-- Tab 3: Accounts (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant font-meta-mono text-meta-mono gap-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 active:scale-95 transition-transform duration-100 touch-target py-1" href="#accounts">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span>Accounts</span>
+</a>
+<!-- Tab 4: Settings (Active State - Exact Rule Match) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-meta-mono text-meta-mono gap-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 active:scale-95 transition-transform duration-100 touch-target py-1" href="#settings">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-bold">Settings</span>
+</a>
+</nav>
+</body></html>

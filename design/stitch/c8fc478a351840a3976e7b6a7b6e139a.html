@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova — Video Review &amp; Export</title>
+<!-- Typography Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS Engine -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container": "#ededfb",
+            "primary-container": "#3157ff",
+            "error-container": "#ffdad6",
+            "surface-variant": "#e1e1f0",
+            "inverse-surface": "#2e303b",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "on-error-container": "#93000a",
+            "on-tertiary-container": "#e0f972",
+            "tertiary-container": "#617300",
+            "on-secondary-fixed": "#3a0a00",
+            "surface-bright": "#fbf8ff",
+            "secondary": "#a83915",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "on-background": "#191b25",
+            "on-surface-variant": "#444656",
+            "tertiary-fixed": "#d5ee69",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdbd1",
+            "on-surface": "#191b25",
+            "background": "#fbf8ff",
+            "outline-variant": "#c4c5d9",
+            "on-primary-container": "#ebebff",
+            "inverse-primary": "#bac3ff",
+            "error": "#ba1a1a",
+            "primary-fixed": "#dee1ff",
+            "surface-container-highest": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "on-primary-fixed-variant": "#0031c6",
+            "surface-container-low": "#f3f2ff",
+            "primary-fixed-dim": "#bac3ff",
+            "tertiary-fixed-dim": "#b9d14f",
+            "on-secondary-container": "#6b1a00",
+            "tertiary": "#4b5900",
+            "surface-dim": "#d9d9e7",
+            "primary": "#003ae4",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary-fixed": "#001159",
+            "surface-tint": "#1c48f2",
+            "on-secondary-fixed-variant": "#862300",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f0effe",
+            "surface-container-high": "#e7e7f5",
+            "on-primary": "#ffffff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-lg": "6.25rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "gutter-lg": "2rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin-md": "3rem"
+          },
+          fontFamily: {
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "interface-label": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "headline-sm": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "body-lg": ["Manrope"]
+          },
+          fontSize: {
+            "display-hero-mobile": ["48px", { lineHeight: "52px", letterSpacing: "-0.03em", fontWeight: "800" }],
+            "body-xl": ["20px", { lineHeight: "30px", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "interface-label": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "600" }],
+            "headline-md": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "headline-lg": ["48px", { lineHeight: "54px", letterSpacing: "-0.03em", fontWeight: "700" }],
+            "display-hero": ["88px", { lineHeight: "94px", letterSpacing: "-0.04em", fontWeight: "800" }],
+            "headline-lg-mobile": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-sm": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-md": ["15px", { lineHeight: "22px", fontWeight: "400" }],
+            "meta-mono": ["12px", { lineHeight: "16px", letterSpacing: "0.06em", fontWeight: "700" }],
+            "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "-0.005em", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 9999px;
+      background: #3157ff;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(23, 25, 35, 0.25);
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md h-full selection:bg-primary-fixed selection:text-primary">
+<div class="flex h-screen w-full overflow-hidden bg-background">
+<!-- Docked Left Side Navigation Bar (Shared Component Anchor) -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50 flex flex-col justify-between">
+<div class="p-4 space-y-6">
+<!-- Atelier Brand Header -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-white shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-xl" data-icon="hub">hub</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface leading-tight">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[10px]">Studio Bench</span>
+</div>
+</div>
+<!-- Primary Create Video CTA -->
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-white font-interface-label text-interface-label py-2.5 px-4 rounded-xl shadow-sm transition-all duration-150 active:scale-[0.99]">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+<span>Create video</span>
+</button>
+<!-- Main Workspace Navigation -->
+<nav class="space-y-1.5 pt-2">
+<!-- Active Tab: Projects (Contextual match for current active project) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="folder" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>Projects</span>
+</a>
+<!-- Inactive Tab: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Inactive Tab: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Inactive Tab: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Studio Bench Footer Utilities -->
+<div class="p-4 border-t border-surface-container space-y-3">
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-1.5 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-lg text-emerald-600" data-icon="cloud_done">cloud_done</span>
+<span>Workspace Status</span>
+</a>
+</div>
+<!-- Creator Studio Portrait Avatar & Profile Anchor -->
+<div class="flex items-center gap-3 pt-2 border-t border-surface-container">
+<img class="w-9 h-9 rounded-full object-cover border border-outline-variant/60" data-alt="A refined studio photographic portrait of an editorial creative director in ambient soft studio light, monochromatic linen garment, natural expression, minimalist neutral warm palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRpSmxepFHTx7SDuZ1uMUD-7BoRcRgwr_N_5q9ipx0KaOUEDZ1fuLqi9yX36SdbIeMsiHWfDqgDmpcdzcxNmfYP8FeIy4G92gqTJJKEmGksfZYgIATlumaaImePuPOJf5lGNXhn_ylpifPzeT5QAL5e8EPoBwPey0wdW-Q7QhRaqLRpTPauGhspFE6TtDdV040_ViwFSU5yL0vw-KcsEhJl8SPVfgsW9iqM8iL-n8QZdktdy50cCUWzfw5lXScjPTnvDqtK3H6OCM"/>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="text-interface-label font-interface-label text-xs truncate text-on-surface">Dr. Ronald V.</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline truncate">Cognitive Acoustics</span>
+</div>
+<span class="material-symbols-outlined text-base text-outline" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Container (Pushed right of fixed sidebar) -->
+<div class="flex-1 ml-64 flex flex-col h-screen overflow-hidden">
+<!-- Top Navigation Bar (Shared Component Anchor) -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest dark:bg-surface-container-low border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none flex justify-between items-center px-6 py-3 w-full h-16 flex-shrink-0">
+<!-- Left Breadcrumb Trail -->
+<div class="flex items-center gap-3">
+<a class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-semibold hover:text-on-surface transition-colors flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="folder">folder</span>
+<span>Projects</span>
+</a>
+<span class="text-outline-variant">/</span>
+<span class="text-interface-label font-interface-label text-on-surface dark:text-inverse-on-surface font-semibold flex items-center gap-2">
+            The science of quiet
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-meta-mono font-meta-mono bg-surface-container text-on-surface-variant border border-outline-variant/50">Approved</span>
+</span>
+</div>
+<!-- Right Trailing Cluster -->
+<div class="flex items-center gap-4">
+<!-- Readiness Badge -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-interface-label font-interface-label">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>Ready for export</span>
+</div>
+<!-- Autosaved State Status -->
+<div class="flex items-center gap-1 text-meta-mono font-meta-mono text-outline text-xs">
+<span class="material-symbols-outlined text-sm text-emerald-600" data-icon="check_circle">check_circle</span>
+<span>Autosaved</span>
+</div>
+<!-- Notification Bell Action -->
+<button aria-label="Notifications" class="w-9 h-9 rounded-lg hover:bg-surface-container-high dark:hover:bg-inverse-surface/50 text-on-surface-variant flex items-center justify-center transition-colors relative">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="w-2 h-2 bg-secondary-container rounded-full absolute top-2 right-2"></span>
+</button>
+<!-- Avatar Mini -->
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up creative portrait of an educator with glasses, focused expression, serene library backdrop, gentle natural ambient ivory light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1bame-rul94iXz--rxGP_U0SgKBS0wAPB01BYdYmFVtuU02KIWu7yasNqUQjVznCwYUp7csbAefcvW-MTap-gTfHa0bko-qI1lkcNHbABU29e36OC6StlZIuwFZoEAU3055rYm3hOXHwrUXfuh2d0LnkKkkUd9BGBLnNfg7azHaPsnQTVPL5xi4AS8Z3A5c22Uv8XwvELeck3nTb5WgSGyZVVqrkhCoRyZc69KsY2t0RRO3RSvdAz5VcoGsuquWK0d5wQDqnlQdA"/>
+</div>
+</div>
+</header>
+<!-- Sub-Workspace Canvas (Split Layout 45% / 55%) -->
+<main class="flex-1 overflow-y-auto px-6 py-6 bg-surface">
+<div class="max-w-[1240px] mx-auto grid grid-cols-12 gap-8 items-start">
+<!-- LEFT SIDE (Approx 45% -> 5 Cols on Grid) : Kinetic 9:16 Video Player Stage -->
+<div class="col-span-12 lg:col-span-5 flex flex-col items-center">
+<!-- Video Cell Frame Container (1080x1920 ratio: 9:16) -->
+<div class="w-full max-w-[370px] aspect-[9/16] bg-[#0F111A] rounded-3xl p-3 relative flex flex-col justify-between overflow-hidden shadow-2xl border border-outline/30 group select-none">
+<!-- Subtle Viewport Grid Backdrop Graphic & Headphone Acoustic Resonance Engine Diagram -->
+<div class="absolute inset-0 z-0 opacity-40 mix-blend-screen overflow-hidden pointer-events-none">
+<svg class="w-full h-full" fill="none" viewbox="0 0 370 657" xmlns="http://www.w3.org/2000/svg">
+<!-- Radial Atmospheric Gradient Glow -->
+<circle cx="185" cy="260" fill="#3157ff" fill-opacity="0.25" filter="blur(50px)" r="160"></circle>
+<circle cx="185" cy="300" fill="#00E5FF" fill-opacity="0.18" filter="blur(40px)" r="90"></circle>
+<!-- Calibration Reticles & Technical Drafting Vectors -->
+<path d="M40 80H330" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 4"></path>
+<path d="M40 540H330" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 4"></path>
+<circle cx="185" cy="240" r="110" stroke="rgba(255,255,255,0.12)" stroke-width="1"></circle>
+<circle cx="185" cy="240" r="75" stroke="rgba(49,87,255,0.4)" stroke-width="1.5"></circle>
+<circle cx="185" cy="240" r="42" stroke="rgba(0,229,255,0.3)" stroke-width="1"></circle>
+<!-- Kinetic Waveform Frequency Paths -->
+<path d="M90 240 C 120 180, 140 300, 185 240 C 220 190, 240 280, 280 240" stroke="#00E5FF" stroke-linecap="round" stroke-width="2"></path>
+<path d="M110 240 C 135 210, 160 270, 185 240 C 210 215, 235 265, 260 240" stroke="#3157FF" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Vector Sound Absorption Nodes -->
+<circle cx="120" cy="240" fill="#D9F26C" r="3"></circle>
+<circle cx="185" cy="240" fill="#FFFFFF" r="4.5"></circle>
+<circle cx="250" cy="240" fill="#D9F26C" r="3"></circle>
+<text fill="rgba(255,255,255,0.4)" font-family="monospace" font-size="9" text-anchor="middle" x="185" y="160">ACTIVE NOISE CANCELLATION (ANC)</text>
+<text fill="#00E5FF" font-family="monospace" font-size="10" text-anchor="middle" x="185" y="325">INVERTED PHASE WAVE: -180°</text>
+</svg>
+</div>
+<!-- Top Telemetry Header Inside Frame -->
+<div class="relative z-10 flex items-center justify-between px-2 pt-2 text-white/70 text-xs">
+<div class="flex items-center gap-1.5 font-meta-mono text-[11px] bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/10">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+<span class="text-white font-bold tracking-wider">REC</span>
+<span class="text-white/40">|</span>
+<span class="text-white/90">Scene 02 [Phase Inversion]</span>
+</div>
+<div class="font-meta-mono text-[11px] text-white/50 bg-black/30 px-2 py-0.5 rounded">
+                  1080×1920
+                </div>
+</div>
+<!-- Center Stage: Synchronized Kinetic Editorial Captions -->
+<div class="relative z-10 px-4 my-auto text-center space-y-3">
+<p class="text-white font-headline-sm font-headline-sm text-lg sm:text-xl leading-relaxed tracking-tight text-center drop-shadow-md">Microphones pick up <span class="bg-yellow-300 text-black px-1.5 py-0.5 rounded font-bold inline-block mx-1 shadow-sm">ambient noise</span>, then the speaker produces an <span class="text-yellow-300 font-bold underline decoration-yellow-400 decoration-2 underline-offset-4">inverted sound wave</span> to reduce unwanted noise near your ear.</p></div>
+<!-- Bottom Interactive Scrubbing Dock (Inside Dark Chamber) -->
+<div class="relative z-10 bg-black/75 backdrop-blur-md p-3 rounded-2xl border border-white/10 space-y-2.5">
+<!-- Scene Indicator Markers Strip -->
+<div class="flex items-center justify-between text-[10px] font-meta-mono text-white/50 px-0.5">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+<span>Scene 1</span>
+</div>
+<div class="flex items-center gap-1 text-primary-fixed">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="text-white font-bold">Scene 2 [Active]</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+<span>Scene 3</span>
+</div>
+</div>
+<!-- Custom Graphic Scrubbing Bar with Tangerine Playhead -->
+<div class="relative w-full h-3 flex items-center cursor-pointer group/scrub">
+<div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden relative">
+<!-- Scene 1 completed -->
+<div class="absolute left-0 top-0 h-full w-[34%] bg-primary-container"></div>
+<!-- Scene 2 active progress -->
+<div class="absolute left-[34%] top-0 h-full w-[16%] bg-yellow-300"></div>
+</div>
+<!-- Tangerine Indicator Needle Head -->
+<div class="absolute left-[50%] -top-1 w-3.5 h-3.5 bg-secondary-container rounded-full border-2 border-white shadow-md transform -translate-x-1/2 flex items-center justify-center transition-transform hover:scale-125">
+<div class="w-1 h-1 bg-white rounded-full"></div>
+</div>
+</div>
+<!-- Transport Controller & Playhead Readout -->
+<div class="flex items-center justify-between text-white text-xs pt-0.5">
+<div class="flex items-center gap-2">
+<button aria-label="Play/Pause" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="pause" data-weight="fill" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<span class="font-meta-mono text-[11px] text-white/90 tracking-wide">Scene 02 [Phase Inversion]</span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Volume" class="w-7 h-7 rounded-lg hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="volume_up">volume_up</span>
+</button>
+<button aria-label="Fullscreen" class="w-7 h-7 rounded-lg hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="fullscreen">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Under Player: Quick Scene Selectors & Version Control Modal Hook -->
+<div class="w-full max-w-[370px] mt-4 space-y-3">
+<div class="grid grid-cols-3 gap-2">
+<!-- Scene 1 Tab -->
+<button class="flex flex-col items-center py-2 px-1.5 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition text-left group">
+<span class="text-[11px] font-meta-mono font-meta-mono text-outline">Scene 01</span>
+<span class="text-interface-label font-interface-label text-xs text-on-surface">0:18</span>
+</button>
+<!-- Scene 2 Active Tab -->
+<button class="flex flex-col items-center py-2 px-1.5 rounded-xl border-2 border-primary bg-primary-fixed/20 shadow-sm text-left">
+<span class="text-[11px] font-meta-mono font-meta-mono text-primary font-bold">Scene 02 [Active]</span>
+<span class="text-interface-label font-interface-label text-xs font-bold text-on-surface">0:20</span>
+</button>
+<!-- Scene 3 Tab -->
+<button class="flex flex-col items-center py-2 px-1.5 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition text-left group">
+<span class="text-[11px] font-meta-mono font-meta-mono text-outline">Scene 03</span>
+<span class="text-interface-label font-interface-label text-xs text-on-surface">0:15</span>
+</button>
+</div>
+<!-- History & Versioning Trigger -->
+<div class="flex items-center justify-between px-3 py-2 bg-surface-container-low rounded-xl border border-surface-variant text-xs">
+<div class="flex items-center gap-2 text-on-surface-variant font-interface-label">
+<span class="material-symbols-outlined text-base text-outline" data-icon="history">history</span>
+<span>Previous versions:</span>
+<span class="font-meta-mono text-primary font-semibold hover:underline cursor-pointer">v1 (0:56)</span>
+<span class="text-outline-variant">•</span>
+<span class="font-meta-mono text-primary font-semibold hover:underline cursor-pointer">v2 (0:53)</span>
+</div>
+<button class="text-xs font-interface-label font-semibold text-primary hover:text-on-primary-fixed-variant flex items-center gap-0.5">
+                  Compare
+                  <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT SIDE (Approx 55% -> 7 Cols on Grid) : Studio Inspector & Publishing Panel -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<!-- Video Meta Header Strip -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/60 shadow-sm space-y-2">
+<div class="flex flex-wrap items-center justify-between gap-2"><span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-meta-mono font-meta-mono text-xs">0:53 runtime</span><span class="text-outline-variant text-xs">·</span><span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-meta-mono font-meta-mono text-xs">1080×1920 · 30fps</span><span class="text-outline-variant text-xs">·</span><span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant text-meta-mono font-meta-mono text-xs">Vertical MP4</span></div>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs">An explanatory video explaining how active noise cancelling headphones cancel ambient sound waves.</p>
+</div>
+<!-- SECTION 1: AI Edit Composer -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/60 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+</div>
+<h2 class="text-interface-label font-interface-label text-base font-bold text-on-surface">Make changes with text</h2>
+</div>
+<span class="text-meta-mono font-meta-mono text-xs text-outline">AI Assistant</span>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-interface-label text-on-surface-variant" for="ai-instruction">Describe what to adjust (e.g. speak slightly faster, simplify caption):</label>
+<div class="relative">
+<textarea class="w-full text-body-md font-body-md text-sm p-3.5 rounded-xl border border-outline-variant bg-surface-bright focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-outline/70" id="ai-instruction" placeholder="Ask for an adjustment (e.g. 'Speak slightly faster in scene 2' or 'Simplify caption wording')..." rows="3"></textarea>
+<div class="absolute right-3 bottom-3 flex items-center gap-1.5 text-xs text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="keyboard">keyboard</span>
+<span class="font-meta-mono text-[10px]">ESC to clear</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+<button class="inline-flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-white font-interface-label text-interface-label py-2.5 px-5 rounded-xl shadow-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="auto_fix_high">auto_fix_high</span>
+<span>Apply adjustment</span>
+</button>
+<p class="text-meta-mono font-meta-mono text-xs text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="info">info</span>
+<span>Creates a new revision (v3) while preserving this approved version.</span>
+</p>
+</div>
+</div>
+<!-- SECTION 2: Fine-Tuning Inspector -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/60 shadow-sm space-y-5">
+<div class="flex items-center justify-between border-b border-surface-container pb-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-base" data-icon="sliders">tune</span>
+</div>
+<h2 class="text-interface-label font-interface-label text-base font-bold text-on-surface">Voice &amp; Captions</h2>
+</div>
+<span class="text-meta-mono font-meta-mono text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Non-destructive</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Voice Architecture Parameter -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-xs text-on-surface-variant font-semibold">Narration Voice</span>
+<button class="text-xs font-interface-label text-primary hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="play_circle">play_circle</span>
+                      Preview Sample
+                    </button>
+</div>
+<div class="p-3 bg-surface rounded-xl border border-outline-variant/70 flex items-center justify-between"><div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-base" data-icon="record_voice_over">record_voice_over</span>
+</div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-sm text-on-surface">Alice (Female, sample)</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Clear &amp; Explanatory • Natural Tempo</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-sm text-outline cursor-pointer" data-icon="arrow_drop_down">arrow_drop_down</span></div>
+<!-- Voice Speed Segmented Control -->
+<div class="space-y-1.5 pt-1">
+<div class="flex justify-between items-center text-xs">
+<span class="text-on-surface-variant font-interface-label">Voice Pacing</span>
+<span class="font-meta-mono text-xs font-bold text-primary">1.0x (Optimal)</span>
+</div>
+<div class="grid grid-cols-3 gap-1.5 p-1 bg-surface-container-low rounded-xl border border-surface-variant text-center text-xs font-meta-mono">
+<button class="py-1 rounded-lg text-on-surface-variant hover:text-on-surface transition">0.9x</button>
+<button class="py-1 rounded-lg bg-surface-container-lowest font-bold text-primary shadow-xs border border-outline-variant/50">1.0x</button>
+<button class="py-1 rounded-lg text-on-surface-variant hover:text-on-surface transition">1.1x</button>
+</div>
+</div>
+</div>
+<!-- Caption Display Parameter -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-xs text-on-surface-variant font-semibold">Caption Styling</span>
+<a class="text-xs font-interface-label text-primary hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="edit_note">edit_note</span>
+                      Edit caption transcript
+                    </a>
+</div>
+<!-- Typography & Position Controls -->
+<div class="p-3 bg-surface rounded-xl border border-outline-variant/70 space-y-3">
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant font-interface-label">Screen Anchor</span>
+<div class="inline-flex rounded-lg bg-surface-container p-0.5 text-xs font-interface-label">
+<button class="px-2.5 py-1 rounded-md text-on-surface-variant hover:text-on-surface">Center</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest font-bold text-on-surface shadow-xs border border-outline-variant/40">Lower-third</button>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs pt-1 border-t border-surface-container">
+<span class="text-on-surface-variant font-interface-label">Kinetic Emphasis</span>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-yellow-300 border border-black/20"></span>
+<span class="text-interface-label text-xs font-medium">Highlight Gold</span>
+</div>
+</div>
+</div>
+<!-- Sound Engineering Master -->
+<div class="p-3 bg-surface-container-low rounded-xl border border-surface-variant flex items-center gap-2.5 text-xs"><span class="material-symbols-outlined text-base text-primary" data-icon="music_note">music_note</span>
+<div class="flex flex-col">
+<span class="font-interface-label font-semibold text-on-surface">Background audio</span>
+<span class="text-meta-mono text-outline text-[11px]">Gentle ambient track</span>
+</div></div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Export & Distribution (Creator-Owned Channels) -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/60 shadow-sm space-y-5">
+<div class="flex items-center justify-between border-b border-surface-container pb-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-base" data-icon="cloud_download">cloud_download</span>
+</div>
+<h2 class="text-interface-label font-interface-label text-base font-bold text-on-surface">Export &amp; Distribution</h2>
+</div>
+<span class="text-meta-mono font-meta-mono text-xs text-outline">Creator-Owned Assets</span>
+</div>
+<!-- Direct Local Downloads Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><button class="flex items-center justify-center gap-2 bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-on-surface font-interface-label text-interface-label py-2.5 px-4 rounded-xl transition-all">
+<span class="material-symbols-outlined text-base text-primary" data-icon="movie">movie</span>
+<span>MP4 · 1080p · 30 fps</span>
+</button>
+<button class="flex items-center justify-center gap-2 bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-on-surface font-interface-label text-interface-label py-2.5 px-4 rounded-xl transition-all">
+<span class="material-symbols-outlined text-base text-outline" data-icon="subtitles">subtitles</span>
+<span>Captions · SRT</span>
+</button></div>
+<!-- High-Profile Publishing CTA -->
+<div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 space-y-3">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-white font-interface-label text-base py-3.5 px-6 rounded-xl shadow-md transition-all duration-150 active:scale-[0.99] font-bold">
+<span>Publish or schedule video</span>
+<span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="flex items-start gap-2 text-xs text-on-surface-variant/90 leading-relaxed px-1">
+<span class="material-symbols-outlined text-sm text-emerald-600 flex-shrink-0 mt-0.5" data-icon="verified_user">verified_user</span>
+<p class="font-body-md text-xs">
+                    Publishes directly to your connected YouTube Shorts or Instagram Reels account with your explicit approval. No unapproved auto-publishing.
+                  </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Micro-interaction logic for preview controls -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Clean non-intrusive console handshake
+      console.log('Explainova Editorial Review Studio active: "The science of quiet"');
+    });
+  </script>
+</body></html>

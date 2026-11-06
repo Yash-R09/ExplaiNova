@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Visual defaults | Explainova Studio</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e7f5",
+            "inverse-primary": "#bac3ff",
+            "surface-container": "#ededfb",
+            "on-primary": "#ffffff",
+            "background": "#fbf8ff",
+            "tertiary": "#4b5900",
+            "primary-container": "#3157ff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "inverse-surface": "#2e303b",
+            "tertiary-container": "#617300",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-tint": "#1c48f2",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "surface-bright": "#fbf8ff",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-tertiary-fixed": "#181e00",
+            "surface-container-highest": "#e1e1f0",
+            "on-primary-container": "#ebebff",
+            "on-surface-variant": "#444656",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#d5ee69",
+            "surface-variant": "#e1e1f0",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "primary-fixed": "#dee1ff",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "secondary": "#a83915",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "on-secondary-fixed-variant": "#862300",
+            "on-secondary-container": "#6b1a00",
+            "on-tertiary-container": "#e0f972",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "6.25rem",
+            "margin": "1.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-sm": ["Sora"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.05em", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased flex min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- ========================================================= -->
+<!-- SHARED COMPONENT: SideNavBar (Anchored Left Shell)        -->
+<!-- ========================================================= -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col justify-between p-4 z-40 bg-surface-container-low border-r border-outline-variant">
+<div class="flex flex-col gap-6">
+<!-- Studio Header -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="w-10 h-10 rounded-lg bg-on-surface flex items-center justify-center text-surface shadow-sm">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="token">token</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm text-on-surface tracking-tight text-base leading-tight font-bold">Explainova Studio</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">Atelier Edition</span>
+</div>
+</div>
+<!-- Action: CTA -->
+<div class="px-1">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-primary text-on-primary font-interface-label text-interface-label shadow-sm hover:bg-primary-container active:scale-[0.99] transition-all duration-150">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+<span>New Project</span>
+</button>
+</div>
+<!-- Main Navigation Tabs -->
+<nav class="flex flex-col gap-1.5 pt-2">
+<!-- Projects -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface cursor-pointer active:scale-[0.99] transition-all duration-150" href="#projects">
+<span class="material-symbols-outlined text-xl" data-icon="folder">folder</span>
+<span>Projects</span>
+</a>
+<!-- Publishing -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface cursor-pointer active:scale-[0.99] transition-all duration-150" href="#publishing">
+<span class="material-symbols-outlined text-xl" data-icon="auto_videocam">auto_videocam</span>
+<span>Publishing</span>
+</a>
+<!-- Connected Accounts -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface cursor-pointer active:scale-[0.99] transition-all duration-150" href="#connected-accounts">
+<span class="material-symbols-outlined text-xl" data-icon="hub">hub</span>
+<span>Connected Accounts</span>
+</a>
+<!-- Settings (Active) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-highest text-primary font-interface-label text-interface-label font-semibold border-l-4 border-primary cursor-pointer active:scale-[0.99] transition-all duration-150" href="#settings">
+<span class="material-symbols-outlined text-xl" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- SideNav Footer Utilities -->
+<div class="flex flex-col gap-1 pt-4 border-t border-outline-variant/60">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface transition-colors duration-150" href="#documentation">
+<span class="material-symbols-outlined text-lg" data-icon="menu_book">menu_book</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface transition-colors duration-150" href="#feedback">
+<span class="material-symbols-outlined text-lg" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+</div>
+</aside>
+<!-- ========================================================= -->
+<!-- SHARED COMPONENT: TopNavBar (Docked Top App Shell)        -->
+<!-- ========================================================= -->
+<header class="fixed top-0 right-0 left-64 h-16 flex items-center justify-between px-8 z-30 bg-surface border-b border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<!-- Breadcrumb Anchor -->
+<div class="flex items-center gap-2">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider">Settings</span>
+<span class="text-outline-variant text-sm">/</span>
+<span class="text-meta-mono font-meta-mono text-on-surface font-semibold tracking-normal text-sm">Visual defaults</span>
+</div>
+<!-- Right Tray -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Pill -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/60">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">Autosaved</span>
+</div>
+<!-- Icon Actions -->
+<div class="flex items-center gap-1">
+<button aria-label="Notifications" class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-150">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Help &amp; Documentation" class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-150">
+<span class="material-symbols-outlined text-xl" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<!-- Studio Director Avatar -->
+<div class="pl-2 border-l border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-primary-fixed border border-primary flex items-center justify-center text-primary font-bold text-xs font-interface-label">
+          ED
+        </div>
+</div>
+</div>
+</header>
+<!-- ========================================================= -->
+<!-- MAIN WORKSPACE CANVAS                                     -->
+<!-- ========================================================= -->
+<main class="ml-64 mt-16 flex-1 px-8 py-8 max-w-[1400px]">
+<!-- Settings Sub-Navigation Tabs -->
+<nav class="flex items-center gap-8 border-b border-outline-variant mb-8">
+<a class="pb-3 text-on-surface-variant font-interface-label text-interface-label hover:text-on-surface transition-colors" href="#profile">
+        Profile &amp; security
+      </a>
+<a class="pb-3 text-primary font-interface-label text-interface-label font-semibold border-b-2 border-primary" href="#visual-defaults">
+        Visual defaults
+      </a>
+</nav>
+<!-- Header Section -->
+<div class="mb-8">
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Visual defaults</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1.5 max-w-3xl">
+        Set starting preferences for your new explainer videos. These apply automatically to new projects, and only to existing projects when you choose 'Apply defaults'.
+      </p>
+</div>
+<!-- Two-Column Studio Layout: Controls (Left) vs 9:16 Live Preview (Right) -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN: Defaults Configuration (7 Columns) -->
+<div class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+<!-- 1. Brand Logo & Mark -->
+<section class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-base text-on-surface">1. Brand Logo &amp; Mark</h2>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant">Persistent visual watermark embedded into final scene exports.</p>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-outline-variant/60">SVG / PNG</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+<!-- Mark preview / Upload box -->
+<div class="flex items-center gap-3.5 p-3 rounded-xl border border-outline-variant bg-surface-container-low">
+<div class="w-12 h-12 rounded-lg bg-on-surface flex items-center justify-center text-primary-fixed border border-outline/30">
+<!-- Explainova Geometric Frame Mark -->
+<svg class="stroke-current stroke-2" fill="none" height="24" viewbox="0 0 24 24" width="24">
+<rect height="18" rx="3" stroke-width="1.75" width="18" x="3" y="3"></rect>
+<circle cx="12" cy="12" r="4" stroke-width="1.75"></circle>
+<path d="M12 3V7M12 17V21M3 12H7M17 12H21" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-sm text-on-surface font-semibold">FrameMark-Studio.svg</span>
+<button class="text-left text-meta-mono font-meta-mono text-primary text-xs hover:underline mt-0.5">Replace watermark</button>
+</div>
+</div>
+<!-- Placement Segmented Selector -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Watermark Position</label>
+<div class="grid grid-cols-3 gap-1 p-1 bg-surface-container rounded-xl border border-outline-variant">
+<button class="py-1.5 text-xs text-center rounded-lg bg-surface-container-lowest text-primary font-interface-label font-semibold shadow-sm border border-outline-variant/60" type="button">
+                  Top Right
+                </button>
+<button class="py-1.5 text-xs text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  Bottom Right
+                </button>
+<button class="py-1.5 text-xs text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  None
+                </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Color Palette & Topic Styles -->
+<section class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="mb-4">
+<h2 class="text-headline-sm font-headline-sm text-base text-on-surface">2. Color Palette &amp; Topic Styles</h2>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant">Default accents and thematic graphic palettes applied to synthesized animations.</p>
+</div>
+<!-- Accent Swatches -->
+<div class="mb-5">
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-2 uppercase">Primary Accent Swatch</label>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Electric Cobalt (Selected) -->
+<button class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border-2 border-primary bg-surface-container-low">
+<span class="w-4 h-4 rounded-full bg-primary-container ring-2 ring-primary/30"></span>
+<span class="text-interface-label font-interface-label text-xs font-bold text-on-surface">Electric Cobalt (#3157FF)</span>
+</button>
+<!-- Tangerine -->
+<button class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-outline-variant hover:bg-surface-container-low transition-colors">
+<span class="w-4 h-4 rounded-full bg-secondary-container"></span>
+<span class="text-interface-label font-interface-label text-xs text-on-surface-variant">Tangerine (#FF784F)</span>
+</button>
+<!-- Acid Lime -->
+<button class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-outline-variant hover:bg-surface-container-low transition-colors">
+<span class="w-4 h-4 rounded-full bg-tertiary-fixed"></span>
+<span class="text-interface-label font-interface-label text-xs text-on-surface-variant">Acid Lime (#D9F26C)</span>
+</button>
+<!-- Custom Hex Input -->
+<div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-outline-variant bg-surface-container-low text-xs">
+<span class="text-outline font-meta-mono">#</span>
+<input class="w-16 bg-transparent border-0 p-0 text-xs font-meta-mono text-on-surface focus:ring-0 uppercase font-semibold" type="text" value="3157FF"/>
+</div>
+</div>
+</div>
+<!-- Topic-Adaptive Style Presets -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-2 uppercase">Topic-adaptive Style Presets</label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<!-- Preset 1: Kinetic Technical (Active) -->
+<div class="p-3 rounded-xl border-2 border-primary bg-primary-fixed/20 relative cursor-pointer">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-interface-label font-interface-label text-xs font-bold text-on-surface">Kinetic Technical</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">Cyan &amp; Deep Violet</p>
+<div class="flex gap-1.5 mt-2">
+<span class="h-2 w-6 rounded-full bg-cyan-400"></span>
+<span class="h-2 w-6 rounded-full bg-violet-700"></span>
+<span class="h-2 w-6 rounded-full bg-primary-container"></span>
+</div>
+</div>
+<!-- Preset 2: Earth & Ocean -->
+<div class="p-3 rounded-xl border border-outline-variant hover:border-outline bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-interface-label font-interface-label text-xs font-semibold text-on-surface">Earth &amp; Ocean</span>
+</div>
+<p class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">Sea Green &amp; Blue</p>
+<div class="flex gap-1.5 mt-2">
+<span class="h-2 w-6 rounded-full bg-emerald-500"></span>
+<span class="h-2 w-6 rounded-full bg-sky-600"></span>
+<span class="h-2 w-6 rounded-full bg-teal-800"></span>
+</div>
+</div>
+<!-- Preset 3: Astrophysics -->
+<div class="p-3 rounded-xl border border-outline-variant hover:border-outline bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-interface-label font-interface-label text-xs font-semibold text-on-surface">Astrophysics</span>
+</div>
+<p class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">Amber &amp; Midnight</p>
+<div class="flex gap-1.5 mt-2">
+<span class="h-2 w-6 rounded-full bg-amber-400"></span>
+<span class="h-2 w-6 rounded-full bg-orange-600"></span>
+<span class="h-2 w-6 rounded-full bg-indigo-950"></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Supported Fonts -->
+<section class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="mb-4">
+<h2 class="text-headline-sm font-headline-sm text-base text-on-surface">3. Supported Fonts</h2>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant">High-legibility editorial typefaces used in scene kinetic titles and script rendering.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Headline Font Selector -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Headline Display Font</label>
+<div class="flex flex-col gap-1.5">
+<label class="flex items-center justify-between p-2.5 rounded-xl border-2 border-primary bg-primary-fixed/20 cursor-pointer">
+<div class="flex items-center gap-2">
+<input checked="" class="text-primary focus:ring-primary h-4 w-4" name="headline-font" type="radio"/>
+<span class="font-headline-sm text-sm text-on-surface font-bold">Sora</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-primary font-bold">Primary Brand</span>
+</label>
+<label class="flex items-center justify-between p-2.5 rounded-xl border border-outline-variant hover:bg-surface-container-low cursor-pointer">
+<div class="flex items-center gap-2">
+<input class="text-primary focus:ring-primary h-4 w-4" name="headline-font" type="radio"/>
+<span class="font-headline-sm text-sm text-on-surface">Space Grotesk</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Geometric</span>
+</label>
+<label class="flex items-center justify-between p-2.5 rounded-xl border border-outline-variant hover:bg-surface-container-low cursor-pointer">
+<div class="flex items-center gap-2">
+<input class="text-primary focus:ring-primary h-4 w-4" name="headline-font" type="radio"/>
+<span class="font-headline-sm text-sm text-on-surface">Inter</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Neutral</span>
+</label>
+</div>
+</div>
+<!-- Body Font Selector -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Body / Script Font</label>
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between p-2.5 rounded-xl border-2 border-primary bg-primary-fixed/20">
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 rounded-full bg-primary flex items-center justify-center text-[10px] text-on-primary">✓</span>
+<span class="font-body-md text-sm text-on-surface font-semibold">Manrope (Calibrated Atelier)</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-primary font-bold">Active Default</span>
+</div>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant mt-2 px-1 leading-relaxed">
+                  Optimized for rapid micro-reading across phone aspect ratios and technical annotations.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Captions & Kinetic Typography -->
+<section class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="mb-4">
+<h2 class="text-headline-sm font-headline-sm text-base text-on-surface">4. Captions &amp; Kinetic Typography</h2>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant">Default placement and real-time word synchronization styling.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Position -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Vertical Placement</label>
+<div class="grid grid-cols-2 gap-1 p-1 bg-surface-container rounded-xl border border-outline-variant">
+<button class="py-1.5 text-xs text-center rounded-lg bg-surface-container-lowest text-primary font-interface-label font-semibold shadow-sm border border-outline-variant/60" type="button">
+                  Lower-third
+                </button>
+<button class="py-1.5 text-xs text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  Center
+                </button>
+</div>
+</div>
+<!-- Font Size -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Display Scale</label>
+<div class="grid grid-cols-2 gap-1 p-1 bg-surface-container rounded-xl border border-outline-variant">
+<button class="py-1.5 text-xs text-center rounded-lg bg-surface-container-lowest text-primary font-interface-label font-semibold shadow-sm border border-outline-variant/60" type="button">
+                  Medium
+                </button>
+<button class="py-1.5 text-xs text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  Large
+                </button>
+</div>
+</div>
+<!-- Word Highlighting Emphasis Style -->
+<div>
+<label class="block text-meta-mono font-meta-mono text-xs text-on-surface-variant mb-1.5 uppercase">Word Highlighting</label>
+<div class="grid grid-cols-3 gap-1 p-1 bg-surface-container rounded-xl border border-outline-variant">
+<button class="py-1.5 text-[11px] text-center rounded-lg bg-surface-container-lowest text-primary font-interface-label font-semibold shadow-sm border border-outline-variant/60" type="button">
+                  Highlight Gold
+                </button>
+<button class="py-1.5 text-[11px] text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  Cobalt Line
+                </button>
+<button class="py-1.5 text-[11px] text-center rounded-lg text-on-surface-variant hover:text-on-surface font-interface-label" type="button">
+                  None
+                </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Narration Voice Default -->
+<section class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="mb-4">
+<h2 class="text-headline-sm font-headline-sm text-base text-on-surface">5. Narration Voice Default</h2>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant">Default open audio synthesis profiles for rapid draft readouts.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Voice 1: Alice -->
+<div class="p-3.5 rounded-xl border-2 border-primary bg-primary-fixed/20 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="text-interface-label font-interface-label text-sm font-bold text-on-surface">Alice</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface border border-outline-variant/60">Female · Clear Neutral</span>
+</div>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant mt-1">Calm clear pacing with crisp consonants for technical explication.</p>
+</div>
+<!-- Audio Wave Sample Player -->
+<div class="mt-4 pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-interface-label text-xs hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>Play sample</span>
+</button>
+<!-- Static SVG Soundwave representation -->
+<div class="flex items-center gap-0.5 h-4">
+<span class="w-0.5 h-2 bg-primary rounded-full"></span>
+<span class="w-0.5 h-3.5 bg-primary rounded-full"></span>
+<span class="w-0.5 h-4 bg-primary rounded-full"></span>
+<span class="w-0.5 h-1.5 bg-primary rounded-full"></span>
+<span class="w-0.5 h-3 bg-primary rounded-full"></span>
+<span class="w-0.5 h-2 bg-primary rounded-full"></span>
+</div>
+</div>
+</div>
+<!-- Voice 2: Male voice (available voice) -->
+<div class="p-3.5 rounded-xl border border-outline-variant hover:border-outline bg-surface-container-low flex flex-col justify-between transition-colors">
+<div>
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<span class="text-interface-label font-interface-label text-sm font-semibold text-on-surface">Julian</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-outline-variant/60">Male · Warm Resonant</span>
+</div>
+<p class="text-body-md font-body-md text-xs text-on-surface-variant mt-1">Grounded and deliberate timber suitable for physics and history essays.</p>
+</div>
+<!-- Audio Wave Sample Player -->
+<div class="mt-4 pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-lowest border border-outline-variant text-on-surface font-interface-label text-xs hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow">play_arrow</span>
+<span>Play sample</span>
+</button>
+<!-- Available voice note -->
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline">Open Available Voice</span>
+</div>
+</div>
+</div>
+<p class="text-meta-mono font-meta-mono text-[11px] text-outline mt-3">
+            Note: Standard royalty-free studio voices included with all local render pipelines.
+          </p>
+</section>
+<!-- 6. Actions & Save Strip -->
+<div class="p-6 rounded-2xl bg-surface-container-low border border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-4">
+<p class="text-body-md font-body-md text-xs text-on-surface-variant leading-relaxed max-w-md">
+            New projects inherit these settings. Existing drafts remain unchanged unless you open project settings and click <span class="font-semibold text-on-surface">'Apply defaults'</span>.
+          </p>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-primary text-on-primary font-interface-label text-interface-label font-semibold shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:bg-[#2143DB] hover:-translate-y-0.5 transition-all" type="button">
+              Save defaults
+            </button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 9:16 Live Preview Card (5 Columns) -->
+<div class="col-span-12 lg:col-span-5 sticky top-24">
+<div class="flex flex-col items-center">
+<!-- Outer Card Container -->
+<div class="w-full max-w-[340px] rounded-3xl bg-surface-container-lowest border border-outline-variant p-4 shadow-[0_8px_24px_-4px_rgba(23,25,35,0.08)]">
+<!-- Preview Top Metadata Bar -->
+<div class="flex items-center justify-between mb-3 px-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-on-surface font-bold">Live Preview</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Default styling applied</span>
+</div>
+<!-- The 9:16 Physical Stage Aspect Ratio Frame -->
+<div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-[#0A0C16] border border-white/10 shadow-inner flex flex-col justify-between p-4">
+<!-- Subtle Background Vector Grid -->
+<div class="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none"></div>
+<!-- Top Frame Bar with Watermark Frame Mark -->
+<div class="relative z-10 flex items-start justify-between">
+<span class="text-[10px] font-meta-mono text-cyan-400/80 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40">
+                  SCENE 02 · ACOUSTIC NULL
+                </span>
+<!-- Placed Watermark: Top Right -->
+<div class="w-7 h-7 rounded-md bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/80">
+<svg class="stroke-current stroke-2" fill="none" height="14" viewbox="0 0 24 24" width="14">
+<rect height="18" rx="3" width="18" x="3" y="3"></rect>
+<circle cx="12" cy="12" r="4"></circle>
+</svg>
+</div>
+</div>
+<!-- Center Graphic Visual: "The science of quiet" Acoustic Headphone Waveform Diagram -->
+<div class="relative z-10 my-auto flex flex-col items-center justify-center text-center px-2">
+<!-- Graphic Acoustic Stage -->
+<div class="relative w-44 h-44 mb-3 flex items-center justify-center">
+<!-- Concentric Ambient Soundwaves -->
+<div class="absolute inset-0 rounded-full border border-violet-500/20 animate-ping" style="animation-duration: 3s;"></div>
+<div class="absolute inset-4 rounded-full border border-violet-500/30"></div>
+<div class="absolute inset-8 rounded-full border border-cyan-500/40"></div>
+<!-- Inverted Antiphase Acoustic Waves Diagram -->
+<div class="relative z-10 w-28 h-28 rounded-full bg-gradient-to-b from-[#14172B] to-[#0A0C16] border border-cyan-500/60 flex flex-col items-center justify-center p-3 shadow-lg">
+<!-- Headphone Outline SVG -->
+<svg class="mb-1" fill="none" height="40" stroke="#22d3ee" stroke-width="1.75" viewbox="0 0 24 24" width="40">
+<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3v-7z"></path>
+<path d="M21 14h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3v-7z"></path>
+<path d="M3 14V10a9 9 0 0 1 18 0v4"></path>
+</svg>
+<!-- Waveform Vector Inversion -->
+<svg class="overflow-visible" fill="none" height="16" viewbox="0 0 100 24" width="64">
+<path d="M0 12 Q 12 0, 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#FF784F" stroke-dasharray="2 2" stroke-width="2"></path>
+<path d="M0 12 Q 12 24, 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#22d3ee" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Phase cancellation tag -->
+<div class="absolute -bottom-2 bg-black/80 px-2 py-0.5 rounded border border-white/20 text-[9px] font-meta-mono text-cyan-300">
+                    Ø 180° PHASE INVERT
+                  </div>
+</div>
+<!-- Video Title Tag -->
+<span class="text-meta-mono font-meta-mono text-[10px] text-white/50 tracking-wider uppercase mb-1">The science of quiet</span>
+<h3 class="font-headline-sm text-sm text-white font-bold tracking-tight">Active Noise Control</h3>
+</div>
+<!-- Lower-Third Kinetic Caption Preview -->
+<div class="relative z-10 pb-2">
+<div class="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 shadow-2xl">
+<p class="font-body-md text-xs text-white/90 leading-relaxed text-center">
+                    Microphones pick up 
+                    <span class="inline-block px-1.5 py-0.5 rounded bg-amber-400 text-black font-bold mx-0.5 shadow-sm">ambient noise</span>, 
+                    then the speaker produces an inverted sound wave to reduce sound near the ear.
+                  </p>
+</div>
+</div>
+</div>
+<!-- Preview Card Metadata Footer -->
+<div class="mt-4 pt-3 border-t border-outline-variant flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-xs" data-icon="play_arrow">play_arrow</span>
+</span>
+<span class="text-meta-mono font-meta-mono text-xs text-on-surface font-semibold">Playable sample</span>
+</div>
+<div class="flex items-center gap-1.5 text-meta-mono font-meta-mono text-xs text-outline">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+<span>0:53 target</span>
+</div>
+</div>
+</div>
+<!-- Helper Microcopy -->
+<p class="text-meta-mono font-meta-mono text-[11px] text-outline text-center mt-3 max-w-[280px]">
+            Aspect ratio locked to 9:16 vertical standard (1080×1920) for reel &amp; mobile explainer distribution.
+          </p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

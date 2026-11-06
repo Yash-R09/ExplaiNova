@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Projects — Library | Explainova</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container": "#ededfb",
+            "primary-container": "#3157ff",
+            "error-container": "#ffdad6",
+            "surface-variant": "#e1e1f0",
+            "inverse-surface": "#2e303b",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "on-error-container": "#93000a",
+            "on-tertiary-container": "#e0f972",
+            "tertiary-container": "#617300",
+            "on-secondary-fixed": "#3a0a00",
+            "surface-bright": "#fbf8ff",
+            "secondary": "#a83915",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "on-background": "#191b25",
+            "on-surface-variant": "#444656",
+            "tertiary-fixed": "#d5ee69",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdbd1",
+            "on-surface": "#191b25",
+            "background": "#fbf8ff",
+            "outline-variant": "#c4c5d9",
+            "on-primary-container": "#ebebff",
+            "inverse-primary": "#bac3ff",
+            "error": "#ba1a1a",
+            "primary-fixed": "#dee1ff",
+            "surface-container-highest": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "on-primary-fixed-variant": "#0031c6",
+            "surface-container-low": "#f3f2ff",
+            "primary-fixed-dim": "#bac3ff",
+            "tertiary-fixed-dim": "#b9d14f",
+            "on-secondary-container": "#6b1a00",
+            "tertiary": "#4b5900",
+            "surface-dim": "#d9d9e7",
+            "primary": "#003ae4",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary-fixed": "#001159",
+            "surface-tint": "#1c48f2",
+            "on-secondary-fixed-variant": "#862300",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f0effe",
+            "surface-container-high": "#e7e7f5",
+            "on-primary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-lg": "6.25rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "gutter-lg": "2rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin-md": "3rem"
+          },
+          "fontFamily": {
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "interface-label": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "headline-sm": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "body-lg": ["Manrope"]
+          },
+          "fontSize": {
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex selection:bg-primary-fixed selection:text-primary">
+<!-- LEFT SIDEBAR NAVIGATION (Shared Component: SideNavBar) -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest border-r border-outline-variant shadow-sm z-30 flex flex-col justify-between p-4">
+<div class="flex flex-col gap-5">
+<!-- Studio Brand Anchor -->
+<div class="flex items-center gap-3 px-2 pt-1 pb-2">
+<div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center text-surface shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="gesture">gesture</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface block leading-tight">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">Studio Bench</span>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<button class="w-full bg-primary-container hover:bg-primary text-on-primary py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-interface-label text-interface-label shadow-sm transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>Create video</span>
+</button>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1 mt-2">
+<!-- Active Tab: Projects (Semantics match screen primary destination) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary bg-primary-fixed rounded-lg border-l-2 border-primary active:scale-[0.99] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>Projects</span>
+</a>
+<!-- Inactive Tab: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="podcasts">podcasts</span>
+<span>Publishing</span>
+</a>
+<!-- Inactive Tab: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Inactive Tab: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer Context -->
+<div class="flex flex-col gap-2 pt-4 border-t border-surface-variant">
+<a class="flex items-center gap-3 px-3 py-1.5 text-interface-label font-interface-label text-outline hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="rate_review">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 bg-surface-container-low rounded-lg text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary" data-icon="cloud_done">cloud_done</span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">Workspace Status</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<!-- Studio Profile Card -->
+<div class="flex items-center gap-3 px-2 py-2 mt-1">
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up photographic portrait of an intellectual creative director wearing horn rim glasses looking thoughtfully toward the camera with quiet studio light illuminating natural contours on a soft ivory atelier background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwWXOb8aIFXdp2b35emFOcHfBJ7ESrdIaAjawMQKc4S8VIXr4DB1nIghemjLVz32QRRFh1n7vQU-3o0PRGa-I8uakeA0eiyJLFvN2tKj_jziOZqcSvwoWajWMRDyWoWkKtJSomMFX6sbtVcmgDBp3sHhWXzrN1c_HSselPCS5CLWsez1HG9P-r6chMruqcSqltkjOLU3k2mmVd_ZKfIDFMq4_lLnxQtFHock0Ft10VP-t8W2YiZKIlk7DaDwfBAFt6TsY0lPdXHWI"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-interface-label font-interface-label text-on-surface truncate">Julian Croft</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] truncate">Senior Essayist</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CANVAS REGION -->
+<div class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TOP BAR NAVIGATION (Shared Component: TopNavBar) -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb Hierarchy -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant font-semibold">Projects</span>
+<span class="text-outline text-meta-mono font-meta-mono">/</span>
+<span class="text-on-surface font-semibold text-interface-label font-interface-label">Private Library</span>
+</div>
+<!-- Middle & Trailing Tooling -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Signal -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant/60">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Autosaved</span>
+</div>
+<!-- Notification Bell -->
+<button aria-label="Notifications" class="w-8 h-8 rounded-lg flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<div class="h-4 w-px bg-outline-variant"></div>
+<!-- Top Avatar -->
+<div class="w-7 h-7 rounded-full bg-surface-variant border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of visual artist and adult educator in profile shot looking downward at an editing console with minimal high key light in an understated modern educational work studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDigLlTGXaLsHMV-7ZIDJNUuGJG2KrKB2IUxHPA5xI9eKFGrlZuiZPIJcgpdsm4006hY-qWIYPJrLJkasWQafjzBqP4jCOtBKyChTq0AZisDuLZpCjb_1J8hZdIkTTtjqYaKFFmrwxX99xl_A4sHm-NzFZayRhxsHlwOodKZjiaSohvh7Tncpc4DBYA0SdUN5p6buWEpQaUDR_r2_q0w-euYMj_ueeFr0uLf_XOxlXH_1Pj-R-6FPbSpoYNwq8mRkWlzOR3eWYdmt8"/>
+</div>
+</div>
+</header>
+<!-- MAIN VIEW CONTAINER -->
+<main class="flex-1 px-8 py-8 max-w-[1240px] w-full mx-auto flex flex-col gap-7">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-surface-dim pb-6">
+<div>
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Projects</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">Your private collection of explainer drafts and finished videos.</p>
+</div>
+<!-- Utility Bar: Search, Status Filter, Sort & View Switches -->
+<div class="flex flex-wrap items-center gap-3">
+<!-- Search input -->
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]" data-icon="search">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-interface-label font-interface-label placeholder-outline focus:outline-none focus:border-primary-container focus:ring-0 transition-colors" placeholder="Search projects..." type="text"/>
+</div>
+<!-- Sort dropdown -->
+<div class="relative">
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant px-3 py-1.5 rounded-lg text-interface-label font-interface-label text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="swap_vert">swap_vert</span>
+<span>Last modified</span>
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+<!-- View mode toggle -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg p-0.5">
+<button class="p-1 rounded bg-surface-container-lowest text-primary shadow-xs" title="Grid View">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-on-surface transition-colors" title="List View">
+<span class="material-symbols-outlined text-[18px]" data-icon="view_list">view_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Segmented Status Filter Tabs -->
+<div class="flex items-center gap-1 border-b border-surface-dim pb-3">
+<button class="px-3.5 py-1.5 rounded-md text-interface-label font-interface-label bg-inverse-surface text-surface font-semibold shadow-xs">
+          All projects <span class="ml-1 text-meta-mono font-meta-mono text-[11px] opacity-75">4</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-md text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+          Drafts <span class="ml-1 text-meta-mono font-meta-mono text-[11px] text-outline">2</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-md text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+          Ready <span class="ml-1 text-meta-mono font-meta-mono text-[11px] text-outline">1</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-md text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Generating <span class="ml-1 text-meta-mono font-meta-mono text-[11px] text-outline">1</span></button>
+</div>
+<!-- FEATURED IN-PROGRESS RENDERING STRIP CARD -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-xs relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary-container"></div>
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 pl-2">
+<div class="flex items-start gap-4">
+<!-- Pulsing processing indicator -->
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed/40 border border-secondary-fixed flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px] text-secondary animate-spin" data-icon="sync">sync</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-meta-mono text-secondary bg-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                  Generating... 64% complete
+                </span>
+<span class="text-meta-mono font-meta-mono text-outline text-[12px]">• Est. runtime 0:53</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface tracking-tight">The science of quiet</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Active Stage: <span class="font-semibold text-on-surface">Creating animations and aligning captions</span></p>
+</div>
+</div>
+<!-- Progress bar & direct controls -->
+<div class="w-full lg:w-80 flex flex-col gap-2">
+<div class="flex justify-between items-center text-meta-mono font-meta-mono text-[11px] text-outline">
+<span>Creating animations and aligning captions</span>
+<span class="text-on-surface font-bold">64%</span>
+</div>
+<!-- Dual tone track progress -->
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full transition-all duration-300 w-[64%]"></div>
+</div>
+<div class="flex items-center justify-end gap-3 mt-1">
+<button class="text-interface-label font-interface-label text-outline hover:text-error text-xs transition-colors">
+                Cancel
+              </button>
+<button class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant px-3 py-1 rounded-lg text-interface-label font-interface-label text-on-surface text-xs transition-colors flex items-center gap-1">
+<span>View workbench</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 9:16 VERTICAL PROJECT GRID -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- CARD 1: The science of quiet (Generating) -->
+<article class="group bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-2xl overflow-hidden flex flex-col shadow-xs transition-all duration-200 hover:-translate-y-0.5">
+<!-- 9:16 Aspect Thumbnail Container -->
+<div class="relative w-full aspect-[9/16] bg-inverse-surface overflow-hidden">
+<img class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500 ease-out" data-alt="Minimalist abstract vector artwork showing mathematical acoustical resonance waveforms and frequency dampening curves on deep navy ink background with precision ivory geometric grid overlays in refined atelier style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIj_yyGA8aF7PjzxhCp6vQXlFHwo4yNI6cvuA0XLRw-0t2RxTm-T8GKhQk8F1_mojC8gOWwj_Vr9cS0D_6WRxMuMikiinsfY5WJ-4sbnxWGuIUilU9Ssq9IkVveR3Nyb8z8tKV8MZGepVbk4E1Y89FemiQVBMl-ypSX4ee9MAPtjG9p_fdxrnXhEelNV1oZ9RNQ3DjvZJuZ15RsraqFJIpp-iWESuVjbjpQlb2yGd1Sst8BL0cdtK3ioZafcX436OmMkkhD-FjnRE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/40"></div>
+<!-- Top Overlays: Status pill & Overflow action -->
+<div class="absolute top-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[11px] font-meta-mono text-secondary bg-secondary-fixed/90 shadow-sm flex items-center gap-1 backdrop-blur-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+                Generating
+              </span>
+<button aria-label="Menu" class="w-7 h-7 rounded-lg bg-black/40 backdrop-blur-md text-surface flex items-center justify-center hover:bg-black/70 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Bottom Video Frame Overlays: Runtime and Topic Badge -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">
+                0:53
+              </span>
+<span class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">
+                Acoustics
+              </span>
+</div>
+</div>
+<!-- Metadata & Details Content -->
+<div class="p-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between gap-2 text-meta-mono font-meta-mono text-outline text-[11px] mb-1"><span>Updated 4m ago</span><span class="text-tertiary">Animating</span></div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                The science of quiet
+              </h3>
+</div>
+<div class="pt-2 border-t border-surface-variant flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Draft #3</span>
+<button class="text-primary hover:text-primary-container font-interface-label text-interface-label text-xs flex items-center gap-1 font-semibold">
+                Open <span class="material-symbols-outlined text-[14px]" data-icon="north_east">north_east</span>
+</button>
+</div>
+</div>
+</article>
+<!-- CARD 2: How rain returns to the sky (Ready) -->
+<article class="group bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-2xl overflow-hidden flex flex-col shadow-xs transition-all duration-200 hover:-translate-y-0.5">
+<!-- 9:16 Aspect Thumbnail Container -->
+<div class="relative w-full aspect-[9/16] bg-inverse-surface overflow-hidden">
+<img class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500 ease-out" data-alt="Tactile scientific editorial illustration depicting hydrologic thermodynamics with layered atmospheric cloud condensation vapor lines and rain droplets rendered in pristine cobalt blue and ivory paper style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTw7ZqigCe0w_zFynF0g-S4TvsciIGNLMN9VglS5MOe8F9DMpS5zhzgf9jIsXU0fTUqTgAMJ8jLaOmwOQvC_yDj1Hkg2QEgq8TmmUPTdaykIHteUZsnEspfTq2DSN55bsNE49t5-vLeFECgGZwncv1GkoZUc1yuJkUKw8miqL-ByfrO05Ps11w1heGzmjaK5p_ehKBwY2TMusm3yT1ERGkojeEQZuxUHsj-opz0rSVKWIxPd7Xqe2DqQWYZE6-KBVCUklQiGWGWt4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/40"></div>
+<!-- Top Overlays -->
+<div class="absolute top-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[11px] font-meta-mono text-tertiary bg-tertiary-fixed/90 shadow-sm flex items-center gap-1 backdrop-blur-xs font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+                Ready
+              </span>
+<button aria-label="Menu" class="w-7 h-7 rounded-lg bg-black/40 backdrop-blur-md text-surface flex items-center justify-center hover:bg-black/70 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Bottom Overlays -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">
+                1:14
+              </span>
+<span class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">Earth Science</span>
+</div>
+</div>
+<!-- Metadata & Details Content -->
+<div class="p-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between gap-2 text-meta-mono font-meta-mono text-outline text-[11px] mb-1">
+<span>Modified 2h ago</span>
+<span class="text-on-surface-variant font-medium">1080p 30 fps</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                How rain returns to the sky
+              </h3>
+</div>
+<div class="pt-2 border-t border-surface-variant flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Exported · MP4 1080p</span>
+<button class="text-primary hover:text-primary-container font-interface-label text-interface-label text-xs flex items-center gap-1 font-semibold">
+                Preview <span class="material-symbols-outlined text-[14px]" data-icon="play_arrow">play_arrow</span>
+</button>
+</div>
+</div>
+</article>
+<!-- CARD 3: Why satellites stay in orbit (Draft) -->
+<article class="group bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-2xl overflow-hidden flex flex-col shadow-xs transition-all duration-200 hover:-translate-y-0.5">
+<!-- 9:16 Aspect Thumbnail Container -->
+<div class="relative w-full aspect-[9/16] bg-inverse-surface overflow-hidden">
+<img class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500 ease-out" data-alt="Technical astrodynamics schematic showing celestial orbital ellipse mechanics and gravitational vector paths drawn in deep midnight blue with crisp white geometric annotations and fine orange trajectory lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrEUzjppQIYUu2AHVTyzFhSBUfNyerJzF9pyX7PvzvYfTHLCiBUYLbxwnqmkbEaSzb2hw2tX9fw55ueCA1aIZQHxh1PsgECbfa5gMAKTqV5VffEXfOmdemABCfwVIohBRchhPe1Gbhc_yVj7D8fY4QdHJkZOsRNgQ-rgMirbLLPkU_pTRguu9cn-OUmF7GBhejPH-aFTUXvXumwtXg3JwFml9Fbu0IesCfLC0n3b3o-1CPplaJ_TGFfgWGTevwkZE1FuOy2aifnvc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/40"></div>
+<!-- Top Overlays -->
+<div class="absolute top-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[11px] font-meta-mono text-on-surface-variant bg-surface-container-high/90 shadow-sm backdrop-blur-xs font-semibold">
+                Draft
+              </span>
+<button aria-label="Menu" class="w-7 h-7 rounded-lg bg-black/40 backdrop-blur-md text-surface flex items-center justify-center hover:bg-black/70 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Bottom Overlays -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">
+                1:00 target
+              </span>
+<span class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">Physics</span>
+</div>
+</div>
+<!-- Metadata & Details Content -->
+<div class="p-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between gap-2 text-meta-mono font-meta-mono text-outline text-[11px] mb-1">
+<span>Modified yesterday</span>
+<span class="text-outline">Script locked</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                Why satellites stay in orbit
+              </h3>
+</div>
+<div class="pt-2 border-t border-surface-variant flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Scene 4/6</span>
+<button class="text-primary hover:text-primary-container font-interface-label text-interface-label text-xs flex items-center gap-1 font-semibold">
+                Edit <span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</article>
+<!-- CARD 4: Neural synaptic pruning (Draft) -->
+<article class="group bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-2xl overflow-hidden flex flex-col shadow-xs transition-all duration-200 hover:-translate-y-0.5">
+<!-- 9:16 Aspect Thumbnail Container -->
+<div class="relative w-full aspect-[9/16] bg-inverse-surface overflow-hidden">
+<img class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500 ease-out" data-alt="Contemporary neuroscience vector diagram highlighting synaptic pruning in violet, deep indigo, and warm amber ink showing branching neural pathways and dendritic tree elimination on warm ivory textured matte background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLkrkhtnArMlgP3GkCkezsareztwPavIJYkgRyw6WUs-tVi87rIuf9A3IDV8BYmdPzd8Uy5oZn9nhoCl34WTas961fa9A-EKuj8oi9mIzb_NINw-LpbWNk9ceG1fbnuXqa5tyIBpNh4B1alqUjsZXp142sjFM6mr_5hkfz32kVAJnt4Mv5AhfgOPP_l-Vx_R6OkakaOZ2WVkqn_cVzmBkpMVAXPij7NK8TSB43SRrYQV3eYplcDCxtw1NTS_m7KC9Qjrg6JVjrAa4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/40"></div>
+<!-- Top Overlays -->
+<div class="absolute top-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[11px] font-meta-mono text-on-surface-variant bg-surface-container-high/90 shadow-sm backdrop-blur-xs font-semibold">
+                Draft
+              </span>
+<button aria-label="Menu" class="w-7 h-7 rounded-lg bg-black/40 backdrop-blur-md text-surface flex items-center justify-center hover:bg-black/70 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Bottom Overlays -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">
+                1:00 target
+              </span>
+<span class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm text-surface text-meta-mono font-meta-mono text-[11px]">Biology</span>
+</div>
+</div>
+<!-- Metadata & Details Content -->
+<div class="p-4 flex flex-col flex-1 justify-between gap-3">
+<div>
+<div class="flex items-center justify-between gap-2 text-meta-mono font-meta-mono text-outline text-[11px] mb-1">
+<span>Modified 3d ago</span>
+<span class="text-outline">Outline pass</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface line-clamp-2 leading-tight group-hover:text-primary transition-colors">How honeybees navigate</h3>
+</div>
+<div class="pt-2 border-t border-surface-variant flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Scene 1/3</span>
+<button class="text-primary hover:text-primary-container font-interface-label text-interface-label text-xs flex items-center gap-1 font-semibold">
+                Edit <span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</article>
+</section>
+<!-- Subdued Atelier Bottom Note -->
+<footer class="pt-8 pb-4 border-t border-surface-variant flex items-center justify-between text-meta-mono font-meta-mono text-outline text-[11px]">
+<div class="flex items-center gap-2"><span>Explainova Studio</span><span>•</span><span>Fast cloud video rendering</span></div>
+<div class="flex items-center gap-4">
+<a class="hover:text-on-surface transition-colors" href="#">Keyboard shortcuts</a>
+<a class="hover:text-on-surface transition-colors" href="#">Documentation</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

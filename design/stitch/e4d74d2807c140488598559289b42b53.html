@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova Studio — Publishing Calendar</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased flex h-screen overflow-hidden selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ================= SIDE NAVIGATION BAR (SHARED COMPONENT) ================= -->
+<aside class="bg-surface-container-lowest dark:bg-surface-container-low docked full-height left-0 w-64 fixed h-screen border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50 flex flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Studio Header Brand Mark -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-9 h-9 rounded-lg bg-inverse-surface flex items-center justify-center text-surface-container-lowest font-headline-sm text-headline-sm font-bold shadow-sm">
+<span>E</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface leading-none">
+            Explainova
+          </div>
+<div class="text-meta-mono font-meta-mono text-outline text-[11px] tracking-wider uppercase mt-1">
+            Studio Bench
+          </div>
+</div>
+</div>
+<!-- Primary CTA: Create Video -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-primary text-on-primary rounded-lg text-interface-label font-interface-label font-semibold shadow-sm hover:bg-primary-container transition-all active:scale-[0.99] duration-150">
+<span class="material-symbols-outlined text-[18px]">movie_edit</span>
+<span>Create video</span>
+</button>
+<!-- Main Navigation Items -->
+<nav class="flex flex-col gap-1">
+<!-- Inactive: Projects -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors active:scale-[0.99] duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span>Projects</span>
+</a>
+<!-- Active: Publishing (Exact mapping to active page intent) -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary active:scale-[0.99] duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">podcasts</span>
+<span class="font-bold">Publishing</span>
+</a>
+<!-- Inactive: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors active:scale-[0.99] duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+<span>Connected accounts</span>
+</a>
+<!-- Inactive: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-inverse-surface/40 rounded-lg transition-colors active:scale-[0.99] duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footers -->
+<div class="flex flex-col gap-1 border-t border-outline-variant/60 pt-3">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 text-interface-label font-interface-label text-on-surface-variant rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-tertiary">cloud_done</span>
+<span>Workspace Status</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+</div>
+</div>
+</aside>
+<!-- ================= MAIN WORKSPACE CANVAS ================= -->
+<div class="pl-64 flex flex-col flex-1 h-screen overflow-hidden">
+<!-- ================= TOP NAVIGATION BAR (SHARED COMPONENT) ================= -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-low docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb Anchor -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-medium">Publishing</span>
+<span class="text-outline-variant text-sm font-semibold">/</span>
+<span class="text-interface-label font-interface-label text-on-surface dark:text-inverse-on-surface font-bold tracking-tight">Calendar</span>
+</div>
+<!-- Trailing Action Indicators & Profile -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Indicator Token -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="text-meta-mono font-meta-mono text-[11px]">Autosaved</span>
+</div>
+<!-- Notification Bell Action -->
+<button aria-label="Notifications" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-secondary-container rounded-full"></span>
+</button>
+<!-- Avatar Portrait Anchor -->
+<div class="flex items-center gap-2.5 pl-2 border-l border-outline-variant/60">
+<img class="w-8 h-8 rounded-full ring-1 ring-outline-variant object-cover" data-alt="A refined studio profile portrait of a creative director in clean crisp architectural lighting wearing minimal dark charcoal apparel against a muted parchment gallery backdrop, embodying editorial Clear explanations and deliberate precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkwc5VsSFm4ITqkp99nBibUZvY8ExgWGP99GWJC46kz9d-d4aYOa_iA11EMIQ_QnAJbQTkUiXvaARCTmpn-XgT3FMtjAzW9mr7zBQcGichiKu8rummCcGw7A_3-tUhRb6-wdLlh0BTbfrvPJ4jsGhib_rEqsnysGsFqudNwrQ4z44jEhIsmFgMXfbcKVrFSVaxrhrqnucIfsLVaZrDu1DI8J0Okfkr_YLjBvqoKH2s9leCD4HmvC04fUNzCD3I5bWWxeNEaR-y3KE"/>
+<div class="flex flex-col text-left">
+<span class="text-interface-label font-interface-label text-[13px] leading-tight text-on-surface font-semibold">Ari Thorne</span>
+<span class="text-meta-mono font-meta-mono text-[10px] text-outline leading-tight">Master Studio</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ================= CONTROLS HEADER ================= -->
+<div class="px-6 py-4 bg-surface-bright border-b border-outline-variant/70 shrink-0">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Title & Subtitle Editorial Grouping -->
+<div>
+<h1 class="text-headline-sm font-headline-sm text-on-surface tracking-tight font-bold">
+            Publishing Calendar
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant text-[14px] mt-0.5">
+            Manage scheduled and published explainer videos across your personal channels.
+          </p>
+</div>
+<!-- Controls Toolbar Array -->
+<div class="flex items-center gap-3">
+<!-- View Switcher (Segmented Track) -->
+<div class="inline-flex p-1 bg-surface-container rounded-xl border border-outline-variant/70">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface text-interface-label font-interface-label font-bold shadow-sm border border-outline-variant/30 flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[16px]">calendar_view_month</span>
+<span>Month</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface text-interface-label font-interface-label font-medium flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">view_agenda</span>
+<span>Agenda</span>
+</button>
+</div>
+<!-- Timezone Selector Dropdown -->
+<div class="flex items-center gap-2 px-3 py-2 bg-surface-container-lowest rounded-xl border border-outline-variant text-on-surface text-interface-label font-interface-label cursor-pointer hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span class="font-medium text-[13px]">India (UTC+05:30)</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+<!-- Schedule New Video CTA Button -->
+<button class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-[#2143DB] text-on-primary rounded-xl text-interface-label font-interface-label font-semibold shadow-[0_2px_8px_rgba(49,87,255,0.25)] transition-all hover:-translate-y-0.5 active:translate-y-0">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Schedule new video</span>
+</button>
+</div>
+</div>
+<!-- Filter Pills Sub-Bar -->
+<div class="flex items-center justify-between pt-3 mt-3 border-t border-outline-variant/40">
+<div class="flex items-center gap-2">
+<!-- All Posts Pill (Active) -->
+<button class="inline-flex items-center gap-2 px-3 py-1 bg-inverse-surface text-surface-container-lowest rounded-md text-interface-label font-interface-label text-[13px] font-semibold transition-colors">
+<span>All posts</span>
+<span class="px-1.5 py-0.2 bg-white/20 rounded text-[11px] font-meta-mono">4</span>
+</button>
+<!-- Scheduled Pill -->
+<button class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container hover:bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface rounded-md text-interface-label font-interface-label text-[13px] transition-colors">
+<span>Scheduled</span>
+<span class="px-1.5 py-0.2 bg-outline-variant/40 rounded text-[11px] font-meta-mono text-on-surface">2</span>
+</button>
+<!-- Published Pill -->
+<button class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container hover:bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface rounded-md text-interface-label font-interface-label text-[13px] transition-colors">
+<span>Published</span>
+<span class="px-1.5 py-0.2 bg-outline-variant/40 rounded text-[11px] font-meta-mono text-on-surface">2</span>
+</button>
+<!-- Needs Attention Pill (With Amber Indicator Dot) -->
+<button class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container hover:bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface rounded-md text-interface-label font-interface-label text-[13px] transition-colors">
+<span class="w-2 h-2 rounded-full bg-[#FF784F] ring-2 ring-secondary-fixed"></span>
+<span>Needs attention</span>
+<span class="px-1.5 py-0.2 bg-secondary-fixed text-on-secondary-fixed-variant rounded text-[11px] font-meta-mono font-bold">1</span>
+</button>
+</div>
+<!-- Month Navigation Pagination -->
+<div class="flex items-center gap-3">
+<span class="text-interface-label font-interface-label font-bold text-on-surface text-[14px]">October 2024</span>
+<div class="inline-flex items-center rounded-lg border border-outline-variant bg-surface-container-lowest p-0.5">
+<button aria-label="Previous month" class="p-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<div class="h-3 w-px bg-outline-variant mx-0.5"></div>
+<button aria-label="Next month" class="p-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= CALENDAR & PREVIEW DRAWER WORKSPACE ================= -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Calendar Grid Panel -->
+<main class="flex-1 overflow-y-auto p-6 bg-background">
+<div class="bg-surface-container-lowest border border-outline-variant/80 rounded-2xl shadow-[0_1px_3px_rgba(23,25,35,0.04),0_4px_12px_rgba(23,25,35,0.03)] overflow-hidden">
+<!-- Days of Week Header Strip -->
+<div class="grid grid-cols-7 border-b border-outline-variant/80 bg-surface-container-low text-center">
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Mon</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Tue</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Wed</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Thu</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Fri</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Sat</div>
+<div class="py-2.5 text-meta-mono font-meta-mono text-outline text-[11px] uppercase tracking-wider">Sun</div>
+</div>
+<!-- Monthly Cells 7x5 Grid -->
+<div class="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-outline-variant/60">
+<!-- Week 1: 30 Sep to 06 Oct -->
+<div class="min-h-[110px] p-2 bg-surface-container-low/40 text-outline/50 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px]">30</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">01</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">02</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">03</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">04</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">05</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">06</span>
+</div>
+<!-- Week 2: 07 to 13 Oct -->
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">07</span>
+</div>
+<!-- Day 08: Published chip 'The science of quiet' -->
+<div class="min-h-[110px] p-2 flex flex-col bg-surface-bright">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-meta-mono font-meta-mono text-[12px] font-bold text-on-surface">08</span>
+<span class="text-[10px] font-meta-mono text-tertiary font-bold tracking-tight">TUE</span>
+</div>
+<!-- Published Card Item -->
+<div class="rounded-xl border border-outline-variant bg-surface-container-lowest p-2 shadow-sm hover:border-outline transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="w-6 h-10 rounded bg-[#0F111A] shrink-0 overflow-hidden flex items-center justify-center relative border border-white/10">
+<img class="w-full h-full object-cover opacity-80" data-alt="A photographic 9:16 vertical video thumbnail exhibiting an acoustic quiet chamber with geometric sound-dampening wedges, bathed in high-contrast monochromatic cyan light with zero lens artifacts, representing the scientific examination of profound silence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq2wmsnbB-hjyaTFocYDSNLxuCcpx4AoGCwym0J05qz-abMJMd13KVd08994-bO0gpxCjOaRWCp5pMowJdYCz1Aq56RvueYcB8YpXd2y30UZJEOSm8hgkg7rvzxT6CJKRf4LVWSyGgIAKOmj3GN9yVtctwnCdaC4G7jBG4gtrnzzu4my5-lsEdY17z83csD9wMcpKqupyl_ohtRUZmLscWU7npVCQiYUyoAEk-uLirQaz9UurfRdaAWOnI2cgcC36c6-cqo1Apg3w"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="text-[12px] font-interface-label font-bold text-on-surface truncate group-hover:text-primary transition-colors">
+                      The science of quiet
+                    </div>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[13px] text-error">smart_display</span>
+<span class="inline-flex items-center text-[10px] font-meta-mono px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold leading-none">
+                        Published · 18:00 IST
+                      </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">09</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">10</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">11</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">12</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">13</span>
+</div>
+<!-- Week 3: 14 to 20 Oct -->
+<!-- Day 14: Scheduled chip 'The science of quiet' (SELECTED STATE) -->
+<div class="min-h-[110px] p-2 flex flex-col bg-primary-fixed/20 ring-2 ring-primary ring-inset relative">
+<div class="flex items-center justify-between mb-1.5">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-meta-mono font-meta-mono text-[11px] font-bold">14</span>
+<span class="text-[10px] font-meta-mono text-primary font-bold uppercase tracking-wider">Active</span>
+</div>
+<!-- Scheduled Chip Card -->
+<div class="rounded-xl border border-primary/40 bg-surface-container-lowest p-2 shadow-sm transition-all cursor-pointer">
+<div class="flex items-start gap-2">
+<div class="w-6 h-10 rounded bg-[#0F111A] shrink-0 overflow-hidden relative border border-white/20">
+<img class="w-full h-full object-cover" data-alt="A cinematic 9:16 vertical explainer storyboard still depicting sound pressure frequency waveforms traversing an ivory architectural drafting chamber, illuminated by clean high-key studio lighting with cobalt blue dynamic particle vectors and razor-sharp framing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7RaxChhgZxvitkIpK1x-GZXb0m4F2Suu6GOw-rTifwpZU_-JzgiQKp5F8OmiNXsi9ZwQ61EcCiLAXnwI90n0NgHGzSSA8pYfIjI_SW0T3Wq4dTs50kpg7lf9uySfrVD5Ta2HXiHAIh61KuSH3iQkJffaitkXjXAk4gozyoc4U30nuv5i0Q_M6oQ19-TjqtDo5985vRwqL1tSHUQPa0jAFVBhH6nGI8A6lsg5VL4qW-cTL8BrY-5MRWGTv2OyyZzW9FpnTYe2ALDs"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="text-[12px] font-interface-label font-bold text-on-surface truncate">
+                      The science of quiet
+                    </div>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-[13px] text-error">smart_display</span>
+<span class="text-[11px] font-meta-mono text-on-surface-variant font-medium">18:30 IST</span>
+</div>
+<div class="mt-1">
+<span class="inline-flex items-center text-[10px] font-meta-mono px-1.5 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-bold leading-none">
+                        Scheduled
+                      </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">15</span>
+</div>
+<!-- Day 16: Needs Attention chip 'Why satellites stay in orbit' -->
+<div class="min-h-[110px] p-2 flex flex-col bg-surface-bright">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-meta-mono font-meta-mono text-[12px] font-bold text-on-surface">16</span>
+<span class="text-[10px] font-meta-mono text-[#FF784F] font-bold">WED</span>
+</div>
+<!-- Needs Attention Card Item -->
+<div class="rounded-xl border border-[#FF784F]/60 bg-surface-container-lowest p-2 shadow-sm hover:border-[#FF784F] transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="w-6 h-10 rounded bg-[#0F111A] shrink-0 overflow-hidden relative border border-[#FF784F]/30">
+<img class="w-full h-full object-cover" data-alt="A 9:16 vertical scientific animation render of orbital mechanics and satellite geostationary trajectories curving over an ivory and ink stylized planetary sphere, characterized by intense tangerine trajectory vectors against an inky dark space backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDztTGUUCzjpF_ieWBYZ-238NUwRYrEm7eZPgs_G90GxUytHo6FYV2uIF7Z-X5E_X4KzaS5gVH7i_R3LUz8L6uP8i4_rBX6SJrygeMpPilHo4d6cPXeiSiIcCmjzscaj8Hbz_ZABhwjgPboEQyLOELhsHJNEglR8rh1zbUuBeQVvzy2JJABM-PDtsHEWmhkwmnl_1QKOQDl5xNDvXbXRlyEMmeN7NapYHdWSIl1jXxlYPIlwnn8FkfkdvyEFluClVLPGKtap05DOE"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="text-[12px] font-interface-label font-bold text-on-surface truncate group-hover:text-secondary transition-colors">
+                      Why satellites stay in orbit
+                    </div>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[13px] text-[#E1306C]">photo_camera</span>
+<span class="text-[11px] font-meta-mono text-on-surface-variant font-medium">20:00 IST</span>
+</div>
+<div class="mt-1">
+<span class="inline-flex items-center gap-1 text-[10px] font-meta-mono px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-bold leading-none">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+                        Reconnect IG
+                      </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">17</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">18</span>
+</div>
+<!-- Day 19: Scheduled chip 'How rain returns to the sky' -->
+<div class="min-h-[110px] p-2 flex flex-col bg-surface-bright">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-meta-mono font-meta-mono text-[12px] font-bold text-on-surface">19</span>
+<span class="text-[10px] font-meta-mono text-outline font-medium">SAT</span>
+</div>
+<!-- Scheduled Multi-channel Card Item -->
+<div class="rounded-xl border border-outline-variant bg-surface-container-lowest p-2 shadow-sm hover:border-outline transition-all cursor-pointer group">
+<div class="flex items-start gap-2">
+<div class="w-6 h-10 rounded bg-[#0F111A] shrink-0 overflow-hidden relative border border-white/10">
+<img class="w-full h-full object-cover" data-alt="A 9:16 vertical animated explanation visual illustrating the thermodynamic water cycle, showing microscopic vapor particles ascending into atmospheric stratocumulus clouds with geometric altitude rulers and deep indigo fluid ink patterns." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2CenVpSLvssiq3i73TtCckgCSs1t_8L0lPU9cho3D5fk5Yx_FQplxmn7uCSpAwdXLT_KR2Q_DbdZwFXqE2Ntbpf3UMNqCvj6uI3-vY59OKEAupVtIzprFRUXDmZIX0T4745dVr837qrLIxPmoJesejy_SppyO7RDXYwv6hPtESmuy0bLnnHPkn3mnILL2xqQnP9kyeZ_Uoa12dGV0ABF7mBVj12B1bL_EIcmKmAstTf7QEgT04-jlQG-Blu_QgcCvazm0o1dgagE"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="text-[12px] font-interface-label font-bold text-on-surface truncate group-hover:text-primary transition-colors">
+                      How rain returns to the sky
+                    </div>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="flex items-center -space-x-0.5">
+<span class="material-symbols-outlined text-[13px] text-error">smart_display</span>
+<span class="material-symbols-outlined text-[13px] text-[#E1306C]">photo_camera</span>
+</div>
+<span class="text-[11px] font-meta-mono text-on-surface-variant font-medium">10:00 IST</span>
+</div>
+<div class="mt-1">
+<span class="inline-flex items-center text-[10px] font-meta-mono px-1.5 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-bold leading-none">
+                        Scheduled
+                      </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">20</span>
+</div>
+<!-- Week 4: 21 to 27 Oct -->
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">21</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">22</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">23</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">24</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">25</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">26</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">27</span>
+</div>
+<!-- Week 5: 28 Oct to 03 Nov -->
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">28</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">29</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">30</span>
+</div>
+<div class="min-h-[110px] p-2 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px] text-on-surface-variant">31</span>
+</div>
+<div class="min-h-[110px] p-2 bg-surface-container-low/40 text-outline/50 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px]">01</span>
+</div>
+<div class="min-h-[110px] p-2 bg-surface-container-low/40 text-outline/50 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px]">02</span>
+</div>
+<div class="min-h-[110px] p-2 bg-surface-container-low/40 text-outline/50 flex flex-col">
+<span class="text-meta-mono font-meta-mono text-[12px]">03</span>
+</div>
+</div>
+</div>
+</main>
+<!-- ================= SIDE / DRAWER PREVIEW (SELECTED POST QUICK DETAILS) ================= -->
+<aside class="w-96 bg-surface-container-lowest border-l border-outline-variant/80 flex flex-col h-full overflow-y-auto shrink-0 shadow-[-4px_0_16px_rgba(23,25,35,0.02)]">
+<!-- Drawer Header -->
+<div class="p-5 border-b border-outline-variant/70 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">event_upcoming</span>
+<span class="text-meta-mono font-meta-mono uppercase tracking-wider text-[11px] font-bold text-on-surface">Scheduled Slot</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed text-[11px] font-meta-mono font-bold">
+            Day 14 · 18:30 IST
+          </span>
+</div>
+<!-- Drawer Content Body -->
+<div class="p-5 flex flex-col gap-6 flex-1">
+<!-- 9:16 Vertical Video Preview Cell -->
+<div class="flex justify-center">
+<div class="w-48 aspect-[9/16] rounded-2xl bg-[#0F111A] relative overflow-hidden border border-outline-variant/80 shadow-[0_8px_24px_-4px_rgba(23,25,35,0.08),0_2px_6px_-1px_rgba(23,25,35,0.04)] group">
+<img class="w-full h-full object-cover" data-alt="A striking vertical 9:16 high-definition video frame showing crisp vector acoustics diagrams, a clean studio dark slate chamber with illuminated sound wave crests, zero-latency motion typography, and an ivory studio border overlay." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKCP-hhsHwaFEsZjy0U_zrOvsuM11HS6X5evbUx-1hiYPIZ-GDlQ-bvW9fn-7Z2W84BTGw2AN9u6ELm1qHUKJcZez64_mw8SeIZmlnmtSjpVKFKxbVuv99a19RYQ20jKPYM07XQ08eqWS3bcTZEJbPTHDyq4WqMLclwm-tKPqNBCq3YNhEfn7wSn1a96oWZyZUnaopyUQ5qutUq_zmDN8_1ZjD2_UyvOKpXXPGh62rKYWhj_1baHKZwcPEXPqWTrJb8nMx_gFL_6A"/>
+<!-- Dark chamber frame boundary & overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none"></div>
+<!-- 0:53 Runtime Badge -->
+<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/75 border border-white/20 text-white font-meta-mono text-[10px] font-bold tracking-wider">
+                0:53
+              </div>
+<!-- Aspect ratio tag -->
+<div class="absolute top-2.5 left-2.5 px-1.5 py-0.5 rounded bg-white/20 text-white font-meta-mono text-[9px] font-bold">
+                9:16
+              </div>
+<!-- Center Playback Action Trigger -->
+<div class="absolute inset-0 flex items-center justify-center">
+<button aria-label="Play preview" class="w-10 h-10 rounded-full bg-white/90 text-on-surface flex items-center justify-center shadow-md hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px] ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Bottom Preview Label -->
+<div class="absolute bottom-2.5 inset-x-2.5 text-center">
+<span class="text-white/80 font-meta-mono text-[10px] tracking-wide">Final Render Master</span>
+</div>
+</div>
+</div>
+<!-- Video Identity & Metadata Block -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant text-[11px] font-meta-mono font-bold">
+                EXP-104
+              </span>
+<span class="text-meta-mono font-meta-mono text-[11px] text-outline">Short Form Educational</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface text-[18px] leading-snug font-bold">
+              The science of quiet
+            </h2>
+<p class="text-body-md font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+              Explores decibel thresholds, sensory deprivation chamber physics, and how auditory perception adapts in extreme silence.
+            </p>
+</div>
+<!-- Channel & Publishing Parameters -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/60 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-[12px] text-outline font-medium">Destination Channel</span>
+<div class="flex items-center gap-1.5 text-interface-label font-interface-label text-[12px] font-bold text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-error">smart_display</span>
+<span>YouTube (@aristhorne-edu)</span>
+</div>
+</div>
+<div class="h-px bg-outline-variant/40"></div>
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-[12px] text-outline font-medium">Current Status</span>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed text-[11px] font-meta-mono font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                Scheduled
+              </span>
+</div>
+<div class="h-px bg-outline-variant/40"></div>
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-[12px] text-outline font-medium">Dispatch Timestamp</span>
+<span class="text-meta-mono font-meta-mono text-[12px] font-semibold text-on-surface">
+                Oct 14, 2024 · 18:30 IST
+              </span>
+</div>
+</div>
+<!-- Discrete Action Set -->
+<div class="flex flex-col gap-2 mt-auto pt-4 border-t border-outline-variant/60">
+<!-- Edit schedule -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-on-surface rounded-xl text-interface-label font-interface-label font-semibold shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+<span>Edit schedule</span>
+</button>
+<!-- View compose details -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-on-surface rounded-xl text-interface-label font-interface-label font-semibold shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+<span>View compose details</span>
+</button>
+<!-- Cancel scheduled post -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 text-error hover:bg-error-container/40 rounded-xl text-interface-label font-interface-label font-semibold transition-colors mt-1">
+<span class="material-symbols-outlined text-[18px]">event_busy</span>
+<span>Cancel scheduled post</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</body></html>

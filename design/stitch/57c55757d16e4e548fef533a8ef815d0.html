@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Profile &amp; security | Explainova Studio</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e7f5",
+            "inverse-primary": "#bac3ff",
+            "surface-container": "#ededfb",
+            "on-primary": "#ffffff",
+            "background": "#fbf8ff",
+            "tertiary": "#4b5900",
+            "primary-container": "#3157ff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "inverse-surface": "#2e303b",
+            "tertiary-container": "#617300",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-tint": "#1c48f2",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "surface-bright": "#fbf8ff",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-tertiary-fixed": "#181e00",
+            "surface-container-highest": "#e1e1f0",
+            "on-primary-container": "#ebebff",
+            "on-surface-variant": "#444656",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#d5ee69",
+            "surface-variant": "#e1e1f0",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "primary-fixed": "#dee1ff",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "secondary": "#a83915",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "on-secondary-fixed-variant": "#862300",
+            "on-secondary-container": "#6b1a00",
+            "on-tertiary-container": "#e0f972",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "6.25rem",
+            "margin": "1.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-sm": ["Sora"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+    }
+    /* Subtle custom focus transitions */
+    input:focus {
+      outline: 2px solid #003ae4 !important;
+      outline-offset: 0px !important;
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen selection:bg-primary-fixed selection:text-primary">
+<!-- ========================================================================= -->
+<!-- SIDE NAVIGATION (Shared Component: SideNavBar)                            -->
+<!-- ========================================================================= -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col justify-between p-4 z-40 bg-surface-container-low border-r border-outline-variant">
+<div class="flex flex-col gap-6">
+<!-- Studio Header / Brand Logo -->
+<div class="flex items-center gap-3 px-2 py-1">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm font-bold shadow-sm">
+<span class="text-on-primary font-headline-sm font-bold">E</span>
+</div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface tracking-tight leading-tight">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[10px]">Atelier Edition</span>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<button class="w-full bg-primary-container text-on-primary py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-interface-label text-interface-label shadow-sm hover:bg-primary transition-all duration-150 active:scale-[0.99] cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Create video</span>
+</button>
+<!-- Navigation Tabs Cluster -->
+<!-- Tab 4: Settings is ACTIVE based on Destination / Strict hierarchy rule -->
+<nav class="flex flex-col gap-1">
+<!-- Projects -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface transition-colors duration-150 cursor-pointer active:scale-[0.99]" href="#projects">
+<span class="material-symbols-outlined text-outline">folder</span>
+<span>Projects</span>
+</a>
+<!-- Publishing -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface transition-colors duration-150 cursor-pointer active:scale-[0.99]" href="#publishing">
+<span class="material-symbols-outlined text-outline">auto_videocam</span>
+<span>Publishing</span>
+</a>
+<!-- Connected Accounts -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-interface-label text-interface-label hover:bg-surface-container hover:text-on-surface transition-colors duration-150 cursor-pointer active:scale-[0.99]" href="#connected-accounts">
+<span class="material-symbols-outlined text-outline">hub</span>
+<span>Connected Accounts</span>
+</a>
+<!-- Settings (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-highest text-primary font-interface-label text-interface-label font-semibold border-l-4 border-primary cursor-pointer active:scale-[0.99]" href="#settings">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer Context / Secondary Links & Status -->
+<div class="flex flex-col gap-4 border-t border-outline-variant pt-4">
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-interface-label text-[13px] hover:bg-surface-container hover:text-on-surface transition-colors" href="#docs">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-interface-label text-[13px] hover:bg-surface-container hover:text-on-surface transition-colors" href="#feedback">
+<span class="material-symbols-outlined text-[18px]">rate_review</span>
+<span>Feedback</span>
+</a>
+</div>
+<!-- Studio Director Avatar / Profile Anchor -->
+<div class="flex items-center gap-3 px-2 py-2 rounded-lg bg-surface-container-lowest border border-outline-variant">
+<img alt="Studio Director Avatar" class="w-9 h-9 rounded-full object-cover border border-outline-variant" data-alt="Intense high-definition editorial headshot of Dr. Aris Thorne, an adult academic researcher wearing archival horn-rimmed spectacles and a tailored charcoal wool blazer against a warm neutral library studio background with clean lighting and high tonal fidelity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJRruKsGjzzTXYtD3u1C4dams9Sn-wKXUK31w466MEBVgMq2ecrOBkFocGpuS6zlptHc86h-eLOJwzdViiz-JgUF6HUeoJOiNfjpyH2ARmYM8NITebFNdWNmdIra4EGwk_P_q9uyGyfpWK4nGDQFLkLKUaThTFMMfN74dDD3srwCBRIvjk5FOTtrLeIXQIGtKoBkteC_-1agNOrhFk7W_Hiuxw1JkVNnahdZULzbGJKiTnGAwyIR9OifqA9vT6RYiHA4ywFEctE6E"/>
+<div class="flex flex-col min-w-0">
+<span class="text-interface-label font-interface-label text-on-surface truncate text-xs font-semibold">Dr. Aris Thorne</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px] truncate">Studio Director</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- TOP BAR (Shared Component: TopNavBar)                                     -->
+<!-- ========================================================================= -->
+<header class="fixed top-0 right-0 left-64 h-16 flex items-center justify-between px-8 z-30 bg-surface border-b border-outline-variant shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<!-- Breadcrumb & Section Scope -->
+<div class="flex items-center gap-2 text-interface-label font-interface-label text-on-surface-variant">
+<span class="text-outline hover:text-on-surface cursor-pointer">Settings</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">Profile &amp; security</span>
+</div>
+<!-- Trailing Actions & User Pill -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-outline-variant text-meta-mono font-meta-mono text-[11px] text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Autosaved</span>
+</div>
+<!-- Notification Action -->
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+</button>
+<!-- User Avatar / Mini Action -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<img alt="Current user profile picture" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="Close-up editorial crop of Dr. Aris Thorne in a warm minimalist studio setting, showcasing deep pigment inks, architectural glasses, and sharp contrast under pristine daylight atelier illumination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGARmLtVxnUbz1J4sf2sZq3bieZkMsY75EnQ8wdom7bD73ezlxaQtNdJMWyAxmf0wTYP_r4LyEq_IYD9uT5OU9oLhaP3I5mBZlCpX0XEZ2grt8g_40_ZlcrsAyRPpv6gqeB8ErxhmpEJ_in2S5-NHSZZskkU_YKNRlg27g2nXKA_NMN0I-xPCEUq_2LlsCrYY0mowGdRs5SFQkTr6d3hhQFKGYVeJDNO3BXObTH31qwLNM6hNwvwcyJ3W36PeZLylD6ShxwF6d3no"/>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN CONTENT CANVAS                                                       -->
+<!-- ========================================================================= -->
+<main class="ml-64 pt-16 min-h-screen bg-background">
+<!-- Centered Editorial Container (1240px constraint with 24px gutters) -->
+<div class="max-w-[1240px] mx-auto px-8 py-10">
+<!-- Settings Sub-navigation Tabs -->
+<div class="flex items-center gap-8 border-b border-outline-variant pb-px mb-8">
+<a class="text-primary font-interface-label text-interface-label border-b-2 border-primary pb-3 font-semibold flex items-center gap-2" href="#profile-security">
+<span>Profile &amp; security</span>
+</a>
+<a class="text-on-surface-variant font-interface-label text-interface-label hover:text-on-surface pb-3 flex items-center gap-2 transition-colors" href="#visual-defaults">
+<span>Visual defaults</span>
+</a>
+</div>
+<!-- Page Header -->
+<div class="mb-10">
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Profile &amp; security</h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1.5 max-w-2xl">
+          Manage your personal credentials, studio name, and account security.
+        </p>
+</div>
+<!-- Bento-style Multi-Section Settings Layout (12-column grid) -->
+<div class="grid grid-cols-12 gap-8">
+<!-- =================================================================== -->
+<!-- SECTION 1: STUDIO PROFILE (7 Columns)                               -->
+<!-- =================================================================== -->
+<section class="col-span-12 lg:col-span-7 bg-surface-container-lowest rounded-xl border border-outline-variant p-7 shadow-[0_1px_3px_rgba(23,25,35,0.04),0_4px_12px_rgba(23,25,35,0.03)] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-5 border-b border-outline-variant">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Studio Profile</h2>
+<p class="text-meta-mono font-meta-mono text-outline text-[11px] mt-0.5 uppercase tracking-wider">Atelier Identity</p>
+</div>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant text-meta-mono font-meta-mono text-[11px]">Primary Seat</span>
+</div>
+<!-- Avatar & Change Photo Row -->
+<div class="flex items-center gap-6 my-6 p-4 rounded-lg bg-surface-container-low border border-outline-variant">
+<div class="relative">
+<img alt="Dr. Aris Thorne" class="w-16 h-16 rounded-full object-cover border-2 border-surface-container-lowest shadow-sm" data-alt="Editorial portrait of Dr. Aris Thorne in a crisp high-contrast studio setting, focused gaze, dressed in dark tailored attire with warm ivory daylight casting architectural shadows over modern educational drafting instruments." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvXSVtVNvJq3Zh_-gFzkotN0jhRVG92OcbK9glhFeRTB59CVajX5pady4ypPLpF7IS02RphVqFttKJyR3x8QLGcASYjhcFUJRTmvMrxDq8zs2ZFd3Whk09dbx04qVLOLtE9BCO3VggI6o86PLpy_YCO5Tpz3NySLhegnD67T4NS3BifzCtuN_PPF5z1SyT6_II5RcU-D9b6wRcl69otox0dBsh1PfnYsS7juEI268HfTVDMkV95lojoRdyE4MJmFJyYz1EBknexp0"/>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary-container text-on-primary flex items-center justify-center border-2 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[12px]">edit</span>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface font-interface-label text-interface-label px-3.5 py-1.5 rounded-lg hover:border-on-surface transition-colors shadow-sm">
+                    Change photo
+                  </button>
+<button class="text-on-surface-variant font-interface-label text-[13px] hover:text-error transition-colors">
+                    Remove
+                  </button>
+</div>
+<span class="text-body-md font-body-md text-outline text-xs mt-1.5">Recommended 400×400px. PNG or JPG under 5MB.</span>
+</div>
+</div>
+<!-- Form Fields -->
+<div class="space-y-5">
+<!-- Full Name -->
+<div>
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold mb-1.5">
+                  Full name
+                </label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-on-surface transition-colors" type="text" value="Dr. Aris Thorne"/>
+</div>
+</div>
+<!-- Studio / Display Name -->
+<div>
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold mb-1.5">
+                  Studio / Display name
+                </label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-on-surface transition-colors" type="text" value="Cognitive Science Lab"/>
+<span class="absolute right-3 top-2.5 text-meta-mono font-meta-mono text-outline text-[11px]">Visible to collaborators</span>
+</div>
+</div>
+<!-- Email Address -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold">
+                    Email address
+                  </label>
+<span class="inline-flex items-center gap-1 text-meta-mono font-meta-mono text-[11px] text-tertiary font-bold">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    Verified
+                  </span>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-on-surface transition-colors" type="email" value="aris.thorne@university.org"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Footer / Commit -->
+<div class="pt-6 mt-6 border-t border-outline-variant flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Last edited 4 days ago</span>
+<button class="bg-primary-container text-on-primary font-interface-label text-interface-label px-5 py-2.5 rounded-xl hover:bg-primary transition-all duration-150 shadow-[0_2px_8px_rgba(49,87,255,0.25)] active:scale-[0.99] cursor-pointer">
+              Save profile changes
+            </button>
+</div>
+</section>
+<!-- Right Column Cluster (5 Columns) -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-8">
+<!-- ================================================================= -->
+<!-- SECTION 2: CHANGE PASSWORD                                        -->
+<!-- ================================================================= -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-7 shadow-[0_1px_3px_rgba(23,25,35,0.04),0_4px_12px_rgba(23,25,35,0.03)]">
+<div class="pb-4 border-b border-outline-variant">
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Change Password</h2>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs mt-0.5">Ensure your passkey is at least 12 characters.</p>
+</div>
+<div class="space-y-4 my-5">
+<div>
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold mb-1">
+                  Current password
+                </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2 text-body-md font-body-md text-on-surface transition-colors" placeholder="••••••••••••••••" type="password"/>
+</div>
+<div>
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold mb-1">
+                  New password
+                </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2 text-body-md font-body-md text-on-surface transition-colors" placeholder="Enter new passkey" type="password"/>
+</div>
+<div>
+<label class="block text-interface-label font-interface-label text-on-surface text-xs font-semibold mb-1">
+                  Confirm new password
+                </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2 text-body-md font-body-md text-on-surface transition-colors" placeholder="Repeat new passkey" type="password"/>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-end">
+<button class="bg-surface-container-lowest border border-outline-variant hover:border-on-surface text-on-surface font-interface-label text-interface-label px-4 py-2 rounded-lg transition-colors shadow-sm">
+                Update password
+              </button>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- SECTION 3: ACTIVE SESSIONS & SIGN OUT                             -->
+<!-- ================================================================= -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-7 shadow-[0_1px_3px_rgba(23,25,35,0.04),0_4px_12px_rgba(23,25,35,0.03)]">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Active Sessions</h2>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs mt-0.5">Hardware instances connected to this bench.</p>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<!-- Current Device Card -->
+<div class="my-5 p-4 rounded-lg bg-surface-container-low border border-outline-variant flex items-start justify-between">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">laptop_mac</span>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface text-sm font-semibold">Chrome on macOS</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-meta-mono font-meta-mono uppercase">This Bench</span>
+</div>
+<p class="text-meta-mono font-meta-mono text-outline text-xs mt-1">
+                    Boston, US · IP 192.0.2.42
+                  </p>
+<p class="text-body-md font-body-md text-on-surface-variant text-xs mt-0.5">
+                    Active now
+                  </p>
+</div>
+</div>
+</div>
+<!-- Action Row -->
+<div class="pt-4 border-t border-outline-variant flex items-center justify-between">
+<button class="text-error font-interface-label text-[13px] hover:underline font-semibold cursor-pointer">
+                Sign out
+              </button>
+<button class="bg-surface-container-lowest border border-outline-variant hover:border-on-surface text-on-surface font-interface-label text-interface-label px-3.5 py-1.5 rounded-lg transition-colors text-xs shadow-sm">
+                Sign out of all other sessions
+              </button>
+</div>
+</section>
+</div>
+<!-- =================================================================== -->
+<!-- SECTION 4: DANGER ZONE — DELETE ACCOUNT (Full 12 Columns)           -->
+<!-- =================================================================== -->
+<section class="col-span-12 bg-surface-container-lowest rounded-xl border-2 border-error-container p-7 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="max-w-3xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error">warning</span>
+<h2 class="text-headline-sm font-headline-sm text-error font-bold">Danger Zone — Delete Account</h2>
+</div>
+<p class="text-body-md font-body-md text-on-surface leading-relaxed">
+                Deleting your account is permanent. Any currently generating or scheduled videos will be stopped immediately. Any videos you have already published to your own connected YouTube or Instagram accounts will remain on those platforms.
+              </p>
+</div>
+<div class="flex-shrink-0">
+<button class="bg-error text-on-error font-interface-label text-interface-label px-5 py-2.5 rounded-xl hover:bg-on-error-container transition-all shadow-sm active:scale-[0.99] cursor-pointer inline-flex items-center gap-2" onclick="document.getElementById('delete-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">delete_forever</span>
+<span>Delete account...</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- ========================================================================= -->
+<!-- MODAL: DELETE ACCOUNT CONFIRMATION (Explicit prompt)                      -->
+<!-- ========================================================================= -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-sm p-4" id="delete-modal">
+<div class="bg-surface-container-lowest border border-error-container rounded-2xl max-w-lg w-full p-8 shadow-2xl relative">
+<div class="flex items-center gap-3 text-error mb-4">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error">report</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Confirm Studio Deletion</h3>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 leading-relaxed">
+        Are you certain you wish to terminate the workspace for <strong class="text-on-surface">Dr. Aris Thorne</strong> (<em class="text-on-surface">Cognitive Science Lab</em>)? All render pipelines, local draft cells, and speech models will be permanently purged.
+      </p>
+<div class="mb-6">
+<label class="block text-interface-label font-interface-label text-on-surface text-xs mb-1.5">
+          Type <span class="font-meta-mono font-meta-mono text-error font-bold">DELETE COGNITIVE SCIENCE LAB</span> to confirm:
+        </label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2 text-body-md font-body-md text-on-surface" placeholder="DELETE COGNITIVE SCIENCE LAB" type="text"/>
+</div>
+<div class="flex items-center justify-end gap-3 pt-4 border-t border-outline-variant">
+<button class="px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-interface-label text-interface-label hover:bg-surface-container transition-colors" onclick="document.getElementById('delete-modal').classList.add('hidden')">
+          Cancel
+        </button>
+<button class="bg-error text-on-error font-interface-label text-interface-label px-5 py-2 rounded-lg hover:bg-on-error-container transition-colors shadow-sm" onclick="document.getElementById('delete-modal').classList.add('hidden')">
+          Permanently delete
+        </button>
+</div>
+</div>
+</div>
+</body></html>

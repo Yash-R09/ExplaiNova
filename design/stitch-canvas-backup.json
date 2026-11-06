@@ -1,0 +1,28 @@
+{
+  "name": "projects/6749329833982008557",
+  "screenInstances": [
+    {
+      "id": "59e9b89daea6466abb05c31dbc47827a",
+      "sourceScreen": "projects/6749329833982008557/screens/59e9b89daea6466abb05c31dbc47827a",
+      "x": 1024,
+      "width": 1280,
+      "height": 5175,
+      "label": "Explainova \u2014 Homepage (Desktop)"
+    },
+    {
+      "id": "a164cc2fd2194f42a2d19f6ee2148938",
+      "sourceScreen": "projects/6749329833982008557/screens/a164cc2fd2194f42a2d19f6ee2148938",
+      "x": 2368,
+      "width": 390,
+      "height": 4721,
+      "label": "Explainova \u2014 Homepage (Mobile)"
+    },
+    {
+      "id": "assets_95158808d3654fc99d9506d08041533b",
+      "width": 960,
+      "height": 540,
+      "sourceAsset": "assets/95158808d3654fc99d9506d08041533b",
+      "type": "DESIGN_SYSTEM_INSTANCE"
+    }
+  ]
+}

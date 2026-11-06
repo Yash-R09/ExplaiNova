@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Publishing — Compose | Explainova</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen selection:bg-primary selection:text-white">
+<!-- SideNavBar Component -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest dark:bg-surface-container-low border-r border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50">
+<div class="flex flex-col justify-between h-full p-4 w-64">
+<!-- Top Section / Branding -->
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center text-surface shadow-sm">
+<span class="font-headline-sm text-headline-sm text-surface-container-lowest">E</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm tracking-tight text-on-surface dark:text-inverse-on-surface block leading-tight">Explainova</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider block text-[10px]">Studio Bench</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-primary text-on-primary rounded-xl font-interface-label text-interface-label shadow-sm hover:opacity-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+          Create video
+        </button>
+<!-- Main Navigation Links -->
+<nav class="flex flex-col gap-1">
+<!-- Inactive Tab: Projects -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg transition-colors hover:bg-surface-container-high dark:hover:bg-inverse-surface/40" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+            Projects
+          </a>
+<!-- Active Tab: Publishing -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary dark:text-inverse-primary bg-primary-fixed dark:bg-primary-container/20 rounded-lg border-l-2 border-primary dark:border-inverse-primary" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">podcasts</span>
+            Publishing
+          </a>
+<!-- Inactive Tab: Connected accounts -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg transition-colors hover:bg-surface-container-high dark:hover:bg-inverse-surface/40" href="#">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+            Connected accounts
+          </a>
+<!-- Inactive Tab: Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg transition-colors hover:bg-surface-container-high dark:hover:bg-inverse-surface/40" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+            Settings
+          </a>
+</nav>
+</div>
+<!-- Footer Navigation Items -->
+<div class="flex flex-col gap-1 border-t border-outline-variant pt-3">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline hover:text-on-surface dark:hover:text-inverse-on-surface rounded-lg transition-colors hover:bg-surface-container-high dark:hover:bg-inverse-surface/40" href="#">
+<span class="material-symbols-outlined text-[20px]">rate_review</span>
+          Feedback
+        </a>
+<div class="flex items-center justify-between px-3 py-2 text-interface-label font-interface-label text-on-surface-variant dark:text-outline rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-tertiary-container">cloud_done</span>
+            Workspace Status
+          </div>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Shell Wrapper -->
+<div class="ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar Component -->
+<header class="docked full-width top-0 sticky z-40 bg-surface-container-lowest dark:bg-surface-container-low border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb / Context Title -->
+<div class="flex items-center gap-2">
+<span class="text-interface-label font-interface-label text-on-surface-variant dark:text-outline-variant font-semibold">Publishing</span>
+<span class="text-outline-variant text-[14px]">/</span>
+<h1 class="text-interface-label font-interface-label text-on-surface dark:text-inverse-on-surface font-semibold tracking-tight">Compose — The science of quiet</h1>
+</div>
+<!-- Trailing Cluster -->
+<div class="flex items-center gap-4">
+<!-- Autosaved Indicator -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container rounded-lg border border-outline-variant/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="text-meta-mono font-meta-mono text-on-surface-variant text-[11px]">Autosaved</span>
+</div>
+<!-- Notification Icon -->
+<button aria-label="Notifications" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<!-- Avatar -->
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/60 flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A dignified portrait avatar of Dr. Aris Thorne, an academic educator with neat circular spectacles and a dark textured linen studio shirt, set against a quiet archival ivory studio wall with soft natural rim lighting and balanced fine-grained editorial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCChiRInaZ8aiUv0WK6TuUqvMNztnpnMz_acjjQY4WSMWuIBd9toCtjC5nckEY8fIynhmgWY4RXKnf-rtsxenMufI1X2DMAxs3dMKwkuF1ckP3phoSw3wS69cKLj4-icETXJcfK4pm3Vq8RhRn6k0ym7okgbyc69bAdBF4zV704Yd5F7aGZzGvGTQpdCLwDMHWunDKkMkic4vLE742Gy-q5uEJdGwwiQWZfElrZYaeAV2GZDmulJNcz5Zupkgog8rZvHE8xBr255ww"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (Two Column Layout strictly capped within 1240px) -->
+<main class="flex-1 p-6 md:p-8">
+<div class="max-w-[1240px] mx-auto grid grid-cols-12 gap-8 items-start">
+<!-- Left Column (Video Preview & Version Confirmation) - 5 Cols -->
+<section class="col-span-12 lg:col-span-5 flex flex-col gap-5 sticky top-20">
+<!-- Section Heading Note -->
+<div class="flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider">Master Render Artifact</span>
+<span class="text-meta-mono font-meta-mono text-primary bg-primary-fixed px-2 py-0.5 rounded">9:16 Vertical</span>
+</div>
+<!-- Vertical 9:16 Video Player Card -->
+<div class="relative w-full max-w-[340px] mx-auto aspect-[9/16] bg-[#0F111A] rounded-[24px] overflow-hidden border border-[#E2DDD0] shadow-sm flex flex-col justify-between p-4 select-none">
+<!-- Video Inset Overhead Status -->
+<div class="flex items-center justify-between text-white/70 text-meta-mono font-meta-mono text-[10px] z-10">
+<span class="px-2 py-0.5 rounded bg-white/10 backdrop-blur-sm border border-white/10">PREVIEW RENDER</span>
+<span class="px-2 py-0.5 rounded bg-white/10 backdrop-blur-sm border border-white/10">00:53</span>
+</div>
+<!-- Visual Animation Draft Mockup (Waveform & Noise-Cancelling Headphone Diagram) -->
+<div class="my-auto flex flex-col items-center justify-center gap-6 text-center z-10 px-2">
+<!-- Schematic Headphone Motif -->
+<div class="w-24 h-24 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-white text-[48px] opacity-90">headphones</span>
+<!-- Soundwave Cancellation Arc Indicators -->
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-4 h-8 border-l-2 border-t-2 border-b-2 border-primary-fixed-dim rounded-l-full"></div>
+<div class="absolute -right-3 top-1/2 -translate-y-1/2 w-4 h-8 border-r-2 border-t-2 border-b-2 border-secondary-container rounded-r-full"></div>
+</div>
+<!-- Real-time Inverted Waveform SVG Graphic -->
+<div class="w-full flex flex-col gap-1 items-center">
+<div class="w-48 h-8 flex items-center justify-between gap-1 px-2">
+<div class="w-1 bg-white/40 h-3 rounded-full"></div>
+<div class="w-1 bg-white/60 h-6 rounded-full"></div>
+<div class="w-1 bg-primary-fixed-dim h-8 rounded-full"></div>
+<div class="w-1 bg-secondary-container h-4 rounded-full"></div>
+<div class="w-1 bg-white/80 h-7 rounded-full"></div>
+<div class="w-1 bg-white/30 h-2 rounded-full"></div>
+<div class="w-1 bg-primary-fixed-dim h-8 rounded-full"></div>
+<div class="w-1 bg-secondary-container h-5 rounded-full"></div>
+<div class="w-1 bg-white/50 h-3 rounded-full"></div>
+</div>
+<span class="text-meta-mono font-meta-mono text-[10px] text-white/50 uppercase tracking-widest">Phase Inversion: -180°</span>
+</div>
+<!-- Animated Editorial Caption Box Overlay -->
+<div class="bg-black/60 backdrop-blur-md border border-white/15 p-3 rounded-xl max-w-[280px]">
+<p class="font-headline-sm text-[13px] leading-tight text-white font-medium text-left">
+                  "Microphones pick up ambient noise, then the speaker produces an inverted sound wave to cancel it out."
+                </p>
+</div>
+</div>
+<!-- Player Scrubbing Bar -->
+<div class="z-10 flex flex-col gap-2">
+<div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden relative">
+<div class="bg-primary-container h-full w-[42%]"></div>
+</div>
+<div class="flex items-center justify-between text-white/80 text-meta-mono font-meta-mono text-[11px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-white">play_arrow</span>
+<span>00:22</span>
+</div>
+<span>00:53</span>
+</div>
+</div>
+<!-- Ambient Atmospheric Tint behind elements -->
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 pointer-events-none"></div>
+</div>
+<!-- Metadata Chip Card & Version Switch Action -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">Export Specification</span>
+<span class="inline-flex items-center gap-1 text-[11px] font-interface-label text-tertiary font-semibold bg-tertiary-fixed px-2 py-0.5 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                Ready
+              </span>
+</div>
+<!-- Metadata Details Chip -->
+<div class="bg-surface-container-low border border-outline-variant/40 rounded-lg p-2.5">
+<p class="text-meta-mono font-meta-mono text-on-surface text-[12px] leading-relaxed">
+                Version 2 (Approved) · 0:53 · 1080p 30fps · MP4
+              </p>
+</div>
+<!-- Button: Change Version -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-interface-label text-interface-label text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">history</span>
+              Change version
+            </button>
+</div>
+</section>
+<!-- Right Column (Publishing Form) - 7 Cols -->
+<section class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+<!-- Destination Platform Tabs -->
+<div class="flex flex-col gap-2">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">Target Destination</span>
+<div class="grid grid-cols-2 gap-3">
+<!-- Tab 1: YouTube (Selected) -->
+<div class="border-2 border-primary bg-surface-container-lowest rounded-xl p-3.5 flex flex-wrap gap-2 items-center justify-between shadow-sm cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-[#FF0000]/10 text-[#FF0000] flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">smart_display</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[15px] text-on-surface">YouTube</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="text-body-md font-body-md text-on-surface-variant text-[13px]">Dr. Aris Thorne</span>
+</div>
+</div>
+<span class="text-meta-mono font-meta-mono text-[11px] text-primary font-semibold bg-primary-fixed px-2 py-0.5 rounded">Connected</span>
+</div>
+<!-- Tab 2: Instagram (Warning Reconnection) -->
+<div class="border border-outline-variant/60 bg-surface-container-low/60 rounded-xl p-3.5 flex flex-wrap gap-2 items-center justify-between cursor-not-allowed opacity-80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high text-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</div>
+<div>
+<span class="font-headline-sm text-[15px] text-on-surface-variant">Instagram</span>
+<span class="text-body-md font-body-md text-outline text-[13px] block">@aris.thorne.explains</span>
+</div>
+</div>
+<span class="text-meta-mono font-meta-mono text-[10px] text-secondary font-semibold bg-secondary-fixed px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                  Reconnection needed
+                </span>
+</div>
+</div>
+</div>
+<!-- YouTube Fields Container -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-5 flex flex-col gap-5 shadow-sm">
+<div class="border-b border-outline-variant/40 pb-3 flex items-center justify-between">
+<span class="font-headline-sm text-[16px] text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+                YouTube Parameters
+              </span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Channel: @aristhorne-edu</span>
+</div>
+<!-- Video Title Input with Counter -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center">
+<label class="font-interface-label text-interface-label text-on-surface" for="video-title">Video title</label>
+<span class="text-meta-mono font-meta-mono text-outline text-[12px]">58/100</span>
+</div>
+<input class="w-full px-3.5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="video-title" type="text" value="The science of quiet: How noise-cancelling headphones work"/>
+</div>
+<!-- Description Textarea -->
+<div class="flex flex-col gap-1.5">
+<label class="font-interface-label text-interface-label text-on-surface" for="video-description">Description</label>
+<textarea class="w-full px-3.5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none leading-relaxed" id="video-description" rows="4">A concise explanation of how active noise cancelling headphones produce inverted sound waves to reduce noise before it hits your ear. Made with Explainova.</textarea>
+</div>
+<!-- Audience Choice Dropdown -->
+<div class="flex flex-col gap-1.5">
+<label class="font-interface-label text-interface-label text-on-surface" for="audience-choice">Audience classification</label>
+<div class="relative">
+<select class="w-full appearance-none px-3.5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer" id="audience-choice">
+<option selected="">Not made for kids (standard adult education)</option>
+<option>Yes, made for kids</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">unfold_more</span>
+</div>
+</div>
+<!-- Synthetic Media Disclosure Toggle/Checkbox -->
+<div class="bg-surface-container-low border border-outline-variant/40 rounded-lg p-3.5 flex items-start gap-3">
+<input checked="" class="mt-1 w-4 h-4 rounded border-on-surface text-primary focus:ring-primary cursor-pointer" id="synthetic-disclosure" type="checkbox"/>
+<label class="cursor-pointer" for="synthetic-disclosure">
+<span class="font-interface-label text-interface-label text-on-surface block">Altered or synthetic content</span>
+<span class="text-body-md font-body-md text-on-surface-variant text-[13px] block">Yes (animation and synthesized voice narration)</span>
+</label>
+</div>
+</div>
+<!-- Instagram Disconnection Helper Note -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-3.5 flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-[20px]">info</span>
+<p class="text-body-md font-body-md text-on-surface-variant text-[13px] flex-1">
+              Instagram is currently disconnected. Reconnect your account in <a class="text-primary underline font-medium" href="#">Connected accounts</a> to publish to Instagram.
+            </p>
+</div>
+<!-- Publishing Timing Controls -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-5 flex flex-col gap-4 shadow-sm">
+<span class="font-headline-sm text-[16px] text-on-surface">Publishing Timing Controls</span>
+<!-- Timing Radios -->
+<div class="flex items-center gap-6">
+<label class="flex items-center gap-2 cursor-pointer font-interface-label text-interface-label text-on-surface-variant">
+<input class="text-primary focus:ring-primary border-outline-variant" name="timing_mode" type="radio" value="now"/>
+                Publish now
+              </label>
+<label class="flex items-center gap-2 cursor-pointer font-interface-label text-interface-label text-on-surface font-semibold">
+<input checked="" class="text-primary focus:ring-primary border-outline-variant" name="timing_mode" type="radio" value="schedule"/>
+                Schedule for later
+              </label>
+</div>
+<!-- Date, Time & Timezone Array -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+<div class="flex flex-col gap-1.5">
+<label class="text-meta-mono font-meta-mono text-outline text-[11px]">Date</label>
+<div class="flex items-center px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-interface-label text-interface-label text-on-surface">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">calendar_today</span>
+                  Tomorrow, Oct 24, 2025
+                </div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-meta-mono font-meta-mono text-outline text-[11px]">Time</label>
+<div class="flex items-center px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-interface-label text-interface-label text-on-surface">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">schedule</span>
+                  18:30
+                </div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-meta-mono font-meta-mono text-outline text-[11px]">Timezone</label>
+<div class="flex items-center px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-interface-label text-interface-label text-on-surface">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">public</span>
+                  India (UTC+05:30)
+                </div>
+</div>
+</div>
+<!-- Clear Summary Banner -->
+<div class="mt-2 bg-surface-container border border-outline-variant/50 rounded-lg p-3.5 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">event_upcoming</span>
+<p class="font-interface-label text-interface-label text-on-surface text-[13px]">
+                This video will publish to YouTube (@aristhorne-edu) on Friday, Oct 24, 2025 at 6:30 PM IST.
+              </p>
+</div>
+</div>
+<!-- Final Safety Confirmation Checkbox (Required) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-4 shadow-sm">
+<label class="flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-0.5 w-4 h-4 rounded border-on-surface text-primary focus:ring-primary cursor-pointer" required="" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface text-[14px] leading-tight">
+                I reviewed this video and destination. I understand this will publish automatically at the scheduled time.
+              </span>
+</label>
+</div>
+<!-- Action Buttons Bar -->
+<div class="flex items-center justify-between pt-2 pb-12">
+<button class="px-5 py-2.5 rounded-lg border border-transparent font-interface-label text-interface-label text-on-surface-variant hover:text-on-surface transition-colors">
+              Cancel
+            </button>
+<div class="flex items-center gap-3">
+<button class="px-5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-interface-label text-interface-label text-on-surface hover:bg-surface-container-high transition-colors shadow-sm">
+                Save draft
+              </button>
+<button class="px-6 py-2.5 bg-primary text-on-primary rounded-xl font-interface-label text-interface-label shadow-sm hover:opacity-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">send</span>
+                Schedule video
+              </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

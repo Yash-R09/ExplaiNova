@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account — Create account · Explainova</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e7f5",
+            "inverse-primary": "#bac3ff",
+            "surface-container": "#ededfb",
+            "on-primary": "#ffffff",
+            "background": "#fbf8ff",
+            "tertiary": "#4b5900",
+            "primary-container": "#3157ff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "inverse-surface": "#2e303b",
+            "tertiary-container": "#617300",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-tint": "#1c48f2",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "surface-bright": "#fbf8ff",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-tertiary-fixed": "#181e00",
+            "surface-container-highest": "#e1e1f0",
+            "on-primary-container": "#ebebff",
+            "on-surface-variant": "#444656",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#d5ee69",
+            "surface-variant": "#e1e1f0",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "primary-fixed": "#dee1ff",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "secondary": "#a83915",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "on-secondary-fixed-variant": "#862300",
+            "on-secondary-container": "#6b1a00",
+            "on-tertiary-container": "#e0f972",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "6.25rem",
+            "margin": "1.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-sm": ["Sora"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Tactile Paper and Ink Substratum */
+    .bg-archival-ivory {
+      background-color: #F6F3EB;
+    }
+    .border-tactile-hairline {
+      border-color: #E2DDD0;
+    }
+    .tactile-card {
+      box-shadow: 0 1px 3px rgba(23, 25, 35, 0.04), 0 4px 12px rgba(23, 25, 35, 0.03);
+    }
+    .tactile-elevated {
+      box-shadow: 0 8px 24px -4px rgba(23, 25, 35, 0.06), 0 2px 6px -1px rgba(23, 25, 35, 0.03);
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Main Split-Screen Container -->
+<main class="min-h-screen w-full flex flex-col lg:flex-row">
+<!-- LEFT PANEL: Architectural Studio Canvas & Editorial Diagram -->
+<section class="lg:w-[50%] xl:w-[48%] bg-archival-ivory border-b lg:border-b-0 lg:border-r border-tactile-hairline p-8 md:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+<!-- Continuous Geometric Guide Path (Vector Motif Line) -->
+<div class="absolute left-12 top-0 bottom-0 w-[1.5px] bg-[#E2DDD0] hidden md:block pointer-events-none"></div>
+<!-- Top Branding Strip -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-on-surface flex items-center justify-center text-background">
+<span class="material-symbols-outlined text-[18px]">architecture</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight leading-none">
+              Explainova
+            </h1>
+<p class="font-meta-mono text-meta-mono text-outline uppercase tracking-wider mt-0.5">
+              Atelier Edition
+            </p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-tactile-hairline bg-[#EFEBE1] text-on-surface-variant font-meta-mono text-meta-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+          Drafting Engine v3.4
+        </span>
+</div>
+<!-- Central Editorial Section & Kinetic Diagram -->
+<div class="my-12 lg:my-auto relative z-10 max-w-xl">
+<div class="mb-8">
+<span class="font-meta-mono text-meta-mono uppercase text-primary font-bold tracking-widest block mb-3">
+            Clear explanations
+          </span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight text-balance">
+            Explain big ideas clearly.
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-3 max-w-md leading-relaxed">
+            The structured atelier for educators, essayists, and creative directors translating complex thoughts into succinct cinematic lessons.
+          </p>
+</div>
+<!-- Editorial Process Diagram: Plan -> Storyboard -> Video -->
+<div class="bg-surface-container-lowest border border-tactile-hairline rounded-xl p-6 tactile-card relative">
+<div class="flex items-center justify-between mb-6 pb-3 border-b border-tactile-hairline">
+<span class="font-meta-mono text-meta-mono uppercase tracking-wider text-outline font-bold">
+              Your workflow
+            </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant font-medium">
+              3 Stages · Synchronized
+            </span>
+</div>
+<!-- Step Progress Structure -->
+<div class="grid grid-cols-3 gap-3 relative">
+<!-- Step 1: Plan -->
+<div class="flex flex-col gap-2 p-3 rounded-lg bg-archival-ivory border border-tactile-hairline">
+<div class="flex items-center justify-between">
+<span class="font-meta-mono text-meta-mono text-outline font-bold">01</span>
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+</div>
+<div class="mt-1">
+<p class="font-interface-label text-interface-label font-bold text-on-surface">Plan</p>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px] leading-tight mt-0.5">
+                  Concept thesis &amp; timing beats
+                </p>
+</div>
+<div class="mt-3 space-y-1">
+<div class="h-1 w-full bg-[#E2DDD0] rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-full"></div>
+</div>
+<span class="font-meta-mono text-[10px] text-outline">Thesis locked</span>
+</div>
+</div>
+<!-- Flow Arrow 1-2 -->
+<div class="absolute left-[31.5%] top-1/2 -translate-y-1/2 z-20 pointer-events-none hidden sm:block">
+<span class="material-symbols-outlined text-outline text-[16px]">trending_flat</span>
+</div>
+<!-- Step 2: Storyboard -->
+<div class="flex flex-col gap-2 p-3 rounded-lg bg-archival-ivory border border-tactile-hairline relative">
+<div class="flex items-center justify-between">
+<span class="font-meta-mono text-meta-mono text-outline font-bold">02</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div class="mt-1">
+<p class="font-interface-label text-interface-label font-bold text-on-surface">Storyboard</p>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px] leading-tight mt-0.5">
+                  Visual cells &amp; voiceover sync
+                </p>
+</div>
+<div class="mt-3 space-y-1">
+<div class="h-1 w-full bg-[#E2DDD0] rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-2/3"></div>
+</div>
+<span class="font-meta-mono text-[10px] text-outline">12 cells active</span>
+</div>
+</div>
+<!-- Flow Arrow 2-3 -->
+<div class="absolute left-[65%] top-1/2 -translate-y-1/2 z-20 pointer-events-none hidden sm:block">
+<span class="material-symbols-outlined text-outline text-[16px]">trending_flat</span>
+</div>
+<!-- Step 3: Video -->
+<div class="flex flex-col gap-2 p-3 rounded-lg bg-archival-ivory border border-tactile-hairline">
+<div class="flex items-center justify-between">
+<span class="font-meta-mono text-meta-mono text-outline font-bold">03</span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+</div>
+<div class="mt-1">
+<p class="font-interface-label text-interface-label font-bold text-on-surface">Video</p>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px] leading-tight mt-0.5">
+                  Render 30 fps vectorized cuts
+                </p>
+</div>
+<div class="mt-3 space-y-1">
+<div class="h-1 w-full bg-[#E2DDD0] rounded-full overflow-hidden">
+<div class="h-full bg-outline w-1/4"></div>
+</div>
+<span class="font-meta-mono text-[10px] text-outline">Queue ready</span>
+</div>
+</div>
+</div>
+<!-- Discrete Micro Quote / Principle -->
+<div class="mt-5 pt-4 border-t border-tactile-hairline flex items-center justify-between text-outline">
+<span class="font-meta-mono text-meta-mono flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">history_edu</span>
+              Modular composition table
+            </span>
+<span class="font-meta-mono text-meta-mono font-semibold text-primary">
+              Multiplane engine
+            </span>
+</div>
+</div>
+</div>
+<!-- Atelier Baseline Footer -->
+<div class="relative z-10 pt-6 border-t border-tactile-hairline flex flex-wrap items-center justify-between text-outline gap-4">
+<span class="font-meta-mono text-meta-mono">
+          Explainova Studio © 2026
+        </span>
+<div class="flex items-center gap-4">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">Colophon</span>
+<span class="text-outline-variant">·</span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">Curriculum Standards</span>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: Precision Sign-Up Form Canvas -->
+<section class="lg:w-[50%] xl:w-[52%] bg-background p-6 sm:p-10 md:p-16 flex items-center justify-center relative">
+<!-- Studio Header Direct Action (Top Right) -->
+<div class="absolute top-6 right-6 md:top-8 md:right-10 flex items-center gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Already an essayist?</span>
+<a class="font-interface-label text-interface-label font-bold text-primary hover:text-primary-container transition-colors py-1 px-2.5 rounded hover:bg-surface-container" href="#signin">
+          Sign in
+        </a>
+</div>
+<!-- Centered Drafting Card Form Wrapper -->
+<div class="w-full max-w-[440px] py-10">
+<!-- Header Group -->
+<header class="mb-8">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+            Create your account
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+            Your private studio for short educational videos.
+          </p>
+</header>
+<!-- Form Element -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Full Name Field -->
+<div>
+<label class="block font-interface-label text-interface-label text-on-surface font-semibold mb-1.5" for="full-name">
+              Full name
+            </label>
+<div class="relative">
+<input autocomplete="name" class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder:text-outline/60 font-body-md text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="full-name" name="name" placeholder="Dr. Aris Thorne" required="" type="text"/>
+</div>
+</div>
+<!-- Email Address Field -->
+<div>
+<label class="block font-interface-label text-interface-label text-on-surface font-semibold mb-1.5" for="email-address">
+              Email address
+            </label>
+<div class="relative">
+<input autocomplete="email" class="w-full h-11 px-3.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder:text-outline/60 font-body-md text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="email-address" name="email" placeholder="aris.thorne@university.org" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block font-interface-label text-interface-label text-on-surface font-semibold" for="password">
+                Password
+              </label>
+<button aria-label="Toggle password visibility" class="font-meta-mono text-meta-mono text-primary hover:text-on-surface font-bold tracking-wider uppercase transition-colors px-1" id="toggle-password-btn" onclick="togglePasswordVisibility()" type="button">
+                Show
+              </button>
+</div>
+<div class="relative">
+<input autocomplete="new-password" class="w-full h-11 px-3.5 pr-12 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder:text-outline/60 font-body-md text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="password" name="password" oninput="validatePassword(this.value)" placeholder="••••••••••••" required="" type="password"/>
+</div>
+<!-- Password Requirements Checklist -->
+<div class="mt-3.5 space-y-2 bg-surface-container-low p-3.5 rounded-lg border border-tactile-hairline" id="password-checklist">
+<div class="flex items-center gap-2 font-interface-label text-interface-label text-on-surface-variant transition-colors" id="rule-length">
+<span class="material-symbols-outlined text-[16px] text-outline" id="icon-length">check_box_outline_blank</span>
+<span class="text-xs">At least 8 characters</span>
+</div>
+<div class="flex items-center gap-2 font-interface-label text-interface-label text-on-surface-variant transition-colors" id="rule-symbol">
+<span class="material-symbols-outlined text-[16px] text-outline" id="icon-symbol">check_box_outline_blank</span>
+<span class="text-xs">Includes a number or symbol</span>
+</div>
+</div>
+</div>
+<!-- Action Container -->
+<div class="pt-3 space-y-4">
+<!-- Primary Submit Action Button -->
+<button class="w-full h-12 bg-primary-container hover:bg-[#2143DB] text-on-primary rounded-xl font-interface-label text-interface-label font-bold flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.99] shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:-translate-y-0.5" type="submit">
+<span>Create account</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<!-- Zero Friction Guarantee (No payment / card required) -->
+<div class="flex items-center justify-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">verified_user</span>
+<p class="font-meta-mono text-meta-mono text-outline">
+                No payment or credit card required.
+              </p>
+</div>
+</div>
+<!-- Legal Disclaimer & Terms Line -->
+<div class="pt-4 border-t border-tactile-hairline">
+<p class="font-body-md text-[13px] leading-relaxed text-on-surface-variant text-center">
+              By continuing, you agree to our 
+              <a class="text-on-surface font-semibold underline underline-offset-2 hover:text-primary transition-colors" href="#terms">Terms of Service</a> 
+              and 
+              <a class="text-on-surface font-semibold underline underline-offset-2 hover:text-primary transition-colors" href="#privacy">Privacy Policy</a>.
+            </p>
+</div>
+<!-- Fallback Bottom Sign In link for mobile viewports -->
+<div class="text-center pt-2 md:hidden">
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Already have an account? 
+              <a class="text-primary font-bold hover:underline" href="#signin">Sign in</a>
+</p>
+</div>
+</form>
+</div>
+<!-- Tactical Benchmark Coordinate Tag (Editorial Stamp) -->
+<div class="absolute bottom-6 right-8 hidden sm:flex items-center gap-2 font-meta-mono text-meta-mono text-outline/60 select-none">
+<span>LOC // 42.3601° N</span>
+<span>·</span>
+<span>LAT // 71.0942° W</span>
+</div>
+</section>
+</main>
+<!-- Interactive Logic for Password Toggle and Validation -->
+<script>
+    function togglePasswordVisibility() {
+      const input = document.getElementById('password');
+      const btn = document.getElementById('toggle-password-btn');
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        input.type = 'password';
+        btn.textContent = 'Show';
+      }
+    }
+
+    function validatePassword(val) {
+      const ruleLength = document.getElementById('rule-length');
+      const iconLength = document.getElementById('icon-length');
+      const ruleSymbol = document.getElementById('rule-symbol');
+      const iconSymbol = document.getElementById('icon-symbol');
+
+      // Rule 1: At least 8 characters
+      if (val.length >= 8) {
+        ruleLength.classList.remove('text-on-surface-variant');
+        ruleLength.classList.add('text-primary', 'font-semibold');
+        iconLength.textContent = 'check_box';
+        iconLength.classList.remove('text-outline');
+        iconLength.classList.add('text-primary');
+      } else {
+        ruleLength.classList.add('text-on-surface-variant');
+        ruleLength.classList.remove('text-primary', 'font-semibold');
+        iconLength.textContent = 'check_box_outline_blank';
+        iconLength.classList.add('text-outline');
+        iconLength.classList.remove('text-primary');
+      }
+
+      // Rule 2: Includes a number or symbol
+      const hasNumberOrSymbol = /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val);
+      if (hasNumberOrSymbol) {
+        ruleSymbol.classList.remove('text-on-surface-variant');
+        ruleSymbol.classList.add('text-primary', 'font-semibold');
+        iconSymbol.textContent = 'check_box';
+        iconSymbol.classList.remove('text-outline');
+        iconSymbol.classList.add('text-primary');
+      } else {
+        ruleSymbol.classList.add('text-on-surface-variant');
+        ruleSymbol.classList.remove('text-primary', 'font-semibold');
+        iconSymbol.textContent = 'check_box_outline_blank';
+        iconSymbol.classList.add('text-outline');
+        iconSymbol.classList.remove('text-primary');
+      }
+    }
+  </script>
+</body></html>

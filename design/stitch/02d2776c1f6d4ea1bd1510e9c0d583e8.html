@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account — Check your email | Explainova Studio</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&family=Sora:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e7f5",
+            "inverse-primary": "#bac3ff",
+            "surface-container": "#ededfb",
+            "on-primary": "#ffffff",
+            "background": "#fbf8ff",
+            "tertiary": "#4b5900",
+            "primary-container": "#3157ff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "inverse-surface": "#2e303b",
+            "tertiary-container": "#617300",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-tint": "#1c48f2",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "surface-bright": "#fbf8ff",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-tertiary-fixed": "#181e00",
+            "surface-container-highest": "#e1e1f0",
+            "on-primary-container": "#ebebff",
+            "on-surface-variant": "#444656",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#d5ee69",
+            "surface-variant": "#e1e1f0",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "primary-fixed": "#dee1ff",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "secondary": "#a83915",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "on-secondary-fixed-variant": "#862300",
+            "on-secondary-container": "#6b1a00",
+            "on-tertiary-container": "#e0f972",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "6.25rem",
+            "margin": "1.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-sm": ["Sora"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tactile-card {
+      box-shadow: 0 1px 3px rgba(23, 25, 35, 0.04), 0 4px 12px rgba(23, 25, 35, 0.03);
+    }
+    .tactile-stage {
+      box-shadow: 0 8px 24px -4px rgba(23, 25, 35, 0.08), 0 2px 6px -1px rgba(23, 25, 35, 0.04);
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary selection:text-on-primary">
+<!-- Main Container: Centered max 1240px within 1440px desktop frame -->
+<main class="w-full flex-grow flex items-center justify-center p-4 md:p-8 lg:p-12">
+<div class="w-full max-w-[1240px] grid grid-cols-1 lg:grid-cols-12 rounded-xl overflow-hidden border border-outline-variant bg-surface-container-lowest tactile-stage">
+<!-- LEFT PANEL: Warm Ivory Editorial Drafting Canvas -->
+<section class="lg:col-span-5 bg-surface-container-low border-b lg:border-b-0 lg:border-r border-outline-variant p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
+<!-- Studio Watermark / Calibration Grid Accent -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#191b25 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Top Header & Brand Identity -->
+<div class="relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm font-bold text-headline-sm shadow-sm">
+              E
+            </div>
+<div>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight block">Explainova Studio</span>
+<span class="font-meta-mono text-meta-mono text-outline tracking-wider block">ATELIER EDITION · VERIFICATION</span>
+</div>
+</div>
+<div class="mt-10">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant font-meta-mono text-meta-mono">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+              AUTH STAGE 01 / PIPELINE ENTRY
+            </div>
+<h2 class="mt-4 font-headline-md text-headline-md text-on-surface tracking-tight">
+              From pedagogy to kinetic screen.
+            </h2>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant max-w-sm">
+              Verify your credentials to unlock the real-time storyboard drafting bench, multiplane composition layers, and neural video pipelines.
+            </p>
+</div>
+</div>
+<!-- Instrumental Diagram: Envelope signal path transitioning into rendered frame -->
+<div class="my-10 relative z-10">
+<div class="border border-outline-variant rounded-xl p-5 bg-surface-container-lowest/80 backdrop-blur-sm tactile-card">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant text-outline font-meta-mono text-meta-mono">
+<span>PROTOCOL: DISPATCH_CUE</span>
+<span>SYNCHRONIZED</span>
+</div>
+<!-- Kinetic Vector Path Graphic -->
+<div class="mt-5 space-y-4">
+<!-- Node 1: Origin (Mail Dispatch) -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]" data-icon="outgoing_mail">outgoing_mail</span>
+</div>
+<div class="flex-1">
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-4/5 animate-pulse"></div>
+</div>
+</div>
+<span class="font-meta-mono text-meta-mono text-primary font-semibold">200 OK</span>
+</div>
+<!-- Connecting Vector Thread -->
+<div class="ml-4 pl-0 border-l-2 border-dashed border-outline-variant h-6"></div>
+<!-- Node 2: Multiplane Video Stage Preview Frame -->
+<div class="p-3 rounded-lg bg-inverse-surface border border-outline/30 text-inverse-on-surface flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 border border-primary-container/40 flex items-center justify-center text-inverse-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="videocam">videocam</span>
+</div>
+<div>
+<p class="font-interface-label text-interface-label text-inverse-on-surface">Target Canvas: 01_PROLOGUE</p>
+<p class="font-meta-mono text-meta-mono text-outline-variant">1080p · 24fps · Ready on handshake</p>
+</div>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Left Footer Meta Info -->
+<div class="relative z-10 pt-4 border-t border-outline-variant flex items-center justify-between text-outline font-meta-mono text-meta-mono">
+<span>ATELIER v2.4</span>
+<span>CAMPUS SSO & SAML SECURED</span>
+</div>
+</section>
+<!-- RIGHT PANEL: Verification Status & Action Card -->
+<section class="lg:col-span-7 bg-surface p-8 sm:p-12 md:p-16 flex items-center justify-center">
+<div class="w-full max-w-md mx-auto">
+<!-- Tactile Primary Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 sm:p-10 tactile-card">
+<!-- Mail/Envelope Status Badge with soft circular accent -->
+<div class="flex justify-start mb-6">
+<div class="relative">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-low border border-outline-variant flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[28px] text-primary-container" data-icon="mail" data-weight="fill" style="font-variation-settings: 'FILL' 1;">mail</span>
+</div>
+<!-- Precision circular badge -->
+<span class="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-primary-container border-2 border-surface-container-lowest"></span>
+</span>
+</div>
+</div>
+<!-- Header Typography -->
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+              Check your email
+            </h1>
+<p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+              We sent a confirmation link to your email address:
+            </p>
+<!-- Masked Email Pill + Change Email Link -->
+<div class="mt-5 p-3.5 rounded-lg bg-surface-container-low border border-outline-variant flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="alternate_email">alternate_email</span>
+<span class="font-interface-label text-interface-label text-on-surface font-semibold truncate tracking-wide">
+                  a***e@university.org
+                </span>
+</div>
+<button class="text-primary hover:text-on-primary-fixed-variant font-interface-label text-interface-label font-semibold inline-flex items-center gap-1 transition-colors duration-150 active:scale-[0.98]" type="button">
+<span>Change email</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+</button>
+</div>
+<!-- Guidance Note -->
+<div class="mt-6 flex items-start gap-3 p-3.5 rounded-lg bg-surface-container border border-outline-variant/60">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5" data-icon="info">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm leading-snug">
+                Click the link in the message to verify your account and start your first project.
+              </p>
+</div>
+<!-- Primary Actions Group -->
+<div class="mt-8 space-y-3">
+<!-- Secondary Action: Open email provider (External Link Style) -->
+<a class="w-full h-11 px-5 rounded-lg bg-surface-container-lowest border border-outline hover:border-on-surface text-on-surface font-interface-label text-interface-label font-semibold flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all duration-150 shadow-sm active:scale-[0.98]" href="https://mail.google.com" rel="noopener noreferrer" target="_blank">
+<span>Open email provider</span>
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="open_in_new">open_in_new</span>
+</a>
+<!-- Cooldown Timer & Resend Segment -->
+<div class="pt-2">
+<div class="w-full py-2.5 px-3 rounded-lg bg-surface-container-low border border-outline-variant flex items-center justify-between text-outline-variant">
+<div class="flex items-center gap-2 text-on-surface-variant font-interface-label text-interface-label">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="schedule">schedule</span>
+<span>Didn't receive the email?</span>
+</div>
+<div class="flex items-center gap-1.5 font-meta-mono text-meta-mono text-outline">
+<span>Resend in</span>
+<span class="inline-block px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-bold" id="countdown">45s</span>
+</div>
+</div>
+<!-- Disabled-ready resend trigger button with accessible cue -->
+<button class="w-full mt-2 py-2 rounded-lg text-outline font-interface-label text-interface-label font-medium opacity-60 cursor-not-allowed text-center transition-all duration-150" disabled="" id="resendBtn" type="button">
+                  Resend verification email
+                </button>
+</div>
+</div>
+<!-- Bottom Navigation Separation Line & Return Link -->
+<div class="mt-8 pt-6 border-t border-outline-variant flex items-center justify-between">
+<a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-interface-label text-interface-label transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-0.5 transition-transform duration-150" data-icon="arrow_back">arrow_back</span>
+<span>Back to sign in</span>
+</a>
+<a class="inline-flex items-center gap-1.5 text-outline hover:text-primary font-meta-mono text-meta-mono transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="help_outline">help_outline</span>
+<span>Need support?</span>
+</a>
+</div>
+</div>
+<!-- Bottom Security Subtext -->
+<div class="mt-6 text-center">
+<p class="font-meta-mono text-meta-mono text-outline">
+              TOKEN IDENTIFIER: EXP-AUTH-98842-TOKEN · EXPIRES IN 24 HOURS
+            </p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Ground Footer: Studio Minimal Anchor -->
+<footer class="w-full py-4 px-6 border-t border-outline-variant bg-surface flex flex-col sm:flex-row items-center justify-between gap-2 text-outline font-meta-mono text-meta-mono">
+<div class="flex items-center gap-4">
+<span>EXPLAINOVA STUDIO</span>
+<span>·</span>
+<span>ATELIER EDITION</span>
+</div>
+<div class="flex items-center gap-6">
+<a class="hover:text-on-surface transition-colors" href="#">PRIVACY POLICY</a>
+<a class="hover:text-on-surface transition-colors" href="#">TERMS OF SERVICE</a>
+<a class="hover:text-on-surface transition-colors" href="#">SYSTEM STATUS: ALL OPERATIONAL</a>
+</div>
+</footer>
+<!-- Light Restrained Countdown Script for Resend Timer -->
+<script>
+    (function() {
+      let secondsLeft = 45;
+      const countdownEl = document.getElementById('countdown');
+      const resendBtn = document.getElementById('resendBtn');
+
+      const timer = setInterval(() => {
+        secondsLeft--;
+        if (countdownEl) {
+          countdownEl.textContent = secondsLeft + 's';
+        }
+        if (secondsLeft <= 0) {
+          clearInterval(timer);
+          if (countdownEl) {
+            countdownEl.textContent = 'Ready';
+            countdownEl.classList.remove('text-primary');
+            countdownEl.classList.add('text-tertiary');
+          }
+          if (resendBtn) {
+            resendBtn.removeAttribute('disabled');
+            resendBtn.classList.remove('opacity-60', 'cursor-not-allowed', 'text-outline');
+            resendBtn.classList.add('text-primary', 'hover:underline', 'cursor-pointer');
+            resendBtn.addEventListener('click', function() {
+              alert('A new confirmation email has been dispatched.');
+            });
+          }
+        }
+      }, 1000);
+    })();
+  </script>
+</body></html>

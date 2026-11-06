@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova — Publish Video</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bac3ff",
+            "inverse-surface": "#2e303b",
+            "secondary": "#a83915",
+            "surface-bright": "#fbf8ff",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003ae4",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "outline": "#747688",
+            "secondary-fixed-dim": "#ffb59f",
+            "surface-tint": "#1c48f2",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "secondary-container": "#ff784f",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-fixed": "#d5ee69",
+            "on-tertiary-fixed": "#181e00",
+            "on-secondary-fixed-variant": "#862300",
+            "on-primary-container": "#ebebff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#3157ff",
+            "inverse-primary": "#bac3ff",
+            "secondary-fixed": "#ffdbd1",
+            "surface-variant": "#e1e1f0",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-secondary-container": "#6b1a00",
+            "on-background": "#191b25",
+            "on-tertiary-container": "#e0f972",
+            "surface-container-high": "#e7e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-surface-variant": "#444656",
+            "error": "#ba1a1a",
+            "background": "#fbf8ff",
+            "surface": "#fbf8ff",
+            "surface-container": "#ededfb",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "on-error": "#ffffff",
+            "tertiary-container": "#617300",
+            "surface-container-highest": "#e1e1f0",
+            "tertiary-fixed-dim": "#b9d14f",
+            "tertiary": "#4b5900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1.5rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "meta-mono": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-sm": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-md": ["Sora"]
+          },
+          "fontSize": {
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-28 selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Canvas Wrapper constrained to standard mobile width -->
+<div class="max-w-md mx-auto min-h-screen bg-background relative flex flex-col shadow-xl">
+<!-- Top App Bar (Task-Focused with Back action: suppresses global navigation shell) -->
+<header class="sticky top-0 z-40 bg-surface-bright/95 backdrop-blur-md px-4 h-16 flex items-center justify-between shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="flex items-center gap-3">
+<a aria-label="Back to Review &amp; Export" class="flex items-center justify-center w-11 h-11 rounded-lg text-on-surface hover:bg-surface-container active:scale-95 transition-all" href="#review-export">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</a>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">Publish video</h1>
+</div>
+</div>
+<!-- Project Context Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant max-w-[140px] truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+<span class="font-meta-mono text-meta-mono truncate text-[11px]">The science of quiet</span>
+</div>
+</header>
+<!-- Main Scrollable Form Flow -->
+<main class="flex-1 px-4 py-4 space-y-5">
+<!-- Section 1: Video Artifact Summary Card -->
+<section class="bg-surface-container-lowest rounded-xl p-3.5 border border-outline-variant/60 shadow-[0_1px_3px_rgba(23,25,35,0.04)]">
+<div class="flex items-center gap-3.5">
+<!-- 9:16 Aspect Ratio Thumbnail Container -->
+<div class="relative w-16 h-28 rounded-lg overflow-hidden flex-shrink-0 bg-inverse-surface shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Cinematic macro animation cel rendering of active noise-cancelling headphone acoustic drivers showing glowing counter-phase geometric sound waves. Deep charcoal background with Electric Cobalt acoustic pressure ripples and ivory vector line guides. High editorial visual quality, sharp drafting precision, studio light-mode contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx_J4EnUEXbm9LzPm_pX94fJi_uMUIXMfJ_mKanDbzNxWF7GyvouLMhyQP5pJHhvHWV1eLPSV3IqmiqjWXZ-x_q2z06zHLRH-EMgNV7lkHCPGTCSOjqo_k_D9ynCybDcGaiUBR7eApo4u7B12dFDOtTy9XnJe-sbDZqqEoFwDuPp1dfYhT7vNfd2SoJUWaNmAgAl4h6gODgIr6ZxpLYIPmYy7a4YY9JqvP25BRv_UcHR-ZyqNlVVtr7zZLqOTtRqnLRkSyGUMeLjM"/>
+<div class="absolute bottom-1 right-1 px-1 py-0.5 rounded bg-inverse-surface/80 backdrop-blur text-surface-bright font-meta-mono text-[9px] font-bold">
+              9:16
+            </div>
+</div>
+<!-- Video Metadata & Approval Status -->
+<div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+<div class="space-y-1">
+<div class="flex items-center justify-between gap-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-meta-mono text-meta-mono text-[10px] uppercase font-bold tracking-wider">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  Approved
+                </span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant/80 text-[11px]">DRAFT_V3</span>
+</div>
+<h2 class="font-headline-sm text-[16px] leading-tight font-semibold text-on-surface truncate">
+                The science of quiet
+              </h2>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center gap-2 font-meta-mono text-meta-mono text-on-surface-variant text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                0:53
+              </span>
+<span>•</span>
+<span>1080p · 30 fps</span>
+<span>•</span>
+<span class="text-primary font-bold">HQ Render</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Destination Account Selection -->
+<section class="space-y-2">
+<label class="block font-interface-label text-interface-label text-on-surface">
+          Publishing Destination
+        </label>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Tab 1: YouTube (Active) -->
+<div class="relative flex items-center justify-between p-3.5 rounded-xl border-2 border-primary bg-surface-container-low shadow-[0_2px_8px_rgba(49,87,255,0.08)] cursor-pointer">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant/50 flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">smart_display</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface">YouTube</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-highest text-primary font-meta-mono text-[10px] font-semibold">Shorts</span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant truncate">Dr. Aris Thorne · @aristhorne-edu</p>
+<div class="flex items-center gap-1 text-tertiary mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary flex-shrink-0"></span>
+<span class="font-meta-mono text-meta-mono text-[10px]">Connected</span>
+</div>
+</div>
+</div>
+<!-- Selection Radio indicator -->
+<div class="w-5 h-5 rounded-full border-2 border-primary bg-primary flex items-center justify-center flex-shrink-0 ml-2">
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest"></div>
+</div>
+</div>
+<!-- Tab 2: Instagram (Inactive / Warning) -->
+<div class="relative flex items-center justify-between p-3.5 rounded-xl border border-outline-variant bg-surface-container-lowest opacity-75 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant/40 flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">camera</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface">Instagram</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-meta-mono text-[10px] font-semibold">Reels</span>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant truncate">@aris.thorne.explains</p>
+<div class="flex items-center gap-1 text-secondary mt-0.5">
+<span class="material-symbols-outlined text-[12px]">warning</span>
+<span class="font-meta-mono text-meta-mono text-[10px]">Needs reconnect</span>
+</div>
+</div>
+</div>
+<!-- Empty radio ring -->
+<div class="w-5 h-5 rounded-full border-2 border-outline flex items-center justify-center flex-shrink-0 ml-2"></div>
+</div>
+</div>
+</section>
+<!-- Section 3: Stacked Publishing Metadata Fields -->
+<section class="space-y-4 pt-1">
+<!-- Video Title Input -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-interface-label text-interface-label text-on-surface" for="video-title">
+              Video Title <span class="text-error">*</span>
+</label>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px]">58/100</span>
+</div>
+<div class="relative">
+<input class="w-full h-12 px-3.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm" id="video-title" type="text" value="The science of quiet: How noise-cancelling headphones work"/>
+</div>
+</div>
+<!-- Video Description Textarea -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-interface-label text-interface-label text-on-surface" for="video-description">
+              Description
+            </label>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px]">162/5000</span>
+</div>
+<textarea class="w-full p-3.5 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm leading-relaxed" id="video-description" rows="4">A concise explanation of how active noise cancelling headphones produce inverted sound waves to reduce noise before it hits your ear. Made with Explainova.</textarea>
+</div>
+<!-- Audience & Disclosure Controls -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-3.5">
+<div class="space-y-1.5">
+<label class="font-interface-label text-interface-label text-on-surface block" for="audience-class">
+              Audience Classification
+            </label>
+<div class="relative">
+<select class="w-full h-11 pl-3 pr-9 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-[14px] text-on-surface appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="audience-class">
+<option selected="">Not made for kids (standard adult education)</option>
+<option>Made for kids (COPPA compliant)</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Synthetic / Altered Disclosure Checkbox -->
+<label class="flex items-start gap-3 cursor-pointer pt-1">
+<input checked="" class="w-5 h-5 mt-0.5 rounded text-primary border-on-surface focus:ring-primary accent-primary cursor-pointer flex-shrink-0" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-interface-label text-[13px] font-semibold text-on-surface block">
+                Altered or synthetic content
+              </span>
+<span class="font-body-md text-[12px] text-on-surface-variant block leading-snug">
+                Animation and synthesized voice narration generated for clear explanations.
+              </span>
+</div>
+</label>
+</div>
+</section>
+<!-- Section 4: Publishing Timing & Scheduling Controls -->
+<section class="space-y-3">
+<label class="block font-interface-label text-interface-label text-on-surface">
+          Publishing Schedule
+        </label>
+<!-- Segmented Radio Toggle Bar -->
+<div class="grid grid-cols-2 p-1 bg-surface-container-high rounded-xl border border-outline-variant/60">
+<button class="h-11 rounded-lg font-interface-label text-interface-label text-on-surface-variant flex items-center justify-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+            Publish now
+          </button>
+<button class="h-11 rounded-lg bg-surface-container-lowest text-primary shadow-[0_1px_3px_rgba(23,25,35,0.06)] font-interface-label text-interface-label flex items-center justify-center gap-1.5 border border-outline-variant/40" type="button">
+<span class="material-symbols-outlined text-[18px]">event_upcoming</span>
+            Schedule for later
+          </button>
+</div>
+<!-- Scheduled Inputs Array -->
+<div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant space-y-3.5 shadow-sm">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<!-- Date Input -->
+<div class="space-y-1">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px]">RELEASE DATE</span>
+<div class="relative flex items-center h-12 px-3.5 rounded-lg border border-outline-variant bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[20px] text-primary mr-2 flex-shrink-0">calendar_today</span>
+<span class="font-body-md text-body-md font-medium truncate">Tomorrow, Oct 24, 2025</span>
+</div>
+</div>
+<!-- Time Input -->
+<div class="space-y-1">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant text-[11px]">LOCAL TIME</span>
+<div class="relative flex items-center h-12 px-3.5 rounded-lg border border-outline-variant bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-[20px] text-primary mr-2 flex-shrink-0">schedule</span>
+<span class="font-body-md text-body-md font-medium truncate">18:30</span>
+</div>
+</div>
+</div>
+<!-- Timezone Display -->
+<div class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container text-on-surface-variant font-meta-mono text-[11px]">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">public</span>
+              Timezone:
+            </span>
+<span class="font-bold text-on-surface">India (UTC+05:30)</span>
+</div>
+<!-- Plain Scheduled Summary Banner -->
+<div class="p-3 rounded-lg bg-surface-container-low border border-primary/20 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0 mt-0.5">info</span>
+<p class="font-body-md text-[13px] text-on-surface leading-normal">
+              This video will publish to <strong class="text-primary">YouTube (@aristhorne-edu)</strong> on <span class="font-semibold">Friday, Oct 24, 2025</span> at <span class="font-semibold">6:30 PM IST</span>.
+            </p>
+</div>
+</div>
+</section>
+<!-- Section 5: Final Review & Safety Confirmation -->
+<section class="pt-1">
+<label class="flex items-start gap-3 p-3.5 rounded-xl border border-outline-variant bg-surface-bright shadow-sm cursor-pointer hover:bg-surface-container-low transition-colors">
+<input checked="" class="w-5 h-5 mt-0.5 rounded text-primary border-on-surface focus:ring-primary accent-primary cursor-pointer flex-shrink-0" type="checkbox"/>
+<span class="font-body-md text-[13px] leading-snug text-on-surface">
+            I reviewed this video and destination. I understand this will publish automatically at the scheduled time.
+          </span>
+</label>
+</section>
+</main>
+<!-- Sticky Bottom Executive Bar -->
+<footer class="sticky bottom-0 z-50 bg-surface-bright/95 backdrop-blur-md px-4 py-3 border-t border-outline-variant/60 shadow-[0_-4px_12px_rgba(23,25,35,0.04)]">
+<div class="flex items-center gap-3">
+<!-- Save Draft Button -->
+<button class="flex-1 h-12 rounded-xl bg-surface-container-lowest border border-outline text-on-surface font-interface-label text-interface-label font-semibold flex items-center justify-center gap-2 hover:bg-surface-container active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+          Save draft
+        </button>
+<!-- Schedule Video Primary Button (Electric Cobalt) -->
+<button class="flex-[1.4] h-12 rounded-xl bg-primary-container text-on-primary font-interface-label text-interface-label font-semibold flex items-center justify-center gap-2 shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:bg-[#2143DB] active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">send</span>
+          Schedule video
+        </button>
+</div>
+</footer>
+</div>
+</body></html>

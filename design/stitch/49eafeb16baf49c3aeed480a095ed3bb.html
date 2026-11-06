@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account — Reset password | Explainova</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Sora & Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e7e7f5",
+            "inverse-primary": "#bac3ff",
+            "surface-container": "#ededfb",
+            "on-primary": "#ffffff",
+            "background": "#fbf8ff",
+            "tertiary": "#4b5900",
+            "primary-container": "#3157ff",
+            "secondary-fixed-dim": "#ffb59f",
+            "outline": "#747688",
+            "inverse-surface": "#2e303b",
+            "tertiary-container": "#617300",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-tint": "#1c48f2",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "surface-bright": "#fbf8ff",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-tertiary-fixed": "#181e00",
+            "surface-container-highest": "#e1e1f0",
+            "on-primary-container": "#ebebff",
+            "on-surface-variant": "#444656",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#d5ee69",
+            "surface-variant": "#e1e1f0",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "primary-fixed": "#dee1ff",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "secondary": "#a83915",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "on-secondary-fixed-variant": "#862300",
+            "on-secondary-container": "#6b1a00",
+            "on-tertiary-container": "#e0f972",
+            "on-tertiary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-tertiary-fixed-variant": "#404c00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "margin-lg": "6.25rem",
+            "margin": "1.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "meta-mono": ["Manrope"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-md": ["Sora"],
+            "headline-sm": ["Sora"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Architectural linework grid background */
+    .drafting-grid {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(23, 25, 35, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(23, 25, 35, 0.03) 1px, transparent 1px);
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen">
+<!-- Semantic Shell Exclusion: In accordance with Destination & Task Rules, Global SideNav/TopNav are suppressed for dedicated Transactional/Auth journeys -->
+<main class="w-full min-h-screen flex flex-col lg:flex-row">
+<!-- LEFT PANEL: Warm Ivory Editorial Drafting Canvas (#F6F3EB) -->
+<section class="lg:w-5/12 xl:w-1/2 bg-[#F6F3EB] border-r border-outline-variant/40 flex flex-col justify-between p-8 sm:p-12 lg:p-16 relative overflow-hidden drafting-grid">
+<!-- Watermark Background Geometric Layer -->
+<div class="absolute inset-0 pointer-events-none opacity-40 flex items-center justify-center">
+<div class="w-[620px] h-[620px] rounded-full border border-dashed border-outline-variant/60"></div>
+<div class="absolute w-[440px] h-[440px] border border-outline-variant/70 rotate-45"></div>
+</div>
+<!-- Header / Atelier Brand Stamp -->
+<div class="relative z-10">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-on-background flex items-center justify-center text-[#F6F3EB]">
+<span class="material-symbols-outlined" data-icon="auto_videocam" style="font-variation-settings: 'FILL' 1;">auto_videocam</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight">Explainova</div>
+<p class="font-meta-mono text-meta-mono text-on-surface-variant uppercase tracking-widest text-[10px]">Atelier Edition • Studio Key Engine</p>
+</div>
+</div>
+</div>
+<!-- Central educational Graphic: Idea-to-Frame Kinetic Flow -->
+<div class="my-12 relative z-10 max-w-md mx-auto w-full">
+<!-- Badge -->
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#EFEBE1] border border-[#E2DDD0] mb-6">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">PIPELINE VERIFICATION: STEP 03 / CREDENTIALS</span>
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight mb-3">
+          Rigorous framing for complex ideas.
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">
+          Explainova transforms scholarly manuscripts and essays into mathematically choreographed animated storyboard cells.
+        </p>
+<!-- Dynamic Structural Diagram: Concept -> Script -> Storyboard Cell -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-sm rounded-xl border border-[#E2DDD0] p-6 shadow-sm relative">
+<!-- Ink connecting trajectory vector line -->
+<div class="absolute top-1/2 left-8 right-8 h-[1.5px] bg-outline-variant -translate-y-6 z-0"></div>
+<div class="grid grid-cols-3 gap-3 relative z-10 text-center">
+<!-- Node 1: Script Vector -->
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-lg bg-[#EFEBE1] border border-[#E2DDD0] flex items-center justify-center text-on-surface mb-2 shadow-xs">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface text-[11px]">Manuscript</span>
+<span class="font-meta-mono text-meta-mono text-outline text-[9px]">00:00:00</span>
+</div>
+<!-- Node 2: Mathematical Split -->
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary mb-2 shadow-xs">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface text-[11px]">Cell Parse</span>
+<span class="font-meta-mono text-meta-mono text-primary text-[9px]">ACTIVE LOCK</span>
+</div>
+<!-- Node 3: Kinetic Frame -->
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-lg bg-[#0F111A] border border-black flex items-center justify-center text-tertiary-fixed mb-2 shadow-xs">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface text-[11px]">9:16 Cinema</span>
+<span class="font-meta-mono text-meta-mono text-outline text-[9px]">30 fps</span>
+</div>
+</div>
+<div class="mt-5 pt-4 border-t border-[#E2DDD0] flex items-center justify-between text-on-surface-variant font-meta-mono text-meta-mono text-[11px]">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+              Drafting Desk Integrity
+            </span>
+<span class="text-outline">v2.4.9 atelier</span>
+</div>
+</div>
+</div>
+<!-- Atelier Studio Footer Credentials -->
+<div class="relative z-10 pt-6 border-t border-[#E2DDD0] flex items-center justify-between font-meta-mono text-meta-mono text-on-surface-variant">
+<span>© 2026 Explainova Studio</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="shield">shield</span>
+          256-Bit Passkey Vault
+        </span>
+</div>
+</section>
+<!-- RIGHT PANEL: Centered Form Card Canvas (#fbf8ff) -->
+<section class="lg:w-7/12 xl:w-1/2 bg-surface flex flex-col justify-center items-center p-6 sm:p-12 lg:p-16 min-h-screen">
+<div class="w-full max-w-[460px]">
+<!-- Main Card Envelope -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/60 shadow-[0_1px_3px_rgba(23,25,35,0.04),0_8px_24px_-4px_rgba(23,25,35,0.06)] p-8 sm:p-10">
+<!-- Card Header -->
+<div class="mb-8">
+<div class="inline-flex items-center gap-1.5 text-primary mb-3">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock_reset">lock_reset</span>
+<span class="font-meta-mono text-meta-mono text-primary text-[11px] uppercase tracking-wider">Account Access Recovery</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight mb-2">
+              Create new password
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Enter a new secure password for your Explainova account.
+            </p>
+</div>
+<!-- Reset Password Form -->
+<form class="space-y-6" id="reset-form" onsubmit="event.preventDefault();">
+<!-- Field 1: New Password -->
+<div class="space-y-2">
+<label class="block font-interface-label text-interface-label text-on-surface" for="new-password">
+                New password
+              </label>
+<div class="relative">
+<input autocomplete="new-password" class="w-full h-11 px-3.5 pr-14 rounded-lg bg-surface-container-lowest border border-outline-variant text-on-surface placeholder:text-outline-variant font-body-md text-body-md focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 focus:outline-none transition-colors" id="new-password" name="new_password" placeholder="••••••••••••" required="" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 text-on-surface-variant hover:text-on-surface font-interface-label text-meta-mono rounded transition-colors" id="toggle-new-pw" type="button">
+<span class="text-xs font-bold uppercase tracking-wider" id="label-new-pw">Show</span>
+</button>
+</div>
+</div>
+<!-- Field 2: Confirm New Password -->
+<div class="space-y-2">
+<label class="block font-interface-label text-interface-label text-on-surface" for="confirm-password">
+                Confirm new password
+              </label>
+<div class="relative">
+<input autocomplete="new-password" class="w-full h-11 px-3.5 pr-14 rounded-lg bg-surface-container-lowest border border-outline-variant text-on-surface placeholder:text-outline-variant font-body-md text-body-md focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 focus:outline-none transition-colors" id="confirm-password" name="confirm_password" placeholder="••••••••••••" required="" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 text-on-surface-variant hover:text-on-surface font-interface-label text-meta-mono rounded transition-colors" id="toggle-confirm-pw" type="button">
+<span class="text-xs font-bold uppercase tracking-wider" id="label-confirm-pw">Show</span>
+</button>
+</div>
+</div>
+<!-- Real-time Validation Check Indicators -->
+<div class="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/40 space-y-2.5">
+<div class="font-meta-mono text-meta-mono text-outline text-[11px] uppercase tracking-wider mb-1">
+                Password Criteria
+              </div>
+<!-- Criteria 1: 8+ characters -->
+<div class="flex items-center gap-2 text-on-surface-variant transition-colors duration-150" id="rule-length">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="radio_button_unchecked" id="icon-length">radio_button_unchecked</span>
+<span class="font-interface-label text-interface-label text-xs">8+ characters</span>
+</div>
+<!-- Criteria 2: Passwords match -->
+<div class="flex items-center gap-2 text-on-surface-variant transition-colors duration-150" id="rule-match">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="radio_button_unchecked" id="icon-match">radio_button_unchecked</span>
+<span class="font-interface-label text-interface-label text-xs">Passwords match</span>
+</div>
+</div>
+<!-- Primary Action CTA -->
+<button class="w-full h-12 rounded-lg bg-primary-container hover:bg-[#2143DB] text-on-primary font-interface-label text-interface-label font-semibold shadow-[0_2px_8px_rgba(49,87,255,0.25)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer" type="submit">
+<span>Save password and sign in</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+</div>
+<!-- Expired-link Fallback Notice Card -->
+<div class="mt-6 p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start gap-3 text-on-surface">
+<div class="text-secondary mt-0.5 flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="info">info</span>
+</div>
+<div class="font-body-md text-body-md text-xs leading-relaxed text-on-surface-variant">
+<p>
+<strong class="font-semibold text-on-surface">Link expired or invalid?</strong> Password reset links expire after 1 hour for security. 
+              <a class="text-primary hover:text-on-primary-fixed-variant font-semibold underline underline-offset-2 ml-1 cursor-pointer transition-colors" href="#">
+                Request a new reset link
+              </a>
+</p>
+</div>
+</div>
+<!-- Bottom Navigation: Back to Sign In -->
+<div class="mt-8 text-center">
+<a class="inline-flex items-center gap-2 font-interface-label text-interface-label text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform" data-icon="west">west</span>
+<span>Back to sign in</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Interactive Logic for Password Visibility & Rule Checkers -->
+<script>
+    const newPwInput = document.getElementById('new-password');
+    const confirmPwInput = document.getElementById('confirm-password');
+    
+    const toggleNewBtn = document.getElementById('toggle-new-pw');
+    const labelNewPw = document.getElementById('label-new-pw');
+    
+    const toggleConfirmBtn = document.getElementById('toggle-confirm-pw');
+    const labelConfirmPw = document.getElementById('label-confirm-pw');
+
+    const ruleLength = document.getElementById('rule-length');
+    const iconLength = document.getElementById('icon-length');
+
+    const ruleMatch = document.getElementById('rule-match');
+    const iconMatch = document.getElementById('icon-match');
+
+    // Toggle password fields
+    toggleNewBtn.addEventListener('click', () => {
+      const isPassword = newPwInput.type === 'password';
+      newPwInput.type = isPassword ? 'text' : 'password';
+      labelNewPw.textContent = isPassword ? 'Hide' : 'Show';
+    });
+
+    toggleConfirmBtn.addEventListener('click', () => {
+      const isPassword = confirmPwInput.type === 'password';
+      confirmPwInput.type = isPassword ? 'text' : 'password';
+      labelConfirmPw.textContent = isPassword ? 'Hide' : 'Show';
+    });
+
+    // Real-time verification validation
+    function validateInputs() {
+      const val1 = newPwInput.value;
+      const val2 = confirmPwInput.value;
+
+      // 8+ characters check
+      if (val1.length >= 8) {
+        iconLength.textContent = 'check_circle';
+        iconLength.classList.remove('text-outline');
+        iconLength.classList.add('text-primary');
+        ruleLength.classList.add('text-on-surface');
+        ruleLength.classList.remove('text-on-surface-variant');
+      } else {
+        iconLength.textContent = 'radio_button_unchecked';
+        iconLength.classList.add('text-outline');
+        iconLength.classList.remove('text-primary');
+        ruleLength.classList.remove('text-on-surface');
+        ruleLength.classList.add('text-on-surface-variant');
+      }
+
+      // Passwords match check
+      if (val1.length > 0 && val1 === val2) {
+        iconMatch.textContent = 'check_circle';
+        iconMatch.classList.remove('text-outline');
+        iconMatch.classList.add('text-primary');
+        ruleMatch.classList.add('text-on-surface');
+        ruleMatch.classList.remove('text-on-surface-variant');
+      } else {
+        iconMatch.textContent = 'radio_button_unchecked';
+        iconMatch.classList.add('text-outline');
+        iconMatch.classList.remove('text-primary');
+        ruleMatch.classList.remove('text-on-surface');
+        ruleMatch.classList.add('text-on-surface-variant');
+      }
+    }
+
+    newPwInput.addEventListener('input', validateInputs);
+    confirmPwInput.addEventListener('input', validateInputs);
+  </script>
+</body></html>

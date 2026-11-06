@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign in — Explainova</title>
+<!-- Fonts: Sora (Headlines) & Manrope (Body & Meta) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bac3ff",
+            "inverse-surface": "#2e303b",
+            "secondary": "#a83915",
+            "surface-bright": "#fbf8ff",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#003ae4",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "error-container": "#ffdad6",
+            "outline": "#747688",
+            "secondary-fixed-dim": "#ffb59f",
+            "surface-tint": "#1c48f2",
+            "inverse-on-surface": "#f0effe",
+            "outline-variant": "#c4c5d9",
+            "on-primary-fixed-variant": "#0031c6",
+            "on-primary-fixed": "#001159",
+            "secondary-container": "#ff784f",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-fixed": "#d5ee69",
+            "on-tertiary-fixed": "#181e00",
+            "on-secondary-fixed-variant": "#862300",
+            "on-primary-container": "#ebebff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#3157ff",
+            "inverse-primary": "#bac3ff",
+            "secondary-fixed": "#ffdbd1",
+            "surface-variant": "#e1e1f0",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f2ff",
+            "on-secondary-container": "#6b1a00",
+            "on-background": "#191b25",
+            "on-tertiary-container": "#e0f972",
+            "surface-container-high": "#e7e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-surface-variant": "#444656",
+            "error": "#ba1a1a",
+            "background": "#fbf8ff",
+            "surface": "#fbf8ff",
+            "surface-container": "#ededfb",
+            "on-surface": "#191b25",
+            "on-secondary-fixed": "#3a0a00",
+            "on-error": "#ffffff",
+            "tertiary-container": "#617300",
+            "surface-container-highest": "#e1e1f0",
+            "tertiary-fixed-dim": "#b9d14f",
+            "tertiary": "#4b5900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1.5rem",
+            "margin-md": "3rem",
+            "gutter-lg": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "meta-mono": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "headline-lg-mobile": ["Sora"],
+            "interface-label": ["Manrope"],
+            "body-lg": ["Manrope"],
+            "headline-sm": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-md": ["Sora"]
+          },
+          "fontSize": {
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Ink boundary styling */
+    .tactile-frame {
+      box-shadow: 0 1px 3px rgba(25, 27, 37, 0.04), 0 4px 12px rgba(25, 27, 37, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Minimal Brand Header -->
+<header class="w-full h-14 px-5 flex items-center justify-between border-b border-outline-variant bg-surface-bright">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-on-background flex items-center justify-center shadow-sm">
+<!-- Structural studio geometry mark -->
+<div class="relative w-4 h-4 flex items-center justify-center">
+<div class="absolute inset-0 border border-surface rounded-sm transform rotate-45"></div>
+<div class="w-1.5 h-1.5 bg-primary-container rounded-full"></div>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">Explainova</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">v2.4 STUDIO</span>
+</div>
+</header>
+<!-- Main Mobile Canvas Container -->
+<main class="w-full max-w-md mx-auto px-5 pt-6 pb-8 flex-1 flex flex-col justify-center">
+<!-- educational Drafting / Linear Flow Graphic Card -->
+<div class="mb-6 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant tactile-frame">
+<div class="flex items-center justify-between mb-3">
+<span class="font-meta-mono text-meta-mono text-on-surface-variant tracking-wider uppercase">CREATE EDUCATIONAL VIDEOS</span>
+<span class="font-meta-mono text-meta-mono text-primary font-bold">9:16 &amp; 9:16</span>
+</div>
+<!-- 3-Step Atelier Geometric Diagram -->
+<div class="relative py-2 px-1 flex items-center justify-between">
+<!-- Connecting Vector Guide Line -->
+<div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-[1.5px] bg-outline-variant z-0"></div>
+<!-- Step 1: Plan -->
+<div class="relative z-10 flex flex-col items-center gap-1.5">
+<div class="w-9 h-9 rounded-lg bg-surface-bright border border-outline flex items-center justify-center text-on-surface shadow-xs">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface">Plan</span>
+</div>
+<!-- Flow Link Symbol / Soundwave segment -->
+<div class="relative z-10 flex items-center gap-0.5 px-1 bg-surface-container-lowest">
+<div class="w-0.5 h-2 bg-outline-variant rounded-full"></div>
+<div class="w-0.5 h-3.5 bg-primary-container rounded-full"></div>
+<div class="w-0.5 h-2 bg-outline-variant rounded-full"></div>
+</div>
+<!-- Step 2: Storyboard -->
+<div class="relative z-10 flex flex-col items-center gap-1.5">
+<div class="w-9 h-9 rounded-lg bg-surface-bright border border-outline flex items-center justify-center text-on-surface shadow-xs">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-on-surface">Storyboard</span>
+</div>
+<!-- Flow Link Symbol -->
+<div class="relative z-10 flex items-center gap-0.5 px-1 bg-surface-container-lowest">
+<div class="w-0.5 h-2 bg-outline-variant rounded-full"></div>
+<div class="w-0.5 h-3.5 bg-secondary-container rounded-full"></div>
+<div class="w-0.5 h-2 bg-outline-variant rounded-full"></div>
+</div>
+<!-- Step 3: Video -->
+<div class="relative z-10 flex flex-col items-center gap-1.5">
+<div class="w-9 h-9 rounded-lg bg-on-background text-surface border border-on-background flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+</div>
+<span class="font-meta-mono text-meta-mono text-primary font-bold">Video</span>
+</div>
+</div>
+</div>
+<!-- Title & Context -->
+<div class="mb-6">
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight">Sign in to Explainova</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5">Continue creating your animated explainer videos.</p>
+</div>
+<!-- Sign In Form -->
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<!-- Email Address Field -->
+<div>
+<label class="block font-interface-label text-interface-label text-on-surface mb-1.5" for="email">
+          Email address
+        </label>
+<div class="relative flex items-center">
+<span class="absolute left-3.5 text-on-surface-variant flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</span>
+<input class="w-full h-12 pl-11 pr-4 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="email" name="email" placeholder="name@institution.edu" required="" type="email" value="aris.thorne@university.edu"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<label class="block font-interface-label text-interface-label text-on-surface mb-1.5" for="password">
+          Password
+        </label>
+<div class="relative flex items-center">
+<span class="absolute left-3.5 text-on-surface-variant flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</span>
+<input class="w-full h-12 pl-11 pr-16 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors tracking-wide" id="password" name="password" placeholder="Enter password" required="" type="password" value="••••••••••••"/>
+<button aria-label="Toggle password visibility" class="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 px-2.5 flex items-center justify-center font-meta-mono text-meta-mono text-on-surface-variant hover:text-on-surface transition-colors active:scale-95" id="togglePassword" type="button">
+            Show
+          </button>
+</div>
+</div>
+<!-- Remember & Forgot Password Utility Row -->
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center gap-2 cursor-pointer select-none py-1">
+<input checked="" class="w-4 h-4 rounded text-primary-container border-outline-variant focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+<span class="font-meta-mono text-meta-mono text-on-surface-variant">Remember for 30 days</span>
+</label>
+<a class="font-interface-label text-[13px] text-primary hover:underline py-1 focus:outline-none focus:ring-1 focus:ring-primary rounded" href="#forgot-password">
+          Forgot password?
+        </a>
+</div>
+<!-- Primary Action Button -->
+<div class="pt-2">
+<button class="w-full h-12 rounded-xl bg-primary-container text-on-primary font-interface-label text-interface-label font-bold flex items-center justify-center gap-2 shadow-sm hover:bg-surface-tint active:scale-[0.98] transition-all duration-150" type="submit">
+<span>Sign in</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Structural Divider -->
+<div class="relative my-6 flex items-center justify-center">
+<div class="w-full border-t border-outline-variant"></div>
+<span class="absolute px-3 bg-surface font-meta-mono text-meta-mono text-outline">OR</span>
+</div>
+<!-- Secondary Registration Option -->
+<a class="w-full h-12 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-center gap-1.5 text-on-surface hover:bg-surface-container active:scale-[0.98] transition-all duration-150 tactile-frame group" href="#register">
+<span class="font-body-md text-body-md text-on-surface-variant">Don't have an account?</span>
+<span class="font-interface-label text-interface-label text-primary font-semibold group-hover:underline">Create account</span>
+</a>
+<!-- educational Security & Reassurance Footnote -->
+<div class="mt-8 pt-4 border-t border-outline-variant/60 flex items-center justify-center gap-2 text-center">
+<span class="material-symbols-outlined text-[16px] text-outline">verified_user</span>
+<p class="font-meta-mono text-meta-mono text-outline leading-tight">
+        Single-creator private studio. Protected access.
+      </p>
+</div>
+</main>
+<!-- Interactive script for password reveal toggle -->
+<script>
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    if (toggleBtn && passwordInput) {
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+      });
+    }
+  </script>
+</body></html>

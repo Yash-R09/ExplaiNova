@@ -1,0 +1,21 @@
+{
+  "name": "explainova-local",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "app:dev": "npm --prefix apps/web run dev",
+    "app:build": "npm --prefix apps/web run build",
+    "app:typecheck": "npm --prefix apps/web run typecheck",
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "sample": "node --env-file-if-exists=.env pipeline.mjs sample",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.540",
+    "@remotion/cli": "4.0.540",
+    "@remotion/renderer": "4.0.540",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.540"
+  }
+}

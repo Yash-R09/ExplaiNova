@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explainova — Editing / Save Conflict</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&family=Sora:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f0effe",
+            "on-secondary": "#ffffff",
+            "background": "#fbf8ff",
+            "surface-variant": "#e1e1f0",
+            "secondary-container": "#ff784f",
+            "secondary-fixed": "#ffdbd1",
+            "primary-fixed-dim": "#bac3ff",
+            "surface-container-highest": "#e1e1f0",
+            "primary-fixed": "#dee1ff",
+            "surface-bright": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed-variant": "#862300",
+            "error": "#ba1a1a",
+            "surface-container": "#ededfb",
+            "on-surface-variant": "#444656",
+            "secondary": "#a83915",
+            "on-tertiary-fixed-variant": "#404c00",
+            "tertiary-container": "#617300",
+            "on-tertiary-container": "#e0f972",
+            "inverse-surface": "#2e303b",
+            "on-secondary-fixed": "#3a0a00",
+            "tertiary-fixed": "#d5ee69",
+            "primary-container": "#3157ff",
+            "on-primary-fixed": "#001159",
+            "on-primary-fixed-variant": "#0031c6",
+            "primary": "#003ae4",
+            "on-background": "#191b25",
+            "on-error-container": "#93000a",
+            "tertiary": "#4b5900",
+            "tertiary-fixed-dim": "#b9d14f",
+            "surface-dim": "#d9d9e7",
+            "inverse-primary": "#bac3ff",
+            "surface-container-low": "#f3f2ff",
+            "on-primary-container": "#ebebff",
+            "on-secondary-container": "#6b1a00",
+            "on-surface": "#191b25",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface": "#fbf8ff",
+            "on-tertiary-fixed": "#181e00",
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e7e7f5",
+            "outline": "#747688",
+            "surface-tint": "#1c48f2",
+            "outline-variant": "#c4c5d9",
+            "secondary-fixed-dim": "#ffb59f",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "margin": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "margin-md": "3rem",
+            "space-lg": "1.5rem",
+            "margin-lg": "6.25rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Sora"],
+            "meta-mono": ["Manrope"],
+            "headline-md": ["Sora"],
+            "interface-label": ["Manrope"],
+            "headline-lg": ["Sora"],
+            "display-hero-mobile": ["Sora"],
+            "body-md": ["Manrope"],
+            "headline-lg-mobile": ["Sora"],
+            "body-lg": ["Manrope"],
+            "body-xl": ["Manrope"],
+            "display-hero": ["Sora"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "meta-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "interface-label": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["48px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-xl": ["20px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-hero": ["88px", { "lineHeight": "94px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style>main,section,aside,header{min-width:0}.grid>*{min-width:0}input,textarea,select{max-width:100%;min-width:0}html,body{max-width:100%}</style></head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden selection:bg-primary-fixed selection:text-on-primary-fixed">
+<div class="flex h-screen w-screen overflow-hidden">
+<!-- SideNavBar (from JSON Anchor) -->
+<aside class="docked full-height left-0 w-64 fixed h-screen bg-surface-container-lowest border-r border-outline-variant shadow-sm z-30 flex flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Atelier Brand mark -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-8 h-8 rounded-lg bg-on-surface flex items-center justify-center text-surface-container-lowest font-headline-sm text-headline-sm">
+            E
+          </div>
+<div>
+<h1 class="text-headline-sm font-headline-sm tracking-tight text-on-surface leading-tight">Explainova</h1>
+<p class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider">Studio Bench</p>
+</div>
+</div>
+<!-- CTA action -->
+<button class="w-full py-2.5 px-4 bg-primary text-on-primary rounded-lg font-interface-label text-interface-label shadow-sm hover:bg-primary-container transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+          Create video
+        </button>
+<!-- Navigation Tabs: Projects active -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-primary bg-primary-fixed rounded-lg border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-primary">folder</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-outline">podcasts</span>
+<span>Publishing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-outline">hub</span>
+<span>Connected accounts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-interface-label font-interface-label text-on-surface-variant hover:text-on-surface rounded-lg transition-colors hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-outline">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Footer metadata / utility -->
+<div class="flex flex-col gap-2 pt-4 border-t border-outline-variant/50">
+<a class="flex items-center gap-3 px-3 py-2 text-meta-mono font-meta-mono text-on-surface-variant hover:text-on-surface rounded-lg hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px] text-outline">rate_review</span>
+<span>Feedback</span>
+</a>
+<div class="flex items-center justify-between px-3 py-2 text-meta-mono font-meta-mono text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">cloud_done</span>
+<span>Workspace Status</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<div class="pl-64 flex flex-col flex-1 h-screen overflow-hidden relative">
+<!-- TopNavBar (from JSON Anchor) -->
+<header class="docked full-width top-0 sticky z-20 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex justify-between items-center px-6 py-3 w-full">
+<!-- Breadcrumb / Location -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 text-interface-label font-interface-label text-on-surface-variant font-semibold">
+<span class="hover:text-on-surface transition-colors cursor-pointer">Projects</span>
+<span class="text-outline">/</span>
+<span class="text-on-surface">The science of quiet</span>
+<span class="text-outline">/</span>
+<span class="text-primary font-bold">Storyboard</span>
+</div>
+<span class="px-2 py-0.5 rounded text-meta-mono font-meta-mono bg-surface-container text-outline uppercase tracking-wider">Draft v2.4</span>
+</div>
+<!-- Trailing cluster -->
+<div class="flex items-center gap-4">
+<!-- Live Save State Badge (Context Indicator) -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/40 border border-error/30 text-error">
+<span class="material-symbols-outlined text-[16px] animate-pulse">sync_problem</span>
+<span class="text-meta-mono font-meta-mono text-error font-bold">Autosaved · 14:30 (Local only)</span>
+</div>
+<!-- Notification action -->
+<button class="w-8 h-8 flex items-center justify-center text-outline hover:text-on-surface rounded-full hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary-container rounded-full"></span>
+</button>
+<!-- Avatar -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A dignified high-contrast portrait of an audio documentary essayist in warm natural light, looking calmly toward the drafting monitor, with studio acoustic diffusers softly blurred in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI7zPfYOnw-R8t5cDCOl8Q4bJNsmxeMocRf-zNqcXTp5-zq3C5c6iLNjMIjdIGBTaQ8QmJqtSQlvq501iOzNqr5itt-Qm0FESfjCrI6EsOrlphUs0LLWIZlMg5Z05K5vtO_Oup1vMobaZkecdfGnOytpTltmJ8wBrnJrYPOjFuzw21BSd-FqSaH9aN-GOVXlEiGGHBGfcYUOtRs7031MRkBzB6jlaz6D0HWwT8a06rtmA1mp3X1bpOHmO_Pp7mALpJ3SaGonNup64"/>
+</div>
+<span class="text-interface-label font-interface-label text-on-surface font-semibold text-xs">Elena Vance</span>
+</div>
+</div>
+</header>
+<!-- Sub-toolbar / Kinetic drafting bar -->
+<div class="bg-surface-container-low px-8 py-2.5 border-b border-outline-variant/60 flex items-center justify-between text-meta-mono font-meta-mono text-outline">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-[18px] text-primary">view_timeline</span>
+<span>3 Sequences · Est. 01:24</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="text-outline">Ratio:</span>
+<span class="text-on-surface font-bold">9:16 Vertical (Shorts/Reels)</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="text-outline">Voice Model:</span>
+<span class="text-on-surface">Atelier Neo-Narrator (Archival English)</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-outline">Timeline Scrub:</span>
+<span class="text-on-surface font-bold text-xs bg-surface-container-lowest px-2 py-0.5 rounded border border-outline-variant">00:48 / 01:24</span>
+</div>
+</div>
+<!-- Storyboard Canvas (Workspace Background) -->
+<main class="flex-1 overflow-y-auto px-8 py-8 bg-background relative filter blur-[1.5px] select-none pointer-events-none">
+<div class="max-w-[1240px] mx-auto flex flex-col gap-8 pb-32">
+<!-- Scene 1: Ambient noise detection -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-sm flex gap-6 items-start">
+<div class="flex flex-col gap-2 w-14 shrink-0">
+<span class="text-headline-sm font-headline-sm text-outline">01</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider">0:00 - 0:24</span>
+<span class="px-2 py-0.5 rounded text-meta-mono font-meta-mono bg-tertiary-fixed text-on-tertiary-fixed text-center font-bold">Active</span>
+</div>
+<!-- Preview frame 9:16 -->
+<div class="w-48 h-72 bg-inverse-surface rounded-xl overflow-hidden shrink-0 border border-outline-variant/30 flex flex-col justify-between p-3 relative shadow-inner">
+<div class="flex justify-between items-center z-10">
+<span class="text-meta-mono font-meta-mono text-inverse-on-surface/80 bg-inverse-surface/80 px-1.5 py-0.5 rounded text-[10px]">RAW CUT</span>
+<span class="material-symbols-outlined text-inverse-on-surface text-[14px]">graphic_eq</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-80">
+<div class="w-full px-4 flex items-center justify-center gap-1">
+<div class="h-12 w-1 bg-primary-fixed-dim rounded"></div>
+<div class="h-20 w-1 bg-primary-fixed rounded"></div>
+<div class="h-8 w-1 bg-primary-fixed-dim rounded"></div>
+<div class="h-28 w-1 bg-surface-tint rounded"></div>
+<div class="h-14 w-1 bg-primary-fixed-dim rounded"></div>
+<div class="h-6 w-1 bg-primary-fixed rounded"></div>
+</div>
+</div>
+<div class="z-10 bg-inverse-surface/90 rounded p-1.5 text-meta-mono font-meta-mono text-inverse-on-surface text-[10px]">
+                Vector: Ambient Decibel Heatmap
+              </div>
+</div>
+<!-- Narration Script & Settings -->
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Ambient noise detection</h3>
+<span class="text-meta-mono font-meta-mono text-outline">48 words · 142 WPM</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-4 font-body-md text-body-md text-on-surface">
+                Cities never truly fall silent; they merely shift their acoustic frequency. Before we can produce true silence, we must measure the constant mechanical hum vibrating through our concrete foundations and bedroom windows.
+              </div>
+<div class="flex items-center gap-4 text-meta-mono font-meta-mono text-outline pt-2">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span> Visual Cues Synced</span>
+<span>·</span>
+<span>Camera: Slow Dolly Zoom</span>
+<span>·</span>
+<span>SFX: Low urban rumble (30Hz)</span>
+</div>
+</div>
+</div>
+<!-- Scene 2: Inverted waveform (Conflict focus scene) -->
+<div class="bg-surface-container-lowest border-2 border-primary/40 rounded-2xl p-6 shadow-sm flex gap-6 items-start relative">
+<div class="absolute -top-3 right-6 bg-primary text-on-primary px-3 py-0.5 rounded-full text-meta-mono font-meta-mono text-xs font-bold shadow-sm">
+              Current Tab Edits Pending
+            </div>
+<div class="flex flex-col gap-2 w-14 shrink-0">
+<span class="text-headline-sm font-headline-sm text-primary">02</span>
+<span class="text-meta-mono font-meta-mono text-primary uppercase tracking-wider font-bold">0:24 - 0:53</span>
+<span class="px-2 py-0.5 rounded text-meta-mono font-meta-mono bg-error-container text-on-error-container text-center font-bold">3 Unsaved</span>
+</div>
+<!-- Preview frame 9:16 -->
+<div class="w-48 h-72 bg-inverse-surface rounded-xl overflow-hidden shrink-0 border border-outline-variant/30 flex flex-col justify-between p-3 relative shadow-inner">
+<div class="flex justify-between items-center z-10">
+<span class="text-meta-mono font-meta-mono text-inverse-on-surface/80 bg-inverse-surface/80 px-1.5 py-0.5 rounded text-[10px]">WAVE REVERSE</span>
+<span class="material-symbols-outlined text-secondary-container text-[14px]">tune</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-85">
+<svg class="w-3/4 h-3/4 stroke-primary-fixed" fill="none" stroke-width="2" viewbox="0 0 120 180">
+<path d="M 10 90 Q 35 30 60 90 T 110 90"></path>
+<path class="stroke-secondary-container" d="M 10 90 Q 35 150 60 90 T 110 90" stroke-dasharray="4 4"></path>
+</svg>
+</div>
+<div class="z-10 bg-inverse-surface/90 rounded p-1.5 text-meta-mono font-meta-mono text-inverse-on-surface text-[10px]">
+                180° Anti-Phase Inversion
+              </div>
+</div>
+<!-- Narration Script & Settings -->
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Inverted waveform</h3>
+<span class="text-meta-mono font-meta-mono px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed-variant rounded">Modified locally</span>
+</div>
+<span class="text-meta-mono font-meta-mono text-outline">61 words · 140 WPM</span>
+</div>
+<!-- Textarea with draft marker -->
+<div class="relative">
+<div class="w-full bg-surface-container-lowest border-2 border-primary rounded-xl p-4 font-body-md text-body-md text-on-surface ring-2 ring-primary/10">
+                  By mirroring the incoming air pressure wave exactly 180 degrees out of phase, sound creates its own photographic negative. Peak meets trough. Compression cancels rarefaction. The result is not an absence of energy, but a precise mathematical collision.
+                </div>
+<div class="mt-2 flex items-center justify-between text-meta-mono font-meta-mono">
+<span class="text-primary font-bold">Unsaved draft change: Added 2 sentences on compression physics</span>
+<span class="text-outline">Edited 4 mins ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scene 3: Phase cancellation -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-sm flex gap-6 items-start opacity-75">
+<div class="flex flex-col gap-2 w-14 shrink-0">
+<span class="text-headline-sm font-headline-sm text-outline">03</span>
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider">0:53 - 1:24</span>
+<span class="px-2 py-0.5 rounded text-meta-mono font-meta-mono bg-surface-container text-outline text-center">Queued</span>
+</div>
+<!-- Preview frame 9:16 -->
+<div class="w-48 h-72 bg-inverse-surface rounded-xl overflow-hidden shrink-0 border border-outline-variant/30 flex flex-col justify-between p-3 relative">
+<div class="flex justify-between items-center z-10">
+<span class="text-meta-mono font-meta-mono text-inverse-on-surface/80 bg-inverse-surface/80 px-1.5 py-0.5 rounded text-[10px]">ANechoic chamber</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="h-0.5 w-3/4 bg-tertiary-fixed"></div>
+</div>
+<div class="z-10 bg-inverse-surface/90 rounded p-1.5 text-meta-mono font-meta-mono text-inverse-on-surface text-[10px]">
+                Zero-State Flatline
+              </div>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Phase cancellation</h3>
+<span class="text-meta-mono font-meta-mono text-outline">52 words · 135 WPM</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-4 font-body-md text-body-md text-on-surface">
+                What enters your eardrum is flat equilibrium. Quiet isn't discovered; it is manufactured inside silicon chips at thirty thousand calculations every second.
+              </div>
+</div>
+</div>
+</div>
+</main>
+<!-- Non-Destructive Conflict Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-on-background/35 backdrop-blur-[2px] p-6">
+<div class="w-full max-w-[680px] bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+<!-- Modal Editorial Header -->
+<div class="p-8 pb-6 border-b border-outline-variant/60">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center shrink-0 border border-secondary-container/30 text-secondary">
+<span class="material-symbols-outlined text-[28px] text-secondary">sync_problem</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="text-meta-mono font-meta-mono text-secondary uppercase font-bold tracking-wider">Sync Discrepancy</span>
+<span class="text-outline">·</span>
+<span class="text-meta-mono font-meta-mono text-outline">Session conflict</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-on-surface mt-1 tracking-tight">
+                  This project changed in another tab
+                </h2>
+<p class="text-body-md font-body-md text-on-surface-variant mt-2 leading-relaxed">
+                  A newer version of this storyboard was saved from another browser window or session at 14:32. Your local edits in this tab have not been overwritten.
+                </p>
+</div>
+</div>
+</div>
+<!-- Comparison Summary Bento Strip -->
+<div class="px-8 py-6 bg-surface-container-low/60 flex flex-col gap-4">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider font-semibold">
+              Comparison summary
+            </span>
+<div class="grid grid-cols-2 gap-4">
+<!-- Card 1: Your local draft -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded-xl p-4.5 shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-primary font-bold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                      Your local draft
+                    </span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Unsaved</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface mt-1">
+                    Contains <span class="font-bold text-on-surface">3 unsaved edits</span> in Scene 2 narration text.
+                  </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between text-meta-mono font-meta-mono text-outline text-xs">
+<span>Scene 2: Inverted waveform</span>
+<span class="text-primary font-semibold">Ready to commit</span>
+</div>
+</div>
+<!-- Card 2: Saved version in other tab -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4.5 shadow-sm flex flex-col justify-between">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-interface-label font-interface-label text-on-surface font-bold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+                      Saved version in other tab
+                    </span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">14:32</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface mt-1">
+                    Contains updated <span class="font-bold text-on-surface">audio timing (0:53)</span>.
+                  </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/40 flex items-center justify-between text-meta-mono font-meta-mono text-outline text-xs">
+<span>Scene 2 boundary edit</span>
+<span class="text-on-surface-variant font-semibold">Stored remotely</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Buttons -->
+<div class="p-8 pt-5 bg-surface-container-lowest border-t border-outline-variant/60 flex items-center justify-between">
+<div class="flex items-center gap-2 text-meta-mono font-meta-mono text-outline">
+<span class="material-symbols-outlined text-[16px] text-tertiary">lock_reset</span>
+<span>No work will be discarded automatically</span>
+</div>
+<div class="flex items-center gap-3">
+<!-- Secondary Action -->
+<button class="px-5 py-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface text-interface-label font-interface-label transition-all flex items-center gap-2 shadow-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">splitscreen</span>
+                Review latest version
+              </button>
+<!-- Primary Action -->
+<button class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-interface-label font-interface-label transition-all shadow-md flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                Keep my draft
+              </button>
+</div>
+</div>
+<!-- Annotated UI Save Indicators Panel (Embedded studio state benchmark) -->
+<div class="bg-surface-container px-8 py-4 border-t border-outline-variant flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-meta-mono font-meta-mono text-outline uppercase tracking-wider text-[11px]">
+                Explainer save indicators:
+              </span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">System reference</span>
+</div>
+<div class="grid grid-cols-3 gap-3 pt-1">
+<!-- State 1: Saved -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2 rounded-lg border border-outline-variant/50">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary-container shrink-0"></div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-on-surface text-xs font-bold leading-tight">Saved</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Saved just now</span>
+</div>
+</div>
+<!-- State 2: Saving -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2 rounded-lg border border-outline-variant/50">
+<div class="w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full animate-spin shrink-0"></div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-primary text-xs font-bold leading-tight">Saving</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Saving changes...</span>
+</div>
+</div>
+<!-- State 3: Offline-unsaved -->
+<div class="flex items-center gap-2.5 bg-surface-container-lowest px-3 py-2 rounded-lg border border-secondary-container/40">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-container shrink-0"></div>
+<div class="flex flex-col">
+<span class="text-interface-label font-interface-label text-secondary text-xs font-bold leading-tight">Offline-unsaved</span>
+<span class="text-meta-mono font-meta-mono text-outline text-[11px]">Stored locally</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>
