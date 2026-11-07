@@ -5,6 +5,12 @@ test('lifecycle commands require a revision with room for a transition',()=>{
  assert.deepEqual(lifecycleProjectInput({expectedRevision:2147483646}),{expectedRevision:2147483646});
  for(const value of [{},{expectedRevision:'1'},{expectedRevision:0},{expectedRevision:1.5},{expectedRevision:2147483647},{expectedRevision:1,ownerId:'other'},{expectedRevision:1,deletedAt:null},null,[]])assert.throws(()=>lifecycleProjectInput(value));
 });
+test('draft preference inputs accept supported selections without injecting defaults into legacy requests',()=>{
+ assert.equal('settings' in projectInput({}),false);
+ assert.deepEqual(projectInput({settings:{voice:'male'}}).settings,{voice:'male'});
+ assert.deepEqual(projectInput({expectedRevision:2,settings:{voice:'female'}},true),{expectedRevision:2,settings:{voice:'female'}});
+ for(const settings of [null,[],{voice:'neutral'},{voiceId:'paid-id'},{voice:1},{captions:false},{captions:'true'},{theme:'arbitrary'},{ownerId:'other'}])assert.throws(()=>projectInput({settings}));
+});
 test('active and Trash cursor fingerprints cannot be mixed',()=>{
  const project={id:'11111111-1111-4111-8111-111111111111',updatedAt:'2026-11-07T10:20:30.123456Z'};
  const trash=makeProjectCursor(project,'trash');assert.equal(parseProjectCursor(trash,'trash')?.filter,'trash-v1');assert.throws(()=>parseProjectCursor(trash));

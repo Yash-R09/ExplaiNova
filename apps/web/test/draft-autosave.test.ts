@@ -4,7 +4,7 @@ import {setTimeout as delay,setImmediate as turn} from 'node:timers/promises';
 import {DraftAutosave} from '../src/lib/draft-autosave.ts';
 import type {IdeaProject} from '../src/lib/project-contract.ts';
 
-const project:IdeaProject={id:'11111111-1111-4111-8111-111111111111',title:'First',brief:'Original',referenceText:'',revision:1,targetDurationMs:60000,audienceLevel:'beginner',tone:'clear',settings:{},status:'draft',createdAt:'2026-11-07T00:00:00Z',updatedAt:'2026-11-07T00:00:00Z'};
+const project:IdeaProject={id:'11111111-1111-4111-8111-111111111111',title:'First',brief:'Original',referenceText:'',revision:1,targetDurationMs:60000,audienceLevel:'beginner',tone:'clear',settings:{voice:'female',captions:true,theme:'topic'},status:'draft',createdAt:'2026-11-07T00:00:00Z',updatedAt:'2026-11-07T00:00:00Z'};
 class MemoryStorage{
   items=new Map<string,string>();get length(){return this.items.size;}
   key(i:number){return [...this.items.keys()][i]??null;}getItem(k:string){return this.items.get(k)??null;}
@@ -146,4 +146,45 @@ test('failed replacement storage leaves the original recovered copy available',(
 test('a malformed success acknowledgement cannot mark unpersisted text saved',async()=>{
  const {instance,storage}=editor({transport:async()=>reply(200,{data:project})});instance.change({brief:'Must persist'});await instance.flush();
  assert.equal(instance.view().status,'error');assert.equal(instance.view().dirty,true);assert.equal(instance.view().fields.brief,'Must persist');assert.ok(JSON.parse([...storage.items.values()][0]).operation);
+});
+test('preference-only edits save with text, and later text changes retain those preferences',async()=>{
+ const {instance,api}=editor();instance.change({targetDurationMs:90000,audienceLevel:'advanced',tone:'direct',settings:{voice:'male',captions:true,theme:'topic'}});
+ assert.equal(instance.view().dirty,true);await instance.flush();assert.equal(api.saved.settings.voice,'male');assert.equal(api.saved.targetDurationMs,90000);assert.equal(api.saved.brief,'Original');
+ instance.change({brief:'New text'});await instance.flush();assert.equal(api.saved.settings.voice,'male');assert.equal(api.saved.audienceLevel,'advanced');assert.equal(instance.view().status,'saved');
+});
+test('changing preferences during a save retains the newer selection for the next revision',async()=>{
+ const api=backend();let release!:()=>void;const gate=new Promise<void>(r=>release=r);
+ const {instance}=editor({transport:async(u,o)=>{await gate;return api.send(u,o);}});
+ instance.change({targetDurationMs:30000,settings:{voice:'male',captions:true,theme:'topic'}});const first=instance.flush();
+ instance.change({targetDurationMs:90000,settings:{voice:'female',captions:true,theme:'topic'}});release();await first;
+ assert.equal(instance.view().fields.targetDurationMs,90000);assert.equal(instance.view().fields.settings.voice,'female');assert.equal(instance.view().dirty,true);
+ await instance.flush();assert.equal(api.saved.targetDurationMs,90000);assert.equal(api.saved.settings.voice,'female');assert.equal(api.saved.revision,3);
+});
+test('preference-only pending copies are independently recoverable',async()=>{
+ const storage=new MemoryStorage(),api=backend(),{instance:a}=editor({storage,online:false,transport:api.send}),{instance:b}=editor({storage,online:false,transport:api.send});
+ a.change({targetDurationMs:30000});b.change({targetDurationMs:90000,settings:{voice:'male',captions:true,theme:'topic'}});a.dispose();b.dispose();
+ const {instance:reopened}=editor({storage,transport:api.send});assert.equal(reopened.view().recoveries.length,2);
+ const selected=reopened.view().recoveries.find(r=>r.backup.fields.targetDurationMs===90000)!;reopened.restore(selected.key);await reopened.flush();assert.equal(api.saved.targetDurationMs,90000);assert.equal(api.saved.settings.voice,'male');assert.equal(storage.length,1);
+});
+test('preference conflicts expose the saved selection before explicit resolution',async()=>{
+ const api=backend(),{instance}=editor({transport:api.send});instance.change({settings:{voice:'male',captions:true,theme:'topic'}});api.advance();await instance.flush();await instance.compare();
+ assert.equal(instance.view().remote?.settings.voice,'female');assert.equal(instance.view().fields.settings.voice,'male');instance.resolve('remote');assert.equal(instance.view().fields.settings.voice,'female');assert.equal(instance.view().dirty,false);
+});
+test('legacy text-only recovery inherits saved preferences and identifies that limitation',async()=>{
+ const storage=new MemoryStorage(),saved={...project,targetDurationMs:90000,settings:{voice:'male' as const,captions:true as const,theme:'topic' as const}};
+ storage.setItem(`explainova:idea:v1:alice:${project.id}:old`,JSON.stringify({schema:1,ownerId:'alice',projectId:project.id,revision:1,fields:{title:'First',brief:'Legacy text',referenceText:''},operation:null,updatedAt:new Date().toISOString()}));
+ const api=backend(),{instance}=editor({project:saved,storage,transport:api.send});const recovery=instance.view().recoveries[0];assert.equal(recovery.backup.legacyTextOnly,true);instance.restore(recovery.key);
+ assert.equal(instance.view().fields.settings.voice,'male');await instance.flush();assert.equal(api.saved.brief,'Legacy text');assert.equal(api.saved.targetDurationMs,90000);
+});
+test('legacy uncertain requests retain their exact body across migration and another reopening',async()=>{
+ const api=backend(),storage=new MemoryStorage(),key='legacy-operation-key-0001',fields={title:'First',brief:'Legacy committed',referenceText:''},body=JSON.stringify({expectedRevision:1,...fields});
+ await api.send('/unused',{method:'PATCH',headers:{'Idempotency-Key':key},body});
+ storage.setItem(`explainova:idea:v1:alice:${project.id}:old`,JSON.stringify({schema:1,ownerId:'alice',projectId:project.id,revision:1,fields:{...fields,brief:'Newer local text'},operation:{key,revision:1,fields},updatedAt:new Date().toISOString()}));
+ const {instance:first}=editor({project:api.saved,storage,online:false,transport:api.send});first.restore(first.view().recoveries[0].key);first.change({targetDurationMs:30000,settings:{voice:'male',captions:true,theme:'topic'}});first.dispose();
+ const {instance:second}=editor({project:api.saved,storage,transport:api.send});second.restore(second.view().recoveries[0].key);await second.flush();assert.deepEqual(api.calls[1],api.calls[0]);assert.equal(second.view().fields.settings.voice,'male');assert.equal(second.view().fields.brief,'Newer local text');
+ await second.flush();assert.equal(api.saved.revision,3);assert.equal(api.saved.targetDurationMs,30000);assert.equal(storage.length,0);
+});
+test('recovery rejects unsupported preference values and view snapshots do not expose mutable settings',()=>{
+ const storage=new MemoryStorage();storage.setItem(`explainova:idea:v1:alice:${project.id}:bad`,JSON.stringify({schema:2,ownerId:'alice',projectId:project.id,revision:1,fields:{...project,settings:{voice:'paid-id',captions:true,theme:'topic'}},operation:null,updatedAt:new Date().toISOString()}));
+ const {instance}=editor({storage});assert.equal(instance.view().recoveries.length,0);const view=instance.view();view.fields.settings.voice='male';assert.equal(instance.view().fields.settings.voice,'female');assert.equal(instance.view().dirty,false);
 });

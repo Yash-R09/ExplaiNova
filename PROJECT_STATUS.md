@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3c2 implemented — reversible draft Trash and restoration**
+Last updated: November 7, 2026 · Current milestone: **M3c3 implemented — editable draft preferences**
 
 ## Working agreement
 
@@ -21,7 +21,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M3b implementation):** debounced serialized autosave, editable fields during requests, owner/project-scoped local pending copies, explicit recovery, bounded idempotent retries, offline/reconnect handling, and explicit two-version conflict resolution. QA-04 (notes omitted from previews) was fixed in M3c1 and independently retested/closed. Source/security review remains pending. See [M3c1 QA report](QA_M3C_REVIEW.md).
 - **Complete (M3c1 implementation):** Duplicate draft from the library creates an independent revision-1 copy of saved creative inputs. Owned transactional copy, stale-source protection, safe idempotent retries and Unicode-safe title prefixing are implemented.
 - **Complete (M3c2 implementation):** confirmed Move to Trash, private paginated Trash, one-click restoration, preserved saved content/history, revision fencing across lifecycle transitions, and idempotent lifecycle commands. [Independent QA](QA_M3C2_REVIEW.md) passed within its scope with no new defects; separate source/security review remains pending.
-- **Not implemented in the SaaS app:** editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
+- **Complete (M3c3 implementation):** per-draft 30/60/90s, audience, tone and male/female narration preference, saved through autosave/recovery/conflicts and retained by duplication/Trash. Captions included and topic-adaptive 2D visuals are fixed V1 requirements. [Independent QA](QA_M3C3_REVIEW.md) passed within its scope with no new defects; source/security review remains pending. Named voice selection/preview and account-wide defaults remain later work.
+- **Not implemented in the SaaS app:** title search, provider calls, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -30,7 +31,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b/M3c1/M3c2 implemented; editable preferences next |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | M3a–M3c3 implemented; title search remains |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -54,6 +55,24 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M3c3 QA — November 7, 2026
+
+- Tested uncommitted preferences against `1aa7f8e`; [independent QA report](QA_M3C3_REVIEW.md). No new reproducible defects found within tested scope; no source fixes made.
+- Passed browser preference selection/save/reload, preference-only stale-tab conflict, saved-settings comparison and explicit saved-version choice. Distinct local preference copies were visible before recovery; restored 30s/male selections saved and survived clean reload.
+- Mobile expanded controls passed visual inspection at actual 390 × 844 without horizontal overflow; basic label/keyboard checks passed. Broader accessibility/device/source-security review remains pending.
+- Passed 46 app unit tests, 13 prototype tests, 164 PostgreSQL tests, 42 preference assertions, 124 project assertions, 109 Trash assertions and 10 session checks (**508 total**), schema lint, production build, strict typecheck and whitespace validation.
+- Removed disposable browser/integration fixtures, discarded remaining listed QA recovery copy, reset viewport and stopped owned app/Supabase services with volumes retained. No provider calls or publication. Commit and push reviewed M3c3/QA changes to `dev` when approved.
+
+### M3c3 — Editable draft preferences · November 7, 2026
+
+- Added optional collapsed Video preferences inside the existing idea editor: target 30/60/90 seconds, beginner/intermediate/advanced audience, clear/conversational/direct tone, and male/female narration preference. Uses existing autosave and Save now; no new workflow step. Captions and topic-adaptive 2D visuals stay included. Voice type is explicitly a preference; no named provider voice/sample or generation is represented as available.
+- API/SQL accept strict partial settings `{voice,captions,theme}` with only male/female, true, topic respectively. Partial updates retain existing settings. Text-only edits no longer reset a chosen voice. New revision content hashes include normalized settings; existing immutable snapshots are untouched. Duplicates and Trash/restore retain preferences.
+- Autosave/dirty detection, queued acknowledgements, pending copies and conflict comparisons now include all preferences. Recovery cards show settings before choosing. New local backup schema 2 retains the owner/project key scope and reads schema-1 text-only copies, marking inherited settings clearly. Legacy uncertain requests preserve their original text-only body/key across another reopen before newer edits/preferences queue. No-settings create commands preserve their pre-migration request hash, keeping existing idempotency retries compatible.
+- **Checks:** 164 PostgreSQL tests (31 new preference cases), clean DB lint, 46 app unit tests (8 new), 42 real preference HTTP assertions, 124 project assertions, 109 Trash assertions, 10 session checks, 13 prototype tests, production build and strict typecheck passed. Whitespace check passed. Existing project race may produce one extra assertion by lock order.
+- Browser: selected all controls, autosaved and reloaded; stale preference-only change paused and comparison showed actual saved selections; explicit saved-version choice worked. Reopening two copies with identical title/idea but different length/voice showed distinct summaries, and restoring 30s/male saved and survived reload. Desktop 1280px and mobile 390px controls showed no horizontal overflow; screenshots inspected under `design/qa/m3c3/`. Full accessibility/device audit remains pending.
+- Local migration `20261107000400_draft_preferences.sql` applied; DB types regenerated (public signatures unchanged). Started Docker Desktop in background because it was stopped. Disposable test identities/projects/local recovery copies cleaned up, owned app/Supabase stopped with volumes retained. No provider calls, paid voice selection, rendering, cloud publishing or root prototype changes.
+- Independent review/QA pending: [handoff](QA_M3C3_HANDOFF.md). Changes remain uncommitted. PRD §7.2 also requires title search; this is now explicit as M3d rather than marking the entire library milestone complete prematurely. After that, proceed to M4 AI planning in small slices.
 
 ### Independent M3c2 QA — November 7, 2026
 
@@ -246,7 +265,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: complete remaining source/security review using [QA_M3C2_HANDOFF.md](QA_M3C2_HANDOFF.md), then **M3c3 — editable draft preferences**. Keep M4 AI brainstorming/storyboard generation separate. [Independent M3c2 QA](QA_M3C2_REVIEW.md) records 427 passing tests/assertions and no new reproducible defects within its scope. Earlier security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
+Next: complete remaining source/security review using [QA_M3C3_HANDOFF.md](QA_M3C3_HANDOFF.md), then **M3d — title search** from approved PRD §7.2. [Independent M3c3 QA](QA_M3C3_REVIEW.md) records 508 passing tests/assertions and no new reproducible defects within its scope. Active/Trash provide the currently relevant status views; generation-state filters arrive with those states. Keep M4 AI brainstorming/storyboard generation separate. Account-wide defaults and named free-tier voice catalog/samples remain later work. Earlier security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -262,6 +281,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Founder approved committing/pushing M3c3 and its independent QA report/evidence to `dev`. Independent QA reported 508 passing tests/assertions and no new defects. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
+
+- November 7, 2026: Implemented M3c3 editable draft preferences with autosave/recovery and legacy request compatibility. Recorded approved title search explicitly as M3d before completing the private-library milestone. No live voice/provider calls.
 
 - November 7, 2026: Founder approved committing/pushing M3c2 and its independent QA report/evidence to `dev`. Independent QA reported 427 passing tests/assertions and no new defects. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
 

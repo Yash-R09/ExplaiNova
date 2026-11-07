@@ -1,6 +1,7 @@
+import {validSettingsPatch,validPreferences,type DraftSettings} from './draft-preferences.ts';
 export type IdeaProject = {
   id: string; title: string; revision: number; brief: string; referenceText: string;
-  targetDurationMs: number; audienceLevel: string; tone: string; settings: Record<string, unknown>;
+  targetDurationMs: number; audienceLevel: string; tone: string; settings: DraftSettings;
   status: 'draft'; createdAt: string; updatedAt: string;
 };
 export type TrashedProject={id:string;title:string;revision:number;deletedAt:string;updatedAt:string};
@@ -14,10 +15,10 @@ export function projectId(value: unknown) {
   if(typeof value!=='string'||!uuidPattern.test(value))throw new ProjectError('VALIDATION_FAILED',400,'Invalid project identifier.');
   return value;
 }
-export function projectInput(value: unknown, patch=false): Record<string,string|number> {
+export function projectInput(value: unknown, patch=false): Record<string,string|number|Partial<DraftSettings>> {
   const fail=()=>{throw new ProjectError('VALIDATION_FAILED',422,'Check the title, idea, notes, and video settings.');};
   if(!value||typeof value!=='object'||Array.isArray(value))return fail();
-  const input=value as Record<string,unknown>,keys=['title','brief','referenceText','targetDurationMs','audienceLevel','tone'];
+  const input=value as Record<string,unknown>,keys=['title','brief','referenceText','targetDurationMs','audienceLevel','tone','settings'];
   if(Object.keys(input).some(key=>!keys.includes(key)&&!(patch&&key==='expectedRevision')))return fail();
   if(patch&&(!Number.isInteger(input.expectedRevision)||Number(input.expectedRevision)<1||Number(input.expectedRevision)>2147483646||Object.keys(input).length<2))return fail();
   const result:Record<string,unknown>=patch?{...input}:{title:'Untitled idea',brief:'',referenceText:'',targetDurationMs:60000,audienceLevel:'beginner',tone:'clear',...input};
@@ -27,7 +28,8 @@ export function projectInput(value: unknown, patch=false): Record<string,string|
   if('targetDurationMs' in result&&![30000,60000,90000].includes(result.targetDurationMs as number))return fail();
   if('audienceLevel' in result&&!['beginner','intermediate','advanced'].includes(result.audienceLevel as string))return fail();
   if('tone' in result&&!['clear','conversational','direct'].includes(result.tone as string))return fail();
-  return result as Record<string,string|number>;
+  if('settings' in result&&!validSettingsPatch(result.settings))return fail();
+  return result as Record<string,string|number|Partial<DraftSettings>>;
 }
 export function commandKey(value: string|null){
   if(!value||!/^[A-Za-z0-9_-]{16,128}$/.test(value))throw new ProjectError('VALIDATION_FAILED',400,'A valid Idempotency-Key is required.');
@@ -60,6 +62,6 @@ export function asTrashedProject(value:unknown):TrashedProject{
 }
 export function asIdeaProject(value: unknown): IdeaProject {
   const p=value as IdeaProject;
-  if(!p||!uuidPattern.test(p.id)||!Number.isInteger(p.revision)||typeof p.title!=='string'||typeof p.brief!=='string'||typeof p.referenceText!=='string'||typeof p.updatedAt!=='string')throw new ProjectError('TEMPORARILY_UNAVAILABLE',503,'The draft could not be loaded. Please try again.');
+  if(!p||!uuidPattern.test(p.id)||!Number.isInteger(p.revision)||typeof p.title!=='string'||typeof p.brief!=='string'||typeof p.referenceText!=='string'||typeof p.updatedAt!=='string'||!validPreferences(p))throw new ProjectError('TEMPORARILY_UNAVAILABLE',503,'The draft could not be loaded. Please try again.');
   return p;
 }

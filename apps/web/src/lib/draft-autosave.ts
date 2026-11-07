@@ -1,8 +1,10 @@
 import type { IdeaProject } from './project-contract';
+import {copyPreferences,validPreferences,type DraftPreferences} from './draft-preferences.ts';
 
-export type DraftFields = { title:string; brief:string; referenceText:string };
-type Operation = { key:string; revision:number; fields:DraftFields };
-type Backup = { schema:1; ownerId:string; projectId:string; revision:number; fields:DraftFields; operation:Operation|null; updatedAt:string };
+type TextFields={ title:string; brief:string; referenceText:string };
+export type DraftFields = TextFields & DraftPreferences;
+type Operation = {key:string;revision:number} & ({fields:DraftFields;legacy?:false}|{fields:TextFields;legacy:true});
+type Backup = { schema:2; ownerId:string; projectId:string; revision:number; fields:DraftFields; operation:Operation|null; updatedAt:string; legacyTextOnly?:boolean };
 export type Recovery = { key:string; raw:string; backup:Backup };
 type StoragePort = Pick<Storage,'length'|'key'|'getItem'|'setItem'|'removeItem'>;
 type Reply = { ok:boolean; status:number; json():Promise<unknown> };
@@ -12,21 +14,29 @@ export type AutosaveView = {
   status:'saved'|'pending'|'saving'|'offline'|'error'|'conflict'|'recovery';
   message:string; storageWarning:boolean; recoveries:Recovery[]; remote:IdeaProject|null; comparing:boolean;
 };
-const fieldsOf=(p:DraftFields):DraftFields=>({title:p.title,brief:p.brief,referenceText:p.referenceText});
-const equal=(a:DraftFields,b:DraftFields)=>a.title===b.title&&a.brief===b.brief&&a.referenceText===b.referenceText;
-function validFields(value:unknown):value is DraftFields {
+const textFieldsOf=(p:TextFields):TextFields=>({title:p.title,brief:p.brief,referenceText:p.referenceText});
+const fieldsOf=(p:DraftFields):DraftFields=>({...textFieldsOf(p),...copyPreferences(p)});
+const equalText=(a:TextFields,b:TextFields)=>a.title===b.title&&a.brief===b.brief&&a.referenceText===b.referenceText;
+const equal=(a:DraftFields,b:DraftFields)=>equalText(a,b)&&a.targetDurationMs===b.targetDurationMs&&a.audienceLevel===b.audienceLevel&&a.tone===b.tone&&a.settings.voice===b.settings.voice&&a.settings.captions===b.settings.captions&&a.settings.theme===b.settings.theme;
+function validText(value:unknown):value is TextFields {
   if(!value||typeof value!=='object')return false;
-  const p=value as DraftFields;
+  const p=value as TextFields;
   return typeof p.title==='string'&&p.title.length<=140&&typeof p.brief==='string'&&p.brief.length<=6000&&typeof p.referenceText==='string'&&p.referenceText.length<=20000;
 }
+function validFields(value:unknown):value is DraftFields{return validText(value)&&validPreferences(value);}
 function validRevision(value:unknown):value is number{return Number.isInteger(value)&&Number(value)>0&&Number(value)<=2147483647;}
-function readBackup(raw:string,ownerId:string,projectId:string):Backup|null {
+function readBackup(raw:string,ownerId:string,projectId:string,fallback:DraftPreferences):Backup|null {
   try{
     if(raw.length>150000)return null;
-    const b=JSON.parse(raw) as Backup;
-    if(b.schema!==1||b.ownerId!==ownerId||b.projectId!==projectId||!validRevision(b.revision)||!validFields(b.fields)||typeof b.updatedAt!=='string'||!Number.isFinite(Date.parse(b.updatedAt)))return null;
-    if(b.operation!==null&&(!b.operation||!validRevision(b.operation.revision)||typeof b.operation.key!=='string'||!/^[A-Za-z0-9_-]{16,128}$/.test(b.operation.key)||!validFields(b.operation.fields)))return null;
-    return b;
+    const b=JSON.parse(raw);
+    if(!b||![1,2].includes(b.schema)||b.ownerId!==ownerId||b.projectId!==projectId||!validRevision(b.revision)||!(b.schema===1?validText(b.fields):validFields(b.fields))||typeof b.updatedAt!=='string'||!Number.isFinite(Date.parse(b.updatedAt)))return null;
+    let operation:Operation|null=null;
+    if(b.operation!==null){
+      const o=b.operation;if(!o||!validRevision(o.revision)||typeof o.key!=='string'||!/^[A-Za-z0-9_-]{16,128}$/.test(o.key))return null;
+      if(b.schema===1||o.legacy===true){if(!validText(o.fields))return null;operation={key:o.key,revision:o.revision,fields:textFieldsOf(o.fields),legacy:true};}
+      else{if(!validFields(o.fields))return null;operation={key:o.key,revision:o.revision,fields:fieldsOf(o.fields)};}
+    }
+    return {schema:2,ownerId,projectId,revision:b.revision,fields:b.schema===1?{...textFieldsOf(b.fields),...copyPreferences(fallback)}:fieldsOf(b.fields),operation,updatedAt:b.updatedAt,legacyTextOnly:b.schema===1||b.legacyTextOnly===true};
   }catch{return null;}
 }
 
@@ -66,7 +76,7 @@ export class DraftAutosave {
       if(this.storage)for(let i=0;i<this.storage.length;i++){
         const key=this.storage.key(i);if(!key?.startsWith(this.prefix))continue;
         const raw=this.storage.getItem(key);if(!raw)continue;
-        const backup=readBackup(raw,this.ownerId,this.project.id);if(!backup)continue;
+        const backup=readBackup(raw,this.ownerId,this.project.id,this.project);if(!backup)continue;
         if(!backup.operation&&backup.revision===this.project.revision&&equal(backup.fields,this.baseline))continue;
         this.recoveries.push({key,raw,backup});
       }
@@ -74,7 +84,7 @@ export class DraftAutosave {
     this.recoveries.sort((a,b)=>b.backup.updatedAt.localeCompare(a.backup.updatedAt));
     if(this.recoveries.length)this.status='recovery';
   }
-  view():AutosaveView{return {fields:{...this.fields},revision:this.project.revision,dirty:!!this.operation||!equal(this.fields,this.baseline),status:this.status,message:this.message,storageWarning:this.storageWarning,recoveries:this.recoveries,remote:this.remote,comparing:this.comparing};}
+  view():AutosaveView{return {fields:fieldsOf(this.fields),revision:this.project.revision,dirty:!!this.operation||!equal(this.fields,this.baseline),status:this.status,message:this.message,storageWarning:this.storageWarning,recoveries:this.recoveries,remote:this.remote,comparing:this.comparing};}
   private emit(){if(!this.disposed)this.notify(this.view());}
   private cancel(){if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
   private schedule(ms=this.debounceMs){this.cancel();if(!this.disposed)this.timer=setTimeout(()=>void this.flush(),ms);}
@@ -83,7 +93,7 @@ export class DraftAutosave {
     try{
       if(!this.storage){this.storageWarning=true;return;}
       if(!this.view().dirty){this.storage.removeItem(this.backupKey);if(this.restored){this.removeUnchanged(this.restored);this.restored=null;}return;}
-      const backup:Backup={schema:1,ownerId:this.ownerId,projectId:this.project.id,revision:this.project.revision,fields:this.fields,operation:this.operation,updatedAt:new Date().toISOString()};
+      const backup:Backup={schema:2,ownerId:this.ownerId,projectId:this.project.id,revision:this.project.revision,fields:this.fields,operation:this.operation,updatedAt:new Date().toISOString()};
       this.storage.setItem(this.backupKey,JSON.stringify(backup));
       // Retire a recovered source only after its replacement is durable.
       if(this.restored){this.removeUnchanged(this.restored);this.restored=null;}
@@ -103,7 +113,7 @@ export class DraftAutosave {
   }
   restore(key:string){
     const source=this.recoveries.find(item=>item.key===key);if(!source||this.status!=='recovery')return;
-    this.restored=source;this.fields={...source.backup.fields};this.operation=source.backup.operation;
+    this.restored=source;this.fields=fieldsOf(source.backup.fields);this.operation=source.backup.operation;
     const changed=source.backup.revision!==this.project.revision;
     // Keep the original base revision in subsequent backups until comparison.
     this.project={...this.project,revision:source.backup.revision};
@@ -121,7 +131,7 @@ export class DraftAutosave {
     if(!this.online){this.status='offline';this.persist();this.emit();return;}
     if(!this.operation){
       if(!this.fields.title.trim()){this.status='error';this.message='Add a draft title to resume autosave.';this.emit();return;}
-      this.operation={key:crypto.randomUUID(),revision:this.project.revision,fields:{...this.fields}};
+      this.operation={key:crypto.randomUUID(),revision:this.project.revision,fields:fieldsOf(this.fields)};
     }
     const operation=this.operation;this.busy=true;this.status='saving';this.message='';this.persist();this.emit();
     this.abort=new AbortController();const timeout=setTimeout(()=>this.abort?.abort(),30000);
@@ -134,9 +144,10 @@ export class DraftAutosave {
         throw Error('The draft service is unavailable.');
       }
       const saved=result.data;
-      if(!saved||saved.id!==this.project.id||saved.revision!==operation.revision+1||!validRevision(saved.revision)||!validFields(saved)||!equal(fieldsOf(saved),{...operation.fields,title:operation.fields.title.trim()}))throw Error('The save could not be confirmed.');
+      if(!saved||saved.id!==this.project.id||saved.revision!==operation.revision+1||!validRevision(saved.revision)||!validFields(saved)||!(operation.legacy?equalText(saved,{...operation.fields,title:operation.fields.title.trim()}):equal(saved,{...operation.fields,title:operation.fields.title.trim()})))throw Error('The save could not be confirmed.');
       // A response acknowledges its snapshot, never keystrokes typed after it.
-      if(equal(this.fields,operation.fields))this.fields=fieldsOf(saved);
+      if(operation.legacy){if(equalText(this.fields,operation.fields))this.fields={...this.fields,...textFieldsOf(saved)};}
+      else if(equal(this.fields,operation.fields))this.fields=fieldsOf(saved);
       this.project=saved;this.baseline=fieldsOf(saved);this.operation=null;this.retries=0;this.remote=null;
       this.status=this.view().dirty?'pending':'saved';this.persist();
     }catch{
@@ -163,7 +174,7 @@ export class DraftAutosave {
   resolve(choice:'remote'|'local'){
     if(!this.remote||this.comparing||this.status!=='conflict')return;
     this.project=this.remote;this.baseline=fieldsOf(this.remote);this.operation=null;this.remote=null;this.message='';this.retries=0;
-    if(choice==='remote')this.fields={...this.baseline};
+    if(choice==='remote')this.fields=fieldsOf(this.baseline);
     this.status=this.view().dirty?(this.online?'pending':'offline'):'saved';this.persist();this.emit();
     if(this.status==='pending')void this.flush();
   }
