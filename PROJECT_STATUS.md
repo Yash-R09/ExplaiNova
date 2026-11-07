@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3a implemented — private idea draft library and manual saving**
+Last updated: November 7, 2026 · Current milestone: **M3b implemented — autosave and pending-edit recovery**
 
 ## Working agreement
 
@@ -18,7 +18,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M2c):** signup, check-email/resend, explicit email confirmation, safe invalid/expired/reused-link handling, and the shared temporary-outage error fix (QA-03).
 - **Complete (M2d implementation):** forgot/reset-password UI, local recovery mail, isolated token-bound reset action, invalid/expired/reused-link handling, and session revocation after success. Independent scoped QA passed; separate source/security review remains pending.
 - **Complete (M3a implementation):** private persisted idea drafts, create/reopen/rename, idea/reference text, acknowledged manual saves, revision history, paginated library, and transactional conflict/idempotency protection. Proceeded at the founder's request while the separate auth source/security review remains pending.
-- **Not implemented in the SaaS app:** autosave/offline draft recovery, duplicate/delete, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M3b implementation):** debounced serialized autosave, editable fields during requests, owner/project-scoped local pending copies, explicit recovery, bounded idempotent retries, offline/reconnect handling, and explicit two-version conflict resolution. Independent QA records 131 passing tests/assertions and one open P3 (QA-04: recovery previews omit reference notes); source/security review remains pending. See [QA report](QA_M3B_REVIEW.md).
+- **Not implemented in the SaaS app:** duplicate/delete, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -27,7 +28,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a implemented; autosave and remaining draft operations follow |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b implemented; duplicate/delete/preferences follow |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -51,6 +52,25 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M3b QA — November 7, 2026
+
+- Tested uncommitted autosave/recovery against `97a42e1`; [independent QA report](QA_M3B_REVIEW.md). Found **QA-04 (P3)**: recovery cards omit pending reference notes, so copies differing only in notes cannot be meaningfully previewed before restoration. Notes themselves were retained; no source fix made.
+- Passed browser typing during delayed PATCH, lost successful response with newer typing, explicit reopening recovery/replay, persisted latest content, separate pending copies, two-tab conflict comparison and explicit keep-local resolution. Final fixture revisions were 1–8 without duplicate replay revisions.
+- Ctrl-click preserved the source editor and the subsequent ordinary-link warning remained active. Native dialog cancellation was inconclusive. Mobile override did not change the measured viewport; mobile remains unverified in this pass.
+- Passed 35 app unit tests, 73 project HTTP assertions, 10 session checks and 13 prototype regressions (**131 total**), production build, typecheck and whitespace validation. Database tests/lint not rerun: schema unchanged.
+- Removed disposable identity/project/revisions/profile, discarded listed QA recovery copies, reset viewport and stopped owned app/proxy/Supabase services with volumes retained. No provider calls or publication.
+- Next: fix/retest QA-04 and finish outstanding source/mobile/browser checks. Commit and push the reviewed M3b slice and QA evidence to `dev` when approved.
+
+### M3b — Autosave and pending-edit recovery · November 7, 2026
+
+- Title, idea and reference notes autosave after 900ms idle, with Save now available. One mutation at a time; newer keystrokes remain editable and queue behind the acknowledged snapshot. Saved appears only for confirmed current content. Reverting during a request still queues a compensating save if necessary.
+- Each editor mount uses an independent localStorage record under its authenticated owner/project. Local text and uncertain operation key/body/base revision survive reopening. Recovery requires an explicit restore/discard choice before autosave proceeds. Invalid/mismatched records are ignored. No credentials are stored. A replacement must be written before retiring the recovered source; quota/unavailable storage produces a warning.
+- Network/5xx/invalid-response failures retain the original operation for exact idempotent replay, including after reopening. Up to four attempts use 1/2/4s delays, then manual retry; mutation timeout 30s. Online events resume pending work. Session/validation errors pause automatic retry. Conflicts pause writes, fetch the latest saved copy for comparison, and require explicit discard-local or replace-saved choice with another revision check.
+- **Verification:** 35 app unit tests (21 autosave scenarios), 73 real local project HTTP assertions (including lost successful response → replay → newer queued edit and persisted offline recovery), 10 existing session checks, 13 prototype tests, production build and strict typecheck passed. No database changes; database tests/lint were not rerun for M3b.
+- Browser verified an initial transport-binding failure preserved pending text; fixed the browser adapter and rebuilt. Reopening offered that copy, explicit restore autosaved it, and a later edit autosaved without clicking Save. Two-tab conflict preserved the rejected tab's text, displayed the saved copy, and explicit keep-mine saved a new revision that survived reload. Desktop 1280px and mobile 390px had no horizontal overflow; evidence in `design/qa/m3b/`.
+- **Limits:** browser-local recovery is not an encrypted vault or cross-device offline app. The page itself still requires server access to open. Clearing browser storage/using another device loses unsynced local copies; storage failures show a warning. Copies can persist across sign-out for the same owner's next sign-in. Other signed-in owners do not hydrate them, but local device/origin access is not an authorization boundary. No cross-tab merge or lease; separate copies and server conflicts prevent silent replacement. Native leave prompts are best-effort; recovery is the fallback.
+- Disposable test users/drafts removed; local services stopped with database volumes retained. No provider calls, media rendering, schema/credential changes, deployment or publishing. Root prototype preserved. Source/security review and independent M3b QA remain pending; see [handoff](QA_M3B_HANDOFF.md).
 
 ### Independent M3a QA — November 7, 2026
 
@@ -186,7 +206,7 @@ November 6, 2026:
 
 ## Next session
 
-Next implementation: **M3b — autosave and owner-scoped pending-edit recovery**, using the M3a transactional save contract. Then M3c: duplicate/delete and draft preferences. Keep M4 AI brainstorming/storyboard generation separate.
+Next: fix/retest QA-04 from [independent M3b QA](QA_M3B_REVIEW.md), complete remaining review checks in [QA_M3B_HANDOFF.md](QA_M3B_HANDOFF.md), then **M3c — duplicate/delete and draft preferences** as separate small slices. Keep M4 AI brainstorming/storyboard generation separate. The founder authorized committing/pushing this M3b checkpoint; QA-04 remains open in that checkpoint.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -202,6 +222,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Founder approved committing/pushing M3b and its independent QA report/evidence to `dev`. QA-04 (P3, missing notes preview) remains documented and unfixed; no notes loss was reported. Credentials/env files, dependencies, rendered video/audio and build outputs remain excluded.
+
+- November 7, 2026: Implemented M3b autosave, persisted pending copies, retry serialization and explicit conflict recovery. No database changes; M3c draft operations/preferences remain next.
 
 - November 7, 2026: Founder approved committing/pushing M3a, the modified-link protection fix, and independent QA evidence to `dev`. Publication checks confirmed credentials/env files, prototype media, dependencies and build outputs stay excluded. Remaining manual navigation/security-review limits are recorded in the QA handoff/review.
 

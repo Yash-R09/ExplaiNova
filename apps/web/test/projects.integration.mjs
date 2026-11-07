@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {localAuthHarness} from './local-form-support.mjs';
+import {DraftAutosave} from '../src/lib/draft-autosave.ts';
 const {admin,request,browserSession,base}=localAuthHarness();
 const users=[];let passed=0;
 const check=(condition,message)=>{assert.ok(condition,message);passed++;};
@@ -44,11 +45,30 @@ try{
  check(new Set([...first.json.data,...second.json.data].map(p=>p.id)).size===3,'pages do not repeat drafts');
  for(const query of ['?limit=51','?cursor=bad','?owner_id='+bob.id,'?limit=1&limit=2'])check((await call(path+query,alice.jar)).response.status===400,'invalid list query rejected');
  const reopened=await call(`${path}/${draft.id}`,alice.jar);check(reopened.json.data.revision===3,'reopening returns current revision');
- const page=await request(`/projects/${draft.id}`,alice.jar);check(page.status===200&&(await page.text()).includes('Save draft'),'server editor loads owned draft');
+ const page=await request(`/projects/${draft.id}`,alice.jar);check(page.status===200&&(await page.text()).includes('Save now'),'server editor loads owned draft');
  check((await request(`/projects/${draft.id}`,bob.jar)).status===404,'foreign editor concealed');
  const before=(await admin.from('projects').select('id',{count:'exact',head:true}).eq('owner_id',alice.id)).count;
  await request('/create',alice.jar);await request('/projects',alice.jar);
  check((await admin.from('projects').select('id',{count:'exact',head:true}).eq('owner_id',alice.id)).count===before,'GET navigation does not create projects');
+ // Exercise the actual browser save controller against the real API, including
+ // a response consumed after a successful commit and replayed on retry.
+ const pending=new Map(),storage={get length(){return pending.size;},key:i=>[...pending.keys()][i]??null,getItem:key=>pending.get(key)??null,setItem:(key,value)=>pending.set(key,value),removeItem:key=>pending.delete(key)};
+ const controllers=[];let drop=true;
+ try{
+  const autosave=new DraftAutosave({project:reopened.json.data,ownerId:alice.id,storage,online:true,notify:()=>{},debounceMs:60000,transport:async(url,options)=>{
+   const response=await request(url,alice.jar,options);
+   if(drop&&options?.method==='PATCH'){drop=false;check(response.status===200,'ambiguous save really committed');await response.json();throw Error('Simulated lost response');}return response;
+  }});controllers.push(autosave);
+  autosave.change({brief:'Autosaved first snapshot'});await autosave.flush();check(autosave.view().status==='error','dropped response remains unconfirmed');
+  autosave.change({brief:'New edits after uncertain save'});await autosave.flush();await autosave.flush();
+  check(autosave.view().status==='saved'&&autosave.view().revision===5,'idempotent retry plus queued edits produce exactly two revisions');
+  const latest=(await call(`${path}/${draft.id}`,alice.jar)).json.data;check(latest.brief==='New edits after uncertain save','newest controller text persists in PostgreSQL');
+  autosave.connectivity(false);autosave.change({referenceText:'Offline recovery notes'});autosave.dispose();
+  const restored=new DraftAutosave({project:latest,ownerId:alice.id,storage,online:true,notify:()=>{},debounceMs:60000,transport:(url,options)=>request(url,alice.jar,options)});controllers.push(restored);
+  check(restored.view().status==='recovery','reopening offers persisted pending copy');restored.restore(restored.view().recoveries[0].key);await restored.flush();
+  check(restored.view().status==='saved'&&restored.view().revision===6&&pending.size===0,'explicit recovery saves one revision and clears local copies');
+  check((await call(`${path}/${draft.id}`,alice.jar)).json.data.referenceText==='Offline recovery notes','recovered notes persist on server');
+ }finally{for(const controller of controllers)controller.dispose();}
  assert.ifError((await admin.from('profiles').update({deletion_status:'pending'}).eq('owner_id',alice.id)).error);
  check((await call(path,alice.jar,'POST',{})).response.status===403,'inactive owner cannot write');
  console.log(`Passed ${passed} local project integration assertions.`);

@@ -156,7 +156,7 @@ All paths below are relative to `/api/v1`.
 
 ### Implemented M3a subset
 
-`GET/POST /api/v1/projects` and `GET/PATCH /api/v1/projects/:id` are implemented locally. Other project commands and AI routes remain planned. The editor currently saves manually; the PATCH contract below will also serve autosave in M3b.
+`GET/POST /api/v1/projects` and `GET/PATCH /api/v1/projects/:id` are implemented locally. Other project commands and AI routes remain planned. M3b uses the same PATCH contract for debounced autosave and manual Save now. The browser serializes requests, persists uncertain request keys/bodies with owner/project-scoped pending text, and replays an uncertain operation before sending newer edits. Conflicts pause autosave for explicit comparison/choice; choosing local text still performs a fresh expectedRevision check. There is no new endpoint or schema in this slice.
 
 - Create accepts an empty object, defaulting to `Untitled idea`, empty idea/notes, 60000ms, beginner, clear. Save requires `expectedRevision` and at least one authoring field. Allowed fields: title (trimmed, nonblank, max 140), brief (max 6000), referenceText (max 20000), targetDurationMs (30000/60000/90000), audienceLevel (beginner/intermediate/advanced), tone (clear/conversational/direct). Unknown fields, including owner/settings, are rejected.
 - POST/PATCH require same-origin JSON with a 64 KiB UTF-8 body maximum, matching Origin/public Host, and an `Idempotency-Key` of 16–128 ASCII letters/digits/underscore/hyphen. No secret/service key is used by app requests.
