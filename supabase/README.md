@@ -49,6 +49,8 @@ The service role bypasses row-level policies and must never reach the browser. T
 
 `tests/database/profiles.test.sql` uses pgTAP, synthetic `example.test` identities, and a rolled-back transaction. It validates the real signup trigger, grants, RLS isolation, constraints, and trusted update behavior. Run it only against the local development instance.
 
+M3a adds `tests/database/idea_projects.test.sql` for private projects, immutable client snapshots, ownership/grants, active-owner checks, idempotent commands and revision conflicts. Together these contain 64 tests. Apply pending migrations with `npm run db:migrate` after startup; starting an existing local stack does not apply new migration files automatically. Project write RPCs derive ownership from the authenticated session and use a private command store; the app never needs a service-role key.
+
 1. Add a timestamped SQL migration for the current feature; never modify a migration already applied to a shared environment.
 2. Apply using `npm run db:migrate`.
 3. Run database tests and lint, then relevant app checks.

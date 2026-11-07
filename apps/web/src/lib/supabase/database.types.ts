@@ -19,13 +19,70 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"project_revisions": {
+                  Row: {
+                    "audience_level": string,"brief": string,"content_hash": string,"created_at": string,"id": string,"owner_id": string,"project_id": string,"reference_text": string,"revision": number,"settings": NonNullable<Json>,"target_duration_ms": number,"title": string,"tone": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "audience_level": string,"brief": string,"content_hash": string,"created_at"?: string,"id"?: string,"owner_id": string,"project_id": string,"reference_text": string,"revision": number,"settings": NonNullable<Json>,"target_duration_ms": number,"title": string,"tone": string
+                  }
+                  Update: {
+                    "audience_level"?: string,"brief"?: string,"content_hash"?: string,"created_at"?: string,"id"?: string,"owner_id"?: string,"project_id"?: string,"reference_text"?: string,"revision"?: number,"settings"?: NonNullable<Json>,"target_duration_ms"?: number,"title"?: string,"tone"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "project_revisions_owner_id_project_id_fkey"
+      columns: ["owner_id","project_id"]
+isOneToOne: false
+      referencedRelation: "projects"
+      referencedColumns: ["owner_id","id"]
+    }
+                  ]
+                },"projects": {
+                  Row: {
+                    "created_at": string,"deleted_at": string | null,"edit_version": number,"id": string,"owner_id": string,"title": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"deleted_at"?: string | null,"edit_version"?: number,"id"?: string,"owner_id": string,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"deleted_at"?: string | null,"edit_version"?: number,"id"?: string,"owner_id"?: string,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "projects_head_revision_fk"
+      columns: ["owner_id","id","edit_version"]
+isOneToOne: false
+      referencedRelation: "project_revisions"
+      referencedColumns: ["owner_id","project_id","revision"]
+    },{
+      foreignKeyName: "projects_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["owner_id"]
+    }
+                  ]
                 }
           }
           Views: {
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "create_idea_project":
+{ Args: { "p_command": Json,"p_command_key": string }; Returns: Json
+                           },
+"get_idea_project":
+{ Args: { "p_id": string }; Returns: Json
+                           },
+"list_idea_projects":
+{ Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number }; Returns: Json
+                           },
+"save_idea_project":
+{ Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           }
           }
           Enums: {
             [_ in never]: never

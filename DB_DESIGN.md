@@ -74,7 +74,11 @@ Constraints: nonblank title; edit_version ≥1; unique `(owner_id,id)`. Pointers
 
 ### project_revisions
 
-`id`, `owner_id`, `project_id`, `revision int`, `brief text`, `reference_text text`, `target_duration_ms int`, `audience_level`, `tone`, `settings jsonb`, `content_hash`, `created_at`.
+`id`, `owner_id`, `project_id`, `revision int`, `title varchar(140)`, `brief text`, `reference_text text`, `target_duration_ms int`, `audience_level`, `tone`, `settings jsonb`, `content_hash`, `created_at`.
+
+M3a implementation refinement: snapshots include title so rename history is retained. `projects(owner_id,id,edit_version)` has a deferred foreign key to its matching revision; storyboard/video head pointers will be added when their tables exist. Authenticated clients have owned SELECT only; authenticated RPCs validate fields, derive `auth.uid()`, lock the active profile/project, and append revisions atomically. Trusted service-role cleanup remains possible; client-facing immutability is enforced by privileges.
+
+The initial feature-specific idempotency store is `private.project_commands` (owner/operation/key, canonical request hash, original response, 24-hour expiry), implementing the project subset of the planned generic idempotency contract. Expired same-key entries are replaced on reuse; a scheduled expiry cleanup is not implemented yet. Create and save replays return the original acknowledged snapshot, even if a later save has advanced the project; read GET to fetch the latest head. Default settings are female voice, captions on, topic theme; editable voice/catalog validation arrives with planning.
 
 Unique `(owner_id,project_id,revision)` and `(owner_id,project_id,id)`; target preset in 30000/60000/90000; body limits enforced in application and sensible database length checks. Rows are immutable. Metadata-only title changes still advance the edit counter and snapshot current creative settings for predictable autosave semantics.
 

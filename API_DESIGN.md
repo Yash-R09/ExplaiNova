@@ -154,6 +154,16 @@ All paths below are relative to `/api/v1`.
 
 ## 6. Authoring and planning examples
 
+### Implemented M3a subset
+
+`GET/POST /api/v1/projects` and `GET/PATCH /api/v1/projects/:id` are implemented locally. Other project commands and AI routes remain planned. The editor currently saves manually; the PATCH contract below will also serve autosave in M3b.
+
+- Create accepts an empty object, defaulting to `Untitled idea`, empty idea/notes, 60000ms, beginner, clear. Save requires `expectedRevision` and at least one authoring field. Allowed fields: title (trimmed, nonblank, max 140), brief (max 6000), referenceText (max 20000), targetDurationMs (30000/60000/90000), audienceLevel (beginner/intermediate/advanced), tone (clear/conversational/direct). Unknown fields, including owner/settings, are rejected.
+- POST/PATCH require same-origin JSON with a 64 KiB UTF-8 body maximum, matching Origin/public Host, and an `Idempotency-Key` of 16–128 ASCII letters/digits/underscore/hyphen. No secret/service key is used by app requests.
+- Draft responses contain id, title, revision, brief, referenceText, targetDurationMs, audienceLevel, tone, settings, status=`draft`, createdAt, updatedAt. Storyboard/video/publication fields are deferred until those modules exist. All responses are private/no-store.
+- List accepts only limit (1–50, default 20) and cursor. `meta` includes requestId, hasMore and nextCursor. The opaque cursor binds the draft-list version, update timestamp (including microseconds), and UUID; malformed cursors return 400. Sorting uses updatedAt/id descending. Concurrent updates can move a draft ahead of an existing cursor; reopen the first page to refresh.
+- Successful create returns 201/Location/revision 1. Successful PATCH returns 200 with the acknowledged snapshot. Reusing the same key/body returns that original snapshot for 24 hours; changing the body returns `IDEMPOTENCY_CONFLICT` 409. A stale expectedRevision returns `REVISION_CONFLICT` 409 and owned currentRevision details, preserving browser text. Missing/foreign/tombstoned projects return 404. Invalid fields return 422, malformed JSON/key/query 400, oversized bodies 413, failed origin 403, temporary failures 503.
+
 ### Create project
 
 ```http

@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M2d implemented — Independent QA passed; source/security review pending**
+Last updated: November 7, 2026 · Current milestone: **M3a implemented — private idea draft library and manual saving**
 
 ## Working agreement
 
@@ -17,7 +17,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M2b):** cookie-based browser/server Supabase clients, session refresh proxy, verified identity/profile access layer, protected studio route group, working sign-in/sign-out, and owned `GET /api/v1/me`.
 - **Complete (M2c):** signup, check-email/resend, explicit email confirmation, safe invalid/expired/reused-link handling, and the shared temporary-outage error fix (QA-03).
 - **Complete (M2d implementation):** forgot/reset-password UI, local recovery mail, isolated token-bound reset action, invalid/expired/reused-link handling, and session revocation after success. Independent scoped QA passed; separate source/security review remains pending.
-- **Not implemented in the SaaS app:** private persisted projects, autosave, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M3a implementation):** private persisted idea drafts, create/reopen/rename, idea/reference text, acknowledged manual saves, revision history, paginated library, and transactional conflict/idempotency protection. Proceeded at the founder's request while the separate auth source/security review remains pending.
+- **Not implemented in the SaaS app:** autosave/offline draft recovery, duplicate/delete, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -26,7 +27,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | Planned |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a implemented; autosave and remaining draft operations follow |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -50,6 +51,32 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M3a QA — November 7, 2026
+
+- Tested draft changes against `3ab7908`; [independent QA report](QA_M3A_REVIEW.md). No new reproducible defects found in tested scope; no application fixes made.
+- Passed create/edit/manual-save/reload/library/reopen/rename, two-tab conflict retention and explicit saved-version reload. Directly verified cancelling ordinary Settings navigation preserved unsaved text on the tested build.
+- Dropped a successful PATCH response using a temporary local proxy. Browser retained text; retry acknowledged revision 4 without duplication. Final fixture history was revisions 1–5 after another save.
+- Passed 64 PostgreSQL tests, 64 project HTTP assertions, 10 session checks, 13 prototype tests, schema lint, production build and typecheck. A navigation fix landed concurrently: reran all **14 app unit tests** and the build successfully afterward (**165 distinct tests/assertions** across the pass). Browser results predate that fix; its modified-click behavior still needs targeted browser verification.
+- Desktop visual check and actual 390px mobile no-overflow measurement passed. Mobile screenshot failed; mobile visual QA and native reload/close prompts remain unverified. Separate source/security review remains pending.
+- Removed disposable identity/draft/revisions/profile; stopped owned app/proxy/Supabase services with volumes retained and viewport reset. No provider calls or publication. Commit and push reviewed M3a/QA changes to `dev` when approved.
+
+### M3a review fix — modified link clicks · November 7, 2026
+
+- Fixed the reported P2: Ctrl/Cmd/Shift/Alt and non-primary link clicks bypass the leave warning without changing the current draft's dirty state. Non-self link targets and downloads also leave editor protection intact.
+- Ordinary link approval no longer clears dirty state during click capture. It remains active until the editor actually unmounts (or a successful save clears it), including when a later handler cancels navigation.
+- Added three regression tests covering modified gestures, repeated warning after an accepted-but-cancelled transition, and declined navigation. All **14 app unit tests** and the production build (including TypeScript) pass; whitespace checks pass. Database/project integration and browser QA were not rerun for this client-only fix; local services remain stopped. Independent review of the fix is pending.
+- Changes remain uncommitted on `dev`. Next implementation remains M3b autosave/pending-edit recovery.
+
+### M3a — Private idea draft library · November 7, 2026
+
+- Added projects, immutable client-facing revision snapshots (including historical titles), owned read policies, and authenticated transactional RPCs. Clients cannot write these tables directly. A deferred foreign key ensures the project head always has a matching snapshot.
+- Added owned project GET/list/create/PATCH endpoints. Mutations enforce same-origin JSON, a 64 KiB body cap, bounded inputs, idempotency keys, and expected-revision comparison under a database row lock. Library pagination preserves timestamp microseconds. Unknown failures return safe errors.
+- Added real project creation, library cards, reopening, title/idea/reference editing, manual Save draft, acknowledgement-based save status, disabled fields during saving, and an inline conflict state that keeps unsaved text. New-project creation requires a button action; GET/prefetch never creates data.
+- **Checks:** 64/64 database tests; database lint clean; 11/11 app unit tests; 64 project HTTP integration assertions; 10/10 existing session integration checks; 13/13 independent prototype tests; production app build and strict typecheck passed. Integration fixtures are disposable local users and are removed after tests.
+- Browser checked create → edit → save → reload → library → reopen → rename/save. Desktop 1280px and mobile 390px had no horizontal overflow. Viewport screenshots under `design/qa/m3a/`. Native unsaved-navigation confirmation could not be verified reliably by automation and remains a manual QA item. Disposable browser identity/drafts removed; owned app server and local Supabase stopped with database volumes preserved.
+- **Scope/limits:** explicit manual saving only. Pending edits currently live in browser memory; native link/unload prompts are best-effort and browser Back/Forward is not a durable recovery mechanism. M3b must add autosave, owner-scoped local recovery, serialized retries, and fuller conflict recovery before claiming resilient draft editing. API supports length/audience/tone presets, but this UI uses defaults (60s, beginner, clear); editable preferences follow. No revision browser yet.
+- No AI/provider calls, rendered media, cloud provisioning, or publication. Root video prototype preserved. Separate auth source/security review and independent M3a review remain pending.
 
 ### Independent M2c/M2d QA — November 7, 2026
 
@@ -159,7 +186,9 @@ November 6, 2026:
 
 ## Next session
 
-Finish the separate source/security review of the auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md). [Independent auth QA](QA_AUTH_REVIEW.md) found no new reproducible defects within its scope and records 90 passing automated checks plus successful build/typecheck. Resolve review findings before starting M3 private idea drafts/autosave. No test account was retained.
+Next implementation: **M3b — autosave and owner-scoped pending-edit recovery**, using the M3a transactional save contract. Then M3c: duplicate/delete and draft preferences. Keep M4 AI brainstorming/storyboard generation separate.
+
+Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
 November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, review checklist, and independent QA report/evidence to `dev`. This checkpoint does not claim that the separate source/security review is complete. Continue reminding the founder to commit after future completed features.
 
@@ -173,6 +202,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Founder approved committing/pushing M3a, the modified-link protection fix, and independent QA evidence to `dev`. Publication checks confirmed credentials/env files, prototype media, dependencies and build outputs stay excluded. Remaining manual navigation/security-review limits are recorded in the QA handoff/review.
+
+- November 7, 2026: Implemented M3a private draft persistence/library/manual saving. Autosave remains the next bounded slice; auth source/security review carried forward as pending.
 
 - November 6, 2026: Completed and verified the M1 app foundation alongside the existing prototype; established this milestone tracker. M2 remains unstarted.
 - November 6, 2026: Completed M2a local database foundation and actual PostgreSQL isolation tests. M2b session/auth integration remains unstarted.

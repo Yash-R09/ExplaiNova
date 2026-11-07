@@ -52,7 +52,9 @@ Stop a running dev server before starting the production server on the same port
 
 ## Current scope
 
-Responsive navigation, signup/email confirmation, sign-in/out, password recovery, cookie session refresh, owned profile reads, and an empty projects view are implemented. Other routes describe planned features. Project persistence, provider integration, and publishing remain unimplemented. Development servers remain loopback-only; no deployment has been configured.
+Responsive navigation, signup/email confirmation, sign-in/out, password recovery, cookie session refresh, owned profile reads, and private idea drafts are implemented. Create a draft, edit its title/idea/reference notes, choose **Save draft**, and reopen it from Projects. Saving advances a persisted revision; conflicts preserve current browser text. The editor currently uses default generation preferences. Autosave, durable offline/pending-edit recovery, duplicate/delete, AI providers, and publishing remain planned. Development app servers remain loopback-only; no deployment has been configured. Local Supabase's separate port-binding limitation is documented in its README.
+
+With local Supabase and the production app server running, `npm run app:test:projects` from the repository root runs disposable two-account HTTP integration checks against real transactions, ownership, retries, concurrent saves, pagination, and page rendering. Credentials remain in memory; created users/projects are cleaned up. Run database migration/types/tests/lint as described in the database README first.
 
 The marketing homepage remains planned; `/` redirects to `/projects`, which requires sign-in. The original Stitch files are design references, not copied executable application code.
 
