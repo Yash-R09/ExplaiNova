@@ -4,6 +4,8 @@
 **Status:** Proposed contract for full V1; not implemented by the local prototype  
 **Related:** [System design](SYSTEM_DESIGN.md), [database design](DB_DESIGN.md), [PRD](PRD.md)
 
+Implementation note (November 7, 2026): M2b implements only `GET /api/v1/me` in the new web app, backed by verified Supabase sessions and owned profile reads. Remaining endpoints below are planned. The separate root prototype retains its local `/api/*` interface.
+
 ## 1. Scope and conventions
 
 Internal dashboard APIs use HTTPS and `/api/v1`. This is not a public developer API. V1 covers private authoring, planning, immutable storyboards, voice selection, generation, assets, and individually authorized publication. Billing and revenue analytics are excluded.

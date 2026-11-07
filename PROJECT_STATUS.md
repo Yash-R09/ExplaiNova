@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **Prototype QA fixes complete; M2a complete**
+Last updated: November 7, 2026 · Current milestone: **M2b complete — Verified sessions and sign-in/out**
 
 ## Working agreement
 
@@ -14,7 +14,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Implemented before this milestone:** the single-user local video prototype at port 4310, including Gemini planning, tested ElevenLabs narration, and Remotion export. It uses local files, not SaaS identity/storage.
 - **Complete (M1):** separate Next.js/TypeScript app at `apps/web`, responsive shell, project empty state, workflow outline, and honest placeholders for later modules.
 - **Complete (M2a):** local Supabase CLI/configuration, profile migration, explicit grants/RLS, signup trigger, generated TypeScript database types, and 29 real PostgreSQL isolation/integrity tests. No hosted project is linked.
-- **Not implemented in the SaaS app:** login, private persisted projects, autosave, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M2b):** cookie-based browser/server Supabase clients, session refresh proxy, verified identity/profile access layer, protected studio route group, working sign-in/sign-out, and owned `GET /api/v1/me`.
+- **Not implemented in the SaaS app:** signup/confirmation/recovery UI, private persisted projects, autosave, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -22,9 +23,9 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | Milestone | Small deliverable | Completion evidence | Status |
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
-| M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | In progress — M2a complete; M2b next |
-| M3 · Private projects | Owned project CRUD/list, preferences, revisioned saving and conflict recovery | RLS tests across two users; reload/revision/conflict checks | Planned |
-| M4 · Idea planning | Save brief, 30/60/90s, male/female accessible voice selection, topic theme, Gemini planning job | Validated provider output; unavailable key/model/quota paths; no silent voice substitution | Planned |
+| M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | In progress — M2a/M2b complete; signup/confirmation next |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | Planned |
+| M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
@@ -33,6 +34,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M10 · Release readiness | Approved homepage/auth polish, notifications, full responsive/accessibility pass, operational controls | End-to-end recovery/security/cleanup checks; staged deployment review | Planned |
 
 M6 is delivered as smaller slices: durable job skeleton → narration/alignment → scene assembly → renderer/R2 → recovery. M9 starts with one provider before adding the other. Platform approval and available account types may affect the social milestones.
+
+Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft is a private project that can remain in the Plan stage without generating a storyboard or video. M3 provides draft persistence/autosave; M4 provides the planning workspace and optional AI assistance on top of it. The workflow remains **Plan → Storyboard → Video**, with no extra required brainstorming step. Autosave continues through storyboard editing in M5.
 
 ## M1 scope and acceptance
 
@@ -45,6 +48,28 @@ M6 is delivered as smaller slices: durable job skeleton → narration/alignment 
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent uncommitted M2b QA — November 7, 2026
+
+- Tested current uncommitted auth changes with a production app server and local Supabase. Details: [M2b QA review](QA_M2B_REVIEW.md).
+- Passed manual wrong-password/retry, Settings return target, reload persistence, sign-out/Back protection, unsafe return-target fallback, inactive-profile denial, and desktop/mobile layout checks. Confirmed actual 390 × 844 viewport with no horizontal overflow.
+- Found **QA-03 (P3)**: offline Supabase returns a credential/email-confirmation error instead of temporary service unavailability. Access still fails closed; no application fix made.
+- Reran auth unit tests (2/2), local session integration checks (10/10), prototype regression tests (13/13), production build, typecheck, and diff whitespace check successfully.
+- Removed disposable browser/integration identities and profiles. Stopped QA app/Supabase services, retained volumes, reset viewport. No provider requests or publication.
+- Next review task: fix/retest QA-03; then continue M2c as planned. M2b and QA documentation remain uncommitted; commit and push to `dev` when approved.
+
+### M2b — Sessions and sign-in/out, November 7, 2026
+
+- **Checkpoint:** committed all prior work and pushed `c288032` to `origin/dev` before starting M2b. Working tree was clean at that checkpoint.
+- Pinned official Supabase SSR/JS dependencies. Added separate browser/server clients and an ignored local app configuration using only the local public API URL, browser-safe publishable key, and application origin. No service/provider secrets enter app configuration.
+- Proxy refreshes verified claims/cookies; the request-scoped data layer independently calls Auth `getUser()` and reads the current owned active profile through RLS. Studio pages and `GET /api/v1/me` fail closed. API output has safe error envelopes, correlation IDs, and no-store headers; no tokens or storage credentials are returned.
+- Added functional sign-in and local-session sign-out. Invalid credentials use generic messages; pending submissions disable inputs; failure retains email and clears the password. Return targets are restricted to known studio pages. Supabase/Next.js framework origin protections remain in place. Signup and password recovery are explicitly deferred.
+- `npm run app:build` — passed with dynamic protected routes, API route, and proxy. `npm run app:typecheck` — passed. A stale generated development type cache referencing the moved pages was removed before validation.
+- `npm run app:test` — 2 auth policy/configuration tests passed (open-redirect defense, missing/unsafe config, privileged key rejection, HTTPS cookie configuration).
+- `npm run app:test:integration` — 10 live local checks passed: anonymous redirect/401, two owned profiles, rejected owner override, no-store private page, corrupted cookie rejection, refresh of an expired session envelope with replacement cookies, and inactive/missing-profile denial. The test expires the cookie envelope; it does not wait for a signed JWT's natural expiry or exhaustively test refresh races.
+- `npm test` — all 13 prototype tests passed. Database SQL is unchanged from M2a; no new schema migration was needed.
+- Browser checks passed: wrong password and retry email retention, successful sign-in, reload persistence, Settings navigation, sign-out, and protected-page revisit. Mobile DOM measurement at an actual 390px viewport found no horizontal overflow. Desktop [sign-in preview](design/scaffold/sign-in.jpg) was saved and visually inspected; mobile screenshot capture failed, so no full mobile visual/accessibility audit is claimed.
+- All disposable integration/browser test identities and profiles were removed. App/Supabase services stopped after verification, volumes retained. No cloud project, provider calls, or new video rendering.
 
 ### Prototype QA repairs — November 7, 2026
 
@@ -97,9 +122,9 @@ November 6, 2026:
 
 ## Next session
 
-Start **M2b: Supabase browser/server clients, validated session handling, and route protection**. Then implement signup/signin/signout, email confirmation, and password recovery as small reviewable flows. Local database commands are in [supabase/README.md](supabase/README.md). The dashboard still behaves as the M1 scaffold; it is not yet connected to Supabase. Project tables and autosave follow in M3.
+Start **M2c: account creation and email confirmation**, including local inbox verification, invalid/expired confirmation links, safe redirects, and returning to the studio. Then implement password recovery as another small slice. Existing confirmed Supabase users can already sign in; no QA account was retained. The studio project list still awaits M3 persistence/autosave.
 
-November 7, 2026: Founder approved committing the M2a foundation and prototype QA fixes to `dev`. This snapshot includes the QA report and generated Next.js development instructions. M2b session integration starts after this checkpoint; remind the founder to commit that new feature when complete.
+November 7, 2026: Founder approved committing and pushing M2b and the explicit idea-draft/autosave/workspace roadmap updates to `dev`. The snapshot also includes [M2b QA review](QA_M2B_REVIEW.md) and its evidence. Known P3 QA-03 remains open: a backend outage displays the generic credential error instead of temporary-unavailability guidance; no access-control failure was observed. Fix and retest this error classification before the next auth slice.
 
 ## Decisions and constraints to preserve
 
@@ -115,3 +140,5 @@ November 7, 2026: Founder approved committing the M2a foundation and prototype Q
 - November 6, 2026: Completed and verified the M1 app foundation alongside the existing prototype; established this milestone tracker. M2 remains unstarted.
 - November 6, 2026: Completed M2a local database foundation and actual PostgreSQL isolation tests. M2b session/auth integration remains unstarted.
 - November 7, 2026: Completed the five reported local-prototype QA fixes, added regression coverage, and verified browser behavior with an isolated simulated worker. M2b remains the next product feature.
+- November 7, 2026: Pushed prior work in `c288032`; implemented and verified M2b sessions, sign-in/out, and owned profile API. Signup/confirmation is next.
+- November 7, 2026: Clarified existing V1 requirements in the roadmap: M3 explicitly covers idea drafts/autosave, and M4 explicitly covers the saved idea workspace and optional brainstorming. Documentation only; these features remain planned.

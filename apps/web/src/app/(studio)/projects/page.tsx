@@ -9,6 +9,6 @@ export default function ProjectsPage() {
       <div className="illustration" aria-hidden="true"><span className="orbit orbit-one" /><span className="orbit orbit-two" /><div className="concept-card"><span className="diagram-label">THE MOMENT IT CLICKS</span><div className="diagram"><span className="diagram-dot" /><span className="diagram-line" /><span className="diagram-core"><Icon name="spark" /></span><span className="diagram-line" /><span className="diagram-dot orange" /></div><span className="diagram-caption">A good question changes everything.</span></div><span className="floating-star">✳</span></div>
     </section>
     <section className="projects-section" aria-labelledby="projects-heading"><div className="section-heading"><h2 id="projects-heading">Your projects <span className="count">0</span></h2><span className="muted">A fresh start</span></div><div className="empty-projects"><span className="feature-icon"><Icon name="projects" /></span><h3>A blank canvas, full of possibility.</h3><p>Your saved projects will live here once project storage is connected.</p><Link href="/create" className="text-link">Explore the creation workspace<Icon name="arrow" /></Link></div></section>
-    <p className="preview-note">Scaffold preview · Authentication and project storage are not connected yet.</p>
+    <p className="preview-note">Your session is connected. Project storage is the next studio feature.</p>
   </>;
 }

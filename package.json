@@ -6,6 +6,7 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:status": "supabase status",
+    "db:configure-app": "node scripts/configure-local-auth.mjs",
     "db:migrate": "supabase migration up",
     "db:test": "supabase test db",
     "db:types": "supabase gen types --schema public > apps/web/src/lib/supabase/database.types.ts",
@@ -13,6 +14,8 @@
     "app:dev": "npm --prefix apps/web run dev",
     "app:build": "npm --prefix apps/web run build",
     "app:typecheck": "npm --prefix apps/web run typecheck",
+    "app:test": "npm --prefix apps/web test",
+    "app:test:integration": "npm --prefix apps/web run test:integration",
     "start": "node --env-file-if-exists=.env server.mjs",
     "sample": "node --env-file-if-exists=.env pipeline.mjs sample",
     "test": "node --test test/*.test.mjs"

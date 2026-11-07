@@ -4,14 +4,17 @@ The full application is now being built in small milestones alongside the workin
 
 Local database development: [Supabase setup, migrations, and isolation tests](supabase/README.md). Run `npm run db:start` with Docker Desktop running; this does not connect to a hosted database.
 
-## New application scaffold
+## New application
 
 ```powershell
+npm ci
 npm --prefix apps/web ci
+npm run db:start
+npm run db:configure-app
 npm run app:dev
 ```
 
-Open **http://127.0.0.1:3000**. The first milestone provides the responsive app shell and first-project view. Authentication, project persistence, generation, and publishing will follow as separate features. The commands and prototype details below still apply to the independent runner on port 4310.
+Open **http://127.0.0.1:3000**. The app now supports existing-user sign-in/out, protected studio pages, and owned profile reads. Signup/confirmation, recovery, project persistence, generation, and publishing follow as separate features. See [web setup](apps/web/README.md) for local test accounts. The commands and prototype details below still apply to the independent runner on port 4310.
 
 Planning documents: [full application system design](SYSTEM_DESIGN.md), [V1 PRD](PRD.md), and [prototype technical plan](TECHNICAL_DESIGN_AND_PROTOTYPE_PLAN.md). The full app is at scaffold stage; most system-design features remain planned. The renderer described below is the independent local prototype.
 

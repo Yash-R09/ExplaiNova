@@ -170,6 +170,8 @@ Desktop receives the complete authoring experience. Mobile must support login, p
 
 ### 7.3 Idea planning
 
+- Provide an idea workspace within the existing Plan stage. Users can save an idea draft, leave it without generating a storyboard, and reopen it later from their private project library.
+- Autosave the idea, reference notes, settings, and optional AI planning conversation. Brainstorming stays optional; users can move directly from their idea to storyboard generation.
 - Accept an idea, existing script, or pasted reference text.
 - AI may suggest angles, hooks, structure, and a learning objective without requiring multiple answers.
 - Defaults: English, 60 seconds, general beginners, clear explanatory tone, default 2D style, selected default voice.
