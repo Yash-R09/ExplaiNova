@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3b implemented — autosave and pending-edit recovery**
+Last updated: November 7, 2026 · Current milestone: **M3c1 implemented — duplicate idea drafts; QA-04 fixed**
 
 ## Working agreement
 
@@ -18,8 +18,9 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M2c):** signup, check-email/resend, explicit email confirmation, safe invalid/expired/reused-link handling, and the shared temporary-outage error fix (QA-03).
 - **Complete (M2d implementation):** forgot/reset-password UI, local recovery mail, isolated token-bound reset action, invalid/expired/reused-link handling, and session revocation after success. Independent scoped QA passed; separate source/security review remains pending.
 - **Complete (M3a implementation):** private persisted idea drafts, create/reopen/rename, idea/reference text, acknowledged manual saves, revision history, paginated library, and transactional conflict/idempotency protection. Proceeded at the founder's request while the separate auth source/security review remains pending.
-- **Complete (M3b implementation):** debounced serialized autosave, editable fields during requests, owner/project-scoped local pending copies, explicit recovery, bounded idempotent retries, offline/reconnect handling, and explicit two-version conflict resolution. Independent QA records 131 passing tests/assertions and one open P3 (QA-04: recovery previews omit reference notes); source/security review remains pending. See [QA report](QA_M3B_REVIEW.md).
-- **Not implemented in the SaaS app:** duplicate/delete, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M3b implementation):** debounced serialized autosave, editable fields during requests, owner/project-scoped local pending copies, explicit recovery, bounded idempotent retries, offline/reconnect handling, and explicit two-version conflict resolution. QA-04 (notes omitted from previews) was fixed in M3c1 and independently retested/closed. Source/security review remains pending. See [M3c1 QA report](QA_M3C_REVIEW.md).
+- **Complete (M3c1 implementation):** Duplicate draft from the library creates an independent revision-1 copy of saved creative inputs. Owned transactional copy, stale-source protection, safe idempotent retries and Unicode-safe title prefixing are implemented.
+- **Not implemented in the SaaS app:** delete/restore, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -28,7 +29,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b implemented; duplicate/delete/preferences follow |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b/M3c1 implemented; delete/restore and preferences follow |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -52,6 +53,25 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M3c1 QA — November 7, 2026
+
+- Tested uncommitted duplication and preview repair against `15f3654`; [independent QA report](QA_M3C_REVIEW.md). No new reproducible defects found in tested scope; no application fixes made.
+- Passed browser source → duplicate → revision-1 copy with saved idea/notes, copy-only edits with unchanged source, stale library rejection, refresh and successful retry against updated source.
+- **QA-04 independently closed:** differing multiline reference notes are visible on recovery cards before restoration; chosen preview matched restored/saved/reloaded fields. Desktop/mobile preview inspection passed at actual 1280px and 390px widths, without horizontal overflow.
+- Passed 36 app unit tests, 13 prototype tests, 91 PostgreSQL tests, 124 project HTTP assertions and 10 session checks (**274 total**), schema lint, production build, strict typecheck and whitespace validation. Race-dependent project assertion count was 124 in this run.
+- Removed disposable browser/integration fixtures and discarded remaining pending QA copy, reset viewport and stopped owned app/Supabase services with volumes retained. No provider calls or publication.
+- Separate source/security review and broader release checks remain pending. Commit and push reviewed M3c1/QA changes to `dev` when approved.
+
+### M3c1 — Duplicate idea drafts and QA-04 · November 7, 2026
+
+- Fixed QA-04: every recovery card now shows labelled idea and reference-note previews, with explicit empty placeholders and scrollable long text. Pending records and restore/discard behavior are unchanged.
+- Added authenticated `POST /api/v1/projects/:id/duplicate` and atomic `duplicate_idea_project` RPC. Command accepts only expectedRevision plus the existing idempotency header. Active ownership, exact saved revision and an undeleted source are checked under lock. Copy starts at revision 1 with title `Copy of …`, saved idea/notes/duration/audience/tone/settings, a new identity and recomputed hash. Source/history are preserved. No jobs, approvals, generated artifacts, social connections or local pending copies are cloned.
+- Idempotent retries return the same original copy acknowledgement for 24 hours, even after subsequent source/copy edits. Changed key/body returns 409. A new command for a stale source returns revision conflict. Repeated clicks within one button are blocked; uncertain retries keep the same key. The library uses separate card links and buttons, without nested interactive elements.
+- **Checks:** 91 PostgreSQL tests (27 new duplicate cases), schema lint clean, 36 app unit tests, 125 real project HTTP assertions, 10 session checks, 13 prototype tests, strict typecheck and production build passed. Duplicate/save race assertion count can vary by one depending on which transaction obtains the lock first. Whitespace checks passed.
+- Browser: create/save source → library duplicate → copy opens at revision 1 with notes → edit/autosave copy → library/source unchanged. For QA-04, two pending copies with identical blank titles/idea text and different notes were generated by pausing autosave with title validation; reopening visibly showed both distinct note previews before restore/discard. Desktop 1280px and mobile 390px measurements had no horizontal overflow. Evidence under `design/qa/m3c/`; mobile screenshots are scaled captures, not a full mobile visual sign-off.
+- Disposable browser/server test identities/projects removed; pending browser fixture copies discarded through the UI. Local app and Supabase stopped, database volumes retained. No providers, rendering, deployment or publishing; root prototype unchanged. New migration applied locally and generated DB types updated.
+- Independent QA/source review remains pending; [handoff](QA_M3C_HANDOFF.md). Changes remain uncommitted. Next slice: M3c2 safe delete/restore, followed by M3c3 draft preferences.
 
 ### Independent M3b QA — November 7, 2026
 
@@ -206,7 +226,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: fix/retest QA-04 from [independent M3b QA](QA_M3B_REVIEW.md), complete remaining review checks in [QA_M3B_HANDOFF.md](QA_M3B_HANDOFF.md), then **M3c — duplicate/delete and draft preferences** as separate small slices. Keep M4 AI brainstorming/storyboard generation separate. The founder authorized committing/pushing this M3b checkpoint; QA-04 remains open in that checkpoint.
+Next: complete remaining source/security review using [QA_M3C_HANDOFF.md](QA_M3C_HANDOFF.md), then **M3c2 — safe draft delete/restore**, followed by M3c3 editable draft preferences. Keep M4 AI brainstorming/storyboard generation separate. [Independent M3c1 QA](QA_M3C_REVIEW.md) passed within its scope and closed QA-04; prior security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -222,6 +242,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Founder approved committing/pushing M3c1 and its independent QA report/evidence to `dev`. Independent QA reported 274 passing tests/assertions, no new defects, and QA-04 closed. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
+
+- November 7, 2026: Implemented M3c1 saved-draft duplication and fixed/retested QA-04 recovery note previews. Deletion/restore and preferences remain separate upcoming slices.
 
 - November 7, 2026: Founder approved committing/pushing M3b and its independent QA report/evidence to `dev`. QA-04 (P3, missing notes preview) remains documented and unfixed; no notes loss was reported. Credentials/env files, dependencies, rendered video/audio and build outputs remain excluded.
 

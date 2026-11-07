@@ -156,6 +156,10 @@ All paths below are relative to `/api/v1`.
 
 ### Implemented M3a subset
 
+M3c1 additionally implements `POST /api/v1/projects/:id/duplicate` with JSON `{expectedRevision: <positive integer>}` (maximum 2147483647) and the existing Idempotency-Key/origin/body limits. Reject unknown fields with 422. Return 201/Location and a new revision-1 draft containing saved title (prefixed `Copy of `, limited to 140 UTF-16 units), brief, referenceText, duration, audience, tone and settings. Source is locked during the snapshot; fresh stale requests return REVISION_CONFLICT 409. Foreign/missing/deleted sources return 404; inactive owners 403. GET is unsupported and cannot create copies.
+
+Same owner/source/key/body retries return the original copy acknowledgement for 24 hours, even if source or copy has since changed. A changed body under that key returns IDEMPOTENCY_CONFLICT 409. A different key represents a new duplication command. Copy excludes source history, local unsaved edits, approvals, jobs, outputs and publishing records. Only the library exposes the action in this slice; it duplicates saved content, not another tab's pending edits.
+
 `GET/POST /api/v1/projects` and `GET/PATCH /api/v1/projects/:id` are implemented locally. Other project commands and AI routes remain planned. M3b uses the same PATCH contract for debounced autosave and manual Save now. The browser serializes requests, persists uncertain request keys/bodies with owner/project-scoped pending text, and replays an uncertain operation before sending newer edits. Conflicts pause autosave for explicit comparison/choice; choosing local text still performs a fresh expectedRevision check. There is no new endpoint or schema in this slice.
 
 - Create accepts an empty object, defaulting to `Untitled idea`, empty idea/notes, 60000ms, beginner, clear. Save requires `expectedRevision` and at least one authoring field. Allowed fields: title (trimmed, nonblank, max 140), brief (max 6000), referenceText (max 20000), targetDurationMs (30000/60000/90000), audienceLevel (beginner/intermediate/advanced), tone (clear/conversational/direct). Unknown fields, including owner/settings, are rejected.

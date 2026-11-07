@@ -31,6 +31,10 @@ export function commandKey(value: string|null){
   if(!value||!/^[A-Za-z0-9_-]{16,128}$/.test(value))throw new ProjectError('VALIDATION_FAILED',400,'A valid Idempotency-Key is required.');
   return value;
 }
+export function duplicateProjectInput(value:unknown):{expectedRevision:number}{
+  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).length!==1||!('expectedRevision' in value)||!Number.isInteger(value.expectedRevision)||Number(value.expectedRevision)<1||Number(value.expectedRevision)>2147483647)throw new ProjectError('VALIDATION_FAILED',422,'Choose the saved draft revision to duplicate.');
+  return {expectedRevision:Number(value.expectedRevision)};
+}
 export type ProjectCursor={updatedAt:string;id:string;filter:'drafts-v1'};
 export function parseProjectCursor(value: unknown): ProjectCursor|null {
   if(value===undefined||value===null)return null;

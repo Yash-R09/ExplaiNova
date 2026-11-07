@@ -2,6 +2,8 @@
 
 Scope: uncommitted autosave/pending-edit recovery changes against `97a42e1`. Tested production Next.js, local Supabase, disposable local identities and real browser UI. No application fixes made.
 
+Implementation follow-up (M3c1, November 7): QA-04 has been fixed by adding labelled reference-note previews and empty states to recovery cards. Implementation browser testing observed two copies with identical titles/ideas but distinct notes before choosing a copy. This is a follow-up note, not an independent retest; the original finding/evidence below is preserved. See `QA_M3C_HANDOFF.md`.
+
 ## Finding QA-04 · P3 · Recovery previews omit pending reference notes
 
 Reproduction:

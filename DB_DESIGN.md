@@ -74,6 +74,8 @@ Constraints: nonblank title; edit_version ≥1; unique `(owner_id,id)`. Pointers
 
 ### project_revisions
 
+M3c1 adds authenticated-only `public.duplicate_idea_project(uuid,jsonb,text)` without new tables. It locks the active owner and owned undeleted source, compares the requested source revision, inserts an independent project/head snapshot at revision 1, and stores the original response in `private.project_commands` under operation `duplicate:<source-id>`. It copies the settings JSON snapshot explicitly, recomputes the new snapshot hash, and never clones historical or future runtime/publishing rows. The source share lock serializes with authoring updates; retries use the existing owner/operation/key advisory lock and 24-hour semantics. Copy titles are bounded in UTF-16 units to match browser/API validation without splitting non-BMP characters.
+
 `id`, `owner_id`, `project_id`, `revision int`, `title varchar(140)`, `brief text`, `reference_text text`, `target_duration_ms int`, `audience_level`, `tone`, `settings jsonb`, `content_hash`, `created_at`.
 
 M3a implementation refinement: snapshots include title so rename history is retained. `projects(owner_id,id,edit_version)` has a deferred foreign key to its matching revision; storyboard/video head pointers will be added when their tables exist. Authenticated clients have owned SELECT only; authenticated RPCs validate fields, derive `auth.uid()`, lock the active profile/project, and append revisions atomically. Trusted service-role cleanup remains possible; client-facing immutability is enforced by privileges.

@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,type IdeaProject} from '../src/lib/project-contract.ts';
+import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,duplicateProjectInput,type IdeaProject} from '../src/lib/project-contract.ts';
+test('duplicate commands require only an exact saved revision',()=>{
+ assert.deepEqual(duplicateProjectInput({expectedRevision:1}),{expectedRevision:1});
+ assert.equal(duplicateProjectInput({expectedRevision:2147483647}).expectedRevision,2147483647);
+ for(const value of [{},{expectedRevision:'1'},{expectedRevision:0},{expectedRevision:1.5},{expectedRevision:2147483648},{expectedRevision:1,title:'x'},{expectedRevision:1,ownerId:'other'},null,[]])assert.throws(()=>duplicateProjectInput(value));
+});
 test('draft input defaults and explicit changes preserve content without accepting ownership',()=>{
  assert.equal(projectInput({}).targetDurationMs,60000);
  assert.deepEqual(projectInput({title:'  Why rain? ',brief:'  A thought\n',expectedRevision:2},true),{title:'Why rain?',brief:'  A thought\n',expectedRevision:2});

@@ -74,6 +74,9 @@ isOneToOne: false
             "create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json
                            },
+"duplicate_idea_project":
+{ Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
 "get_idea_project":
 { Args: { "p_id": string }; Returns: Json
                            },

@@ -69,7 +69,34 @@ try{
   check(restored.view().status==='saved'&&restored.view().revision===6&&pending.size===0,'explicit recovery saves one revision and clears local copies');
   check((await call(`${path}/${draft.id}`,alice.jar)).json.data.referenceText==='Offline recovery notes','recovered notes persist on server');
  }finally{for(const controller of controllers)controller.dispose();}
+ const source=(await call(`${path}/${draft.id}`,alice.jar)).json.data,duplicatePath=`${path}/${draft.id}/duplicate`;
+ check((await call(duplicatePath,new Map(),'POST',{expectedRevision:6})).response.status===401,'anonymous duplication denied');
+ check((await call(duplicatePath,bob.jar,'POST',{expectedRevision:6})).response.status===404,'foreign duplication concealed');
+ for(const [body,key,headers,status] of [[{expectedRevision:6},randomUUID(),{Origin:'https://other.test'},403],[{expectedRevision:6},'',{},400],[{expectedRevision:'6'},randomUUID(),{},422],[{expectedRevision:6,ownerId:bob.id},randomUUID(),{},422]])check((await call(duplicatePath,alice.jar,'POST',body,key,headers)).response.status===status,'invalid duplicate request rejected');
+ check((await request(duplicatePath,alice.jar)).status===405,'GET cannot duplicate');
+ const duplicateKey=randomUUID(),copies=await Promise.all([1,2,3,4].map(()=>call(duplicatePath,alice.jar,'POST',{expectedRevision:6},duplicateKey))),copy=copies[0].json.data;
+ check(copies.every(r=>r.response.status===201)&&new Set(copies.map(r=>r.json.data.id)).size===1,'parallel duplicate retries create one copy');
+ check(copy.id!==draft.id&&copy.revision===1&&copy.title==='Copy of '+source.title,'copy has separate identity and fresh revision');
+ check(copies[0].response.headers.get('location')===`${path}/${copy.id}`,'copy location is owned resource');
+ for(const field of ['brief','referenceText','targetDurationMs','audienceLevel','tone'])check(copy[field]===source[field],`copy retains ${field}`);
+ check(JSON.stringify(copy.settings)===JSON.stringify(source.settings),'copy retains settings snapshot');
+ check((await call(`${path}/${draft.id}`,alice.jar)).json.data.revision===6,'duplication does not edit source');
+ const {data:copyHistory,error:historyError}=await admin.from('project_revisions').select('revision').eq('project_id',copy.id);assert.ifError(historyError);check(copyHistory.length===1,'source revision history not duplicated');
+ check((await call(duplicatePath,alice.jar,'POST',{expectedRevision:7},duplicateKey)).response.status===409,'changed body cannot reuse duplicate key');
+ await call(`${path}/${copy.id}`,alice.jar,'PATCH',{expectedRevision:1,referenceText:'Copy-only notes'});
+ check((await call(`${path}/${draft.id}`,alice.jar)).json.data.referenceText==='Offline recovery notes','copy edits independent of source');
+ await call(`${path}/${draft.id}`,alice.jar,'PATCH',{expectedRevision:6,brief:'Changed source',targetDurationMs:90000});
+ check((await call(`${path}/${copy.id}`,alice.jar)).json.data.brief===source.brief,'source edits independent of copy');
+ const replay=await call(duplicatePath,alice.jar,'POST',{expectedRevision:6},duplicateKey);check(replay.json.data.id===copy.id&&replay.json.data.revision===1,'retry after source/copy edits returns original copy acknowledgement');
+ check((await call(duplicatePath,alice.jar,'POST',{expectedRevision:6})).response.status===409,'stale source revision rejected');
+ const two=await Promise.all([1,2].map(()=>call(duplicatePath,alice.jar,'POST',{expectedRevision:7})));
+ check(new Set(two.map(r=>r.json.data.id)).size===2&&two.every(r=>r.json.data.targetDurationMs===90000),'distinct commands create independent current-input copies');
+ const sourceAndCopy=await Promise.all([call(`${path}/${draft.id}`,alice.jar,'PATCH',{expectedRevision:7,brief:'Concurrent source change'}),call(duplicatePath,alice.jar,'POST',{expectedRevision:7})]);
+ check(sourceAndCopy[0].response.status===200&&[201,409].includes(sourceAndCopy[1].response.status),'save/copy race is serialized around source revision');
+ if(sourceAndCopy[1].response.status===201)check(sourceAndCopy[1].json.data.brief==='Changed source','racing copy represents exact approved input revision');
+ const copiedPage=await request(`/projects/${copy.id}`,alice.jar);check(copiedPage.status===200&&(await copiedPage.text()).includes('Copy of '),'copied draft opens editor');
  assert.ifError((await admin.from('profiles').update({deletion_status:'pending'}).eq('owner_id',alice.id)).error);
+ check((await call(duplicatePath,alice.jar,'POST',{expectedRevision:8})).response.status===403,'inactive owner cannot duplicate');
  check((await call(path,alice.jar,'POST',{})).response.status===403,'inactive owner cannot write');
  console.log(`Passed ${passed} local project integration assertions.`);
 }finally{
