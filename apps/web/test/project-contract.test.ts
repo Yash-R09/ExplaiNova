@@ -1,6 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,duplicateProjectInput,type IdeaProject} from '../src/lib/project-contract.ts';
+import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,duplicateProjectInput,lifecycleProjectInput,type IdeaProject} from '../src/lib/project-contract.ts';
+test('lifecycle commands require a revision with room for a transition',()=>{
+ assert.deepEqual(lifecycleProjectInput({expectedRevision:2147483646}),{expectedRevision:2147483646});
+ for(const value of [{},{expectedRevision:'1'},{expectedRevision:0},{expectedRevision:1.5},{expectedRevision:2147483647},{expectedRevision:1,ownerId:'other'},{expectedRevision:1,deletedAt:null},null,[]])assert.throws(()=>lifecycleProjectInput(value));
+});
+test('active and Trash cursor fingerprints cannot be mixed',()=>{
+ const project={id:'11111111-1111-4111-8111-111111111111',updatedAt:'2026-11-07T10:20:30.123456Z'};
+ const trash=makeProjectCursor(project,'trash');assert.equal(parseProjectCursor(trash,'trash')?.filter,'trash-v1');assert.throws(()=>parseProjectCursor(trash));
+ assert.throws(()=>parseProjectCursor(makeProjectCursor(project),'trash'));
+});
 test('duplicate commands require only an exact saved revision',()=>{
  assert.deepEqual(duplicateProjectInput({expectedRevision:1}),{expectedRevision:1});
  assert.equal(duplicateProjectInput({expectedRevision:2147483647}).expectedRevision,2147483647);

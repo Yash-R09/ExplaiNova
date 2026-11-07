@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3c1 implemented — duplicate idea drafts; QA-04 fixed**
+Last updated: November 7, 2026 · Current milestone: **M3c2 implemented — reversible draft Trash and restoration**
 
 ## Working agreement
 
@@ -20,7 +20,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M3a implementation):** private persisted idea drafts, create/reopen/rename, idea/reference text, acknowledged manual saves, revision history, paginated library, and transactional conflict/idempotency protection. Proceeded at the founder's request while the separate auth source/security review remains pending.
 - **Complete (M3b implementation):** debounced serialized autosave, editable fields during requests, owner/project-scoped local pending copies, explicit recovery, bounded idempotent retries, offline/reconnect handling, and explicit two-version conflict resolution. QA-04 (notes omitted from previews) was fixed in M3c1 and independently retested/closed. Source/security review remains pending. See [M3c1 QA report](QA_M3C_REVIEW.md).
 - **Complete (M3c1 implementation):** Duplicate draft from the library creates an independent revision-1 copy of saved creative inputs. Owned transactional copy, stale-source protection, safe idempotent retries and Unicode-safe title prefixing are implemented.
-- **Not implemented in the SaaS app:** delete/restore, editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M3c2 implementation):** confirmed Move to Trash, private paginated Trash, one-click restoration, preserved saved content/history, revision fencing across lifecycle transitions, and idempotent lifecycle commands. [Independent QA](QA_M3C2_REVIEW.md) passed within its scope with no new defects; separate source/security review remains pending.
+- **Not implemented in the SaaS app:** editable generation preferences, provider calls, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -29,7 +30,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b/M3c1 implemented; delete/restore and preferences follow |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | M3a/M3b/M3c1/M3c2 implemented; editable preferences next |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -53,6 +54,25 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M3c2 QA — November 7, 2026
+
+- Tested uncommitted Trash/restore against `584a8b5`; [independent QA report](QA_M3C2_REVIEW.md). No new reproducible defects found in tested scope; no application fixes made.
+- Passed browser empty Trash, move confirmation/Cancel, active-card removal, hidden trashed editor, restore with preserved idea/multiline notes, and reload at lifecycle revision 4.
+- Pre-Trash editor save after restoration correctly conflicted and retained local text; comparison showed the restored saved content. Explicit saved-version choice preserved server data. Stale Restore in another tab failed safely with Refresh view recovery.
+- Desktop visual checks and populated Trash at actual 390 × 844 passed without horizontal overflow. Full mobile/accessibility/source-security review remains outside this scoped QA.
+- Passed 38 app unit tests, 13 prototype tests, 133 PostgreSQL tests, 109 lifecycle HTTP assertions, 124 project assertions and 10 session checks (**427 total**), schema lint, production build, typecheck and whitespace checks.
+- Removed disposable browser/integration fixtures, cleared rejected pending editor text via explicit saved-version choice, reset viewport and stopped owned app/Supabase with volumes retained. No provider calls or publication. Commit and push reviewed M3c2/QA changes to `dev` when approved.
+
+### M3c2 — Reversible Trash and restoration · November 7, 2026
+
+- Library cards now offer Move to Trash with inline confirmation/Cancel. Trash is a separate protected `/projects/trash` page, reachable from the library, with empty state, summaries, pagination and Restore draft. Only saved content is restored; local pending copies remain available through the existing recovery system. Permanent deletion and automatic purge are absent.
+- Added same-origin, no-store DELETE `/api/v1/projects/:id` (202), POST `/api/v1/projects/:id/restore` (200), and GET project list `view=trash`. Both commands require exact expectedRevision JSON and an Idempotency-Key. List cursors bind `drafts-v1` or `trash-v1`; crossing views is rejected. Trash summaries contain only id/title/revision/deletedAt/updatedAt.
+- New RPCs derive active ownership, lock the project, compare revision, and change deleted_at with an incremented edit_version plus a matching unchanged creative snapshot. Trashed records/history remain invisible to normal RLS reads and normal GET/PATCH/duplicate commands. Restoring keeps identity, content/settings/hash and history, while fencing pre-delete autosaves. Same-key retries return the original acknowledgement without reapplying a later lifecycle transition.
+- **Checks:** 133 PostgreSQL tests (42 new lifecycle cases), clean schema lint, 38 app unit tests, 109 real Trash/restore HTTP assertions, 124 existing project assertions, 10 session checks, 13 prototype tests, strict typecheck and production build passed. Existing project race can produce 124 or 125 assertions by lock order. Whitespace checks passed.
+- Browser: empty Trash → create/save source → Move to Trash → Cancel retains it → confirm removes active card → private Trash shows saved title/revision → Restore removes Trash card → reopen source with original idea/notes and revision 4. Desktop 1280px and mobile 390px showed no horizontal overflow; screenshots inspected under `design/qa/m3c2/`. Targeted layout checks only, not a full accessibility/device audit.
+- New migration applied locally and DB types regenerated. Disposable users/drafts cleaned up, owned app/Supabase stopped with volumes retained. No providers, rendering, cloud provisioning, public publishing or root prototype changes. Independent review/source-security QA remains pending; see [handoff](QA_M3C2_HANDOFF.md).
+- Changes remain uncommitted; remind the founder to commit/push after review. Next slice: M3c3 editable draft preferences; AI planning remains M4.
 
 ### Independent M3c1 QA — November 7, 2026
 
@@ -226,7 +246,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: complete remaining source/security review using [QA_M3C_HANDOFF.md](QA_M3C_HANDOFF.md), then **M3c2 — safe draft delete/restore**, followed by M3c3 editable draft preferences. Keep M4 AI brainstorming/storyboard generation separate. [Independent M3c1 QA](QA_M3C_REVIEW.md) passed within its scope and closed QA-04; prior security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
+Next: complete remaining source/security review using [QA_M3C2_HANDOFF.md](QA_M3C2_HANDOFF.md), then **M3c3 — editable draft preferences**. Keep M4 AI brainstorming/storyboard generation separate. [Independent M3c2 QA](QA_M3C2_REVIEW.md) records 427 passing tests/assertions and no new reproducible defects within its scope. Earlier security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -242,6 +262,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Founder approved committing/pushing M3c2 and its independent QA report/evidence to `dev`. Independent QA reported 427 passing tests/assertions and no new defects. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
+
+- November 7, 2026: Implemented M3c2 private Trash/restoration with lifecycle revision fencing and integration/browser verification. No hard-delete or purge; editable preferences are next.
 
 - November 7, 2026: Founder approved committing/pushing M3c1 and its independent QA report/evidence to `dev`. Independent QA reported 274 passing tests/assertions, no new defects, and QA-04 closed. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
 

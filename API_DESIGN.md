@@ -118,6 +118,7 @@ All paths below are relative to `/api/v1`.
 | GET/POST `/projects` | List / create project | 200 / 201 |
 | GET/PATCH/DELETE `/projects/:id` | Read / autosave / soft-delete | 200 / 200 / 202 |
 | POST `/projects/:id/duplicate` | Copy creative inputs, no live jobs/posts | 201 |
+| POST `/projects/:id/restore` | Restore an owned trashed draft with expected revision | 200 |
 | GET `/projects/:id/messages` | Paginated saved planning conversation | 200 |
 | POST `/projects/:id/planning-jobs` | Submit user message and planning mode | 202 |
 | GET `/storyboards/:id` | Read immutable storyboard | 200 |
@@ -156,6 +157,14 @@ All paths below are relative to `/api/v1`.
 
 ### Implemented M3a subset
 
+M3c2 implements reversible deletion: DELETE `/api/v1/projects/:id` accepts only `{expectedRevision}` (integer 1–2147483646) with Idempotency-Key, the same origin/JSON/64 KiB limits as other mutations, and returns 202 `{id,revision,status:"trashed",deletedAt}` in the normal data envelope. The project is already hidden from active reads when acknowledged; 202 does not promise a background permanent purge. POST `/api/v1/projects/:id/restore` takes the same command and returns 200 with the restored full draft. There is no hard-delete endpoint or automatic expiry.
+
+Each successful lifecycle transition preserves identity/creative inputs/history and increments revision with a matching snapshot. Fresh stale expectedRevision returns 409 with owned currentRevision. Missing/foreign/wrong-state resources return 404; inactive owners 403. Trashed drafts cannot be normally read, saved, or duplicated. Restoring fences old autosaves because its revision has advanced. Local pending copies are not deleted by these commands; old copies require explicit conflict recovery after restoration.
+
+Project list additionally accepts `view=drafts|trash`, default drafts. Trash responses contain only id/title/revision/deletedAt/updatedAt and use `trash-v1` cursors; active cursors use `drafts-v1`. Cursors cannot cross views. Sorting, limits and no-store rules are unchanged. Authenticated-only Trash RPC is the narrow path to owner summaries; normal table RLS continues to hide trashed rows/history.
+
+Delete and restore have separate owner/project/operation/key idempotency scopes. Same key/body returns its original acknowledgement for 24 hours before current-state validation, even if later commands reversed that state. It never re-executes the old transition. GET/list is authoritative for current state; a new intentional lifecycle action needs a fresh key and current revision. Changed body under a retained key returns IDEMPOTENCY_CONFLICT 409.
+
 M3c1 additionally implements `POST /api/v1/projects/:id/duplicate` with JSON `{expectedRevision: <positive integer>}` (maximum 2147483647) and the existing Idempotency-Key/origin/body limits. Reject unknown fields with 422. Return 201/Location and a new revision-1 draft containing saved title (prefixed `Copy of `, limited to 140 UTF-16 units), brief, referenceText, duration, audience, tone and settings. Source is locked during the snapshot; fresh stale requests return REVISION_CONFLICT 409. Foreign/missing/deleted sources return 404; inactive owners 403. GET is unsupported and cannot create copies.
 
 Same owner/source/key/body retries return the original copy acknowledgement for 24 hours, even if source or copy has since changed. A changed body under that key returns IDEMPOTENCY_CONFLICT 409. A different key represents a new duplication command. Copy excludes source history, local unsaved edits, approvals, jobs, outputs and publishing records. Only the library exposes the action in this slice; it duplicates saved content, not another tab's pending edits.
@@ -165,7 +174,7 @@ Same owner/source/key/body retries return the original copy acknowledgement for 
 - Create accepts an empty object, defaulting to `Untitled idea`, empty idea/notes, 60000ms, beginner, clear. Save requires `expectedRevision` and at least one authoring field. Allowed fields: title (trimmed, nonblank, max 140), brief (max 6000), referenceText (max 20000), targetDurationMs (30000/60000/90000), audienceLevel (beginner/intermediate/advanced), tone (clear/conversational/direct). Unknown fields, including owner/settings, are rejected.
 - POST/PATCH require same-origin JSON with a 64 KiB UTF-8 body maximum, matching Origin/public Host, and an `Idempotency-Key` of 16–128 ASCII letters/digits/underscore/hyphen. No secret/service key is used by app requests.
 - Draft responses contain id, title, revision, brief, referenceText, targetDurationMs, audienceLevel, tone, settings, status=`draft`, createdAt, updatedAt. Storyboard/video/publication fields are deferred until those modules exist. All responses are private/no-store.
-- List accepts only limit (1–50, default 20) and cursor. `meta` includes requestId, hasMore and nextCursor. The opaque cursor binds the draft-list version, update timestamp (including microseconds), and UUID; malformed cursors return 400. Sorting uses updatedAt/id descending. Concurrent updates can move a draft ahead of an existing cursor; reopen the first page to refresh.
+- List accepts only limit (1–50, default 20), cursor and view (drafts/trash, default drafts). `meta` includes requestId, hasMore and nextCursor. The opaque cursor binds the view/version, update timestamp (including microseconds), and UUID; malformed/cross-view cursors return 400. Sorting uses updatedAt/id descending. Concurrent updates or lifecycle transitions can move a draft across pages/views; reopen the first page to refresh.
 - Successful create returns 201/Location/revision 1. Successful PATCH returns 200 with the acknowledged snapshot. Reusing the same key/body returns that original snapshot for 24 hours; changing the body returns `IDEMPOTENCY_CONFLICT` 409. A stale expectedRevision returns `REVISION_CONFLICT` 409 and owned currentRevision details, preserving browser text. Missing/foreign/tombstoned projects return 404. Invalid fields return 422, malformed JSON/key/query 400, oversized bodies 413, failed origin 403, temporary failures 503.
 
 ### Create project

@@ -19,6 +19,7 @@
     "app:test:signup": "npm --prefix apps/web run test:signup",
     "app:test:recovery": "npm --prefix apps/web run test:recovery",
     "app:test:projects": "npm --prefix apps/web run test:projects",
+    "app:test:trash": "npm --prefix apps/web run test:trash",
     "start": "node --env-file-if-exists=.env server.mjs",
     "sample": "node --env-file-if-exists=.env pipeline.mjs sample",
     "test": "node --test test/*.test.mjs"

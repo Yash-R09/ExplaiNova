@@ -68,6 +68,10 @@ Preferences contain supported defaults: voice selection, theme, captions, logo a
 
 ### projects
 
+M3c2 implements private Trash using deleted_at, with an owner/updated_at/id partial index for deleted rows. Authenticated-only trash/restore RPCs invoke a revoked private helper that derives active ownership, takes the project row lock, checks expectedRevision, copies the current creative snapshot unchanged into the next revision, and updates edit_version/deleted_at/updated_at atomically. Unchanged content_hash is retained because these transitions change lifecycle rather than creative inputs. This also fences authoring requests from before deletion after restoration. Same-key replay returns the original stored acknowledgement without changing the current lifecycle.
+
+Existing RLS still hides trashed projects and revision history from ordinary client reads. `list_trashed_idea_projects` exposes only owned summaries after an active-owner check; restoration is a narrow authenticated command, not new general table write privileges. No hard-delete grant, purge job, expiry policy or cascade removal is introduced. Browser-local unsaved records remain separate and can require explicit conflict recovery after restore. When generation/publication tables are introduced, their active-work/reference rules must be integrated before extending this draft-only lifecycle to those resources.
+
 `id`, `owner_id`, `title varchar(140)`, `edit_version int`, `current_storyboard_id uuid nullable`, `current_ready_video_id uuid nullable`, `deleted_at`, timestamps.
 
 Constraints: nonblank title; edit_version ≥1; unique `(owner_id,id)`. Pointers must reference rows from the same owner/project. Add circular pointer foreign keys after child tables exist; use deferrable constraints only for transactions that actually need them.

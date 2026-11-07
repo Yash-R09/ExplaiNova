@@ -83,7 +83,16 @@ isOneToOne: false
 "list_idea_projects":
 { Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number }; Returns: Json
                            },
+"list_trashed_idea_projects":
+{ Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number }; Returns: Json
+                           },
+"restore_idea_project":
+{ Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
 "save_idea_project":
+{ Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
+"trash_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
                            }
           }
