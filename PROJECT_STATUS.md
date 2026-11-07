@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M2b complete — Verified sessions and sign-in/out**
+Last updated: November 7, 2026 · Current milestone: **M2d implemented — Independent QA passed; source/security review pending**
 
 ## Working agreement
 
@@ -15,7 +15,9 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M1):** separate Next.js/TypeScript app at `apps/web`, responsive shell, project empty state, workflow outline, and honest placeholders for later modules.
 - **Complete (M2a):** local Supabase CLI/configuration, profile migration, explicit grants/RLS, signup trigger, generated TypeScript database types, and 29 real PostgreSQL isolation/integrity tests. No hosted project is linked.
 - **Complete (M2b):** cookie-based browser/server Supabase clients, session refresh proxy, verified identity/profile access layer, protected studio route group, working sign-in/sign-out, and owned `GET /api/v1/me`.
-- **Not implemented in the SaaS app:** signup/confirmation/recovery UI, private persisted projects, autosave, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
+- **Complete (M2c):** signup, check-email/resend, explicit email confirmation, safe invalid/expired/reused-link handling, and the shared temporary-outage error fix (QA-03).
+- **Complete (M2d implementation):** forgot/reset-password UI, local recovery mail, isolated token-bound reset action, invalid/expired/reused-link handling, and session revocation after success. Independent scoped QA passed; separate source/security review remains pending.
+- **Not implemented in the SaaS app:** private persisted projects, autosave, provider calls, workers, R2, downloads, social connections, scheduling, and publishing.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -23,7 +25,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | Milestone | Small deliverable | Completion evidence | Status |
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
-| M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | In progress — M2a/M2b complete; signup/confirmation next |
+| M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/rename/duplicate/delete drafts, autosave with save-state indicators, preferences, revisioned saving and conflict recovery | RLS isolation; saved idea survives reload; offline/pending edits and revision conflicts handled honestly | Planned |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
@@ -48,6 +50,41 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M2c/M2d QA — November 7, 2026
+
+- Tested the uncommitted auth slice against `6a5b4b6` using production Next.js, local Supabase, Mailpit, and manual browser flows. [Independent QA report](QA_AUTH_REVIEW.md).
+- No new reproducible defects found within tested scope. Independently closed QA-03: actual backend outage now gives temporary-unavailability guidance for sign-in and reset requests.
+- Manual signup validation/correction, email delivery, explicit confirmation into owned studio, sign-out, recovery request/clean landing, malformed-link recovery, desktop layout, mobile reset layout, and basic label/keyboard checks passed. Mobile reset viewport confirmed at 390 × 844 without overflow; mobile signup not verified in this pass.
+- Supporting checks passed: 7 auth unit tests, 10 session checks, 14 signup checks, 17 recovery checks, 29 real PostgreSQL checks, 13 prototype regressions (**90 total**), production build, typecheck, and diff whitespace validation.
+- Removed browser/integration fixture identities and profiles, reset viewport, and stopped QA app/Supabase services with volumes retained. No source fixes, provider calls, or publication. Password changes tested through HTTP integration forms, not browser entry.
+- Separate source/security review and broader release checks remain pending; see report limits. Commit and push the reviewed auth slice and QA documentation to `dev` when approved.
+
+### M2d — Password recovery, November 7, 2026
+
+- Preserved uncommitted M2c/QA-03 work. Added `/forgot-password`, `/auth/recovery`, and `/reset-password`, plus a local recovery email template and shared password validation.
+- Recovery GET stages a bounded ten-minute HttpOnly token scoped to `/reset-password` and redirects to a clean no-store/no-referrer page. Input validation precedes provider verification. An ordinary browser session cannot replace the email proof.
+- The password action uses a separate in-memory Supabase client for the emailed account. It does not create normal browser auth cookies or accidentally use another signed-in identity. Active owned profile is checked before update. The staged link is cleared after verification; failures after consumption require a fresh link, and ambiguous outcomes are explained honestly.
+- Successful reset returns to sign-in and requests global refresh-session revocation. Access JWTs can remain valid until provider expiry; revocation failures after success have distinct truthful feedback.
+- `npm run app:test:recovery` — 17 real local checks passed: generic unknown-email feedback, request delivery, no reset via ordinary login alone, clean/scoped landing, validation without token consumption, cross-origin denial, different signed-in account isolation, new/old password behavior, refresh-session revocation, reused/expired/unissued token rejection, same-password handling, unsupported URL purposes, and inactive-profile denial. Expiry changes target only disposable fixture IDs.
+- `npm run app:test` — 7 auth policy/error tests passed. Existing 10 session checks, 14 signup checks, and all 13 prototype tests passed. Strict app typecheck and production build passed. No new database schema migration.
+- Browser checks verified generic reset-request feedback, malformed-link recovery, clean reset-form navigation, actual 390px viewport without overflow, and real request-service outage guidance after Supabase stopped. Password changes were tested through HTTP integration, not entered in computer-use automation. [Reset form preview](design/qa/m2d-reset-password.jpg).
+- All disposable recovery/session/signup fixture identities and profiles removed; local test emails reference deleted fixtures. App/Supabase stopped at handoff; volumes retained. No hosted delivery, provider calls, or video generation.
+- [Auth review checklist](AUTH_REVIEW_CHECKLIST.md) records source boundaries, commands, expected behaviors, tradeoffs, and tests still needed. Independent code review/manual QA has not yet been performed for this combined auth slice.
+
+### M2c — Signup/confirmation and QA-03 repair, November 7, 2026
+
+- Started from pushed `6a5b4b6`. Implemented `/sign-up`, `/check-email`, `/auth/confirm`, and `/confirm-email`, sharing the approved auth visual frame.
+- Signup validates email/password confirmation, retains email after validation failure, and clears password fields. Duplicate-account responses remain generic; unconfirmed users receive no app session. Profile creation uses the existing Auth trigger; no new database migration.
+- Configured a local Explainova confirmation email template. Its link stages the bounded provider token in a ten-minute HttpOnly cookie, redirects to a clean no-store/no-referrer confirmation page, and requires an explicit POST action to verify. GET/email scanning does not confirm an account. Tokens are not rendered into the form or included in the success URL; successful confirmation clears the staged token and opens `/projects`.
+- Resend uses Supabase throttling and generic wording. Unsupported confirmation types and redirect overrides are ignored. Expired, reused, missing, or malformed links fail closed with recovery navigation. PKCE-prefixed SHA-224 and standard SHA-224/SHA-256 hashes are accepted; other shapes fail validation.
+- QA-03 fixed: returned SDK `AuthRetryableFetchError`, zero-status transport failures, and 5xx service errors now show temporary-unavailability guidance instead of credential advice. Credential and throttling messages stay distinct and generic. Actual browser outage reproduced with Supabase stopped: correct retry guidance, no access granted.
+- `npm run app:test` — 6/6 tests passed, including an actual SDK returned-network-error shape and confirmation/signup policy cases.
+- `npm run app:test:signup` — 14 real local app-form/Supabase/Mailpit checks passed: signup validation, email delivery, no unconfirmed access, clean confirmation GET, explicit confirmation/session/profile, duplicate signup, reused/unsupported links, resend/replacement, and genuinely expired Auth token. Expiry test changes only a disposable user's confirmation timestamp.
+- `npm run app:test:integration` — existing 10/10 session isolation checks passed. `npm test` — all 13 prototype regressions passed. Production build and strict app typecheck passed.
+- Browser checks passed: mismatch validation and email retention, signup → local inbox, clean confirmation landing → private studio, sign-out, and real service-outage feedback. Actual 390px signup viewport had no horizontal overflow. Screenshot capture was intermittent; the saved [fixed-outage screenshot](design/qa/m2c-outage-fixed.jpg) was visually inspected. No full accessibility or multi-device audit claimed.
+- All disposable local identities/profiles removed. Test emails remain only in local Mailpit and refer to deleted fixtures. App/Supabase stopped after verification; volumes retained. No external email delivery, cloud provisioning, provider calls, or new video rendering.
+- Local email allowance increased to 30/hour for repeatable Mailpit tests; this is local configuration, not a hosted-plan entitlement or a production email configuration.
 
 ### Independent uncommitted M2b QA — November 7, 2026
 
@@ -122,9 +159,9 @@ November 6, 2026:
 
 ## Next session
 
-Start **M2c: account creation and email confirmation**, including local inbox verification, invalid/expired confirmation links, safe redirects, and returning to the studio. Then implement password recovery as another small slice. Existing confirmed Supabase users can already sign in; no QA account was retained. The studio project list still awaits M3 persistence/autosave.
+Finish the separate source/security review of the auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md). [Independent auth QA](QA_AUTH_REVIEW.md) found no new reproducible defects within its scope and records 90 passing automated checks plus successful build/typecheck. Resolve review findings before starting M3 private idea drafts/autosave. No test account was retained.
 
-November 7, 2026: Founder approved committing and pushing M2b and the explicit idea-draft/autosave/workspace roadmap updates to `dev`. The snapshot also includes [M2b QA review](QA_M2B_REVIEW.md) and its evidence. Known P3 QA-03 remains open: a backend outage displays the generic credential error instead of temporary-unavailability guidance; no access-control failure was observed. Fix and retest this error classification before the next auth slice.
+November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, review checklist, and independent QA report/evidence to `dev`. This checkpoint does not claim that the separate source/security review is complete. Continue reminding the founder to commit after future completed features.
 
 ## Decisions and constraints to preserve
 
@@ -142,3 +179,6 @@ November 7, 2026: Founder approved committing and pushing M2b and the explicit i
 - November 7, 2026: Completed the five reported local-prototype QA fixes, added regression coverage, and verified browser behavior with an isolated simulated worker. M2b remains the next product feature.
 - November 7, 2026: Pushed prior work in `c288032`; implemented and verified M2b sessions, sign-in/out, and owned profile API. Signup/confirmation is next.
 - November 7, 2026: Clarified existing V1 requirements in the roadmap: M3 explicitly covers idea drafts/autosave, and M4 explicitly covers the saved idea workspace and optional brainstorming. Documentation only; these features remain planned.
+- November 7, 2026: Completed M2c signup/email confirmation and fixed QA-03. All local integration/browser checks passed; password recovery is next.
+- November 7, 2026: Implemented M2d password recovery and prepared the complete auth review/QA handoff. M3 remains unstarted.
+- November 7, 2026: Included independent auth QA results/evidence and prepared the founder-authorized M2c/M2d commit. No new QA defect reported; source/security review remains pending.

@@ -16,6 +16,8 @@
     "app:typecheck": "npm --prefix apps/web run typecheck",
     "app:test": "npm --prefix apps/web test",
     "app:test:integration": "npm --prefix apps/web run test:integration",
+    "app:test:signup": "npm --prefix apps/web run test:signup",
+    "app:test:recovery": "npm --prefix apps/web run test:recovery",
     "start": "node --env-file-if-exists=.env server.mjs",
     "sample": "node --env-file-if-exists=.env pipeline.mjs sample",
     "test": "node --test test/*.test.mjs"

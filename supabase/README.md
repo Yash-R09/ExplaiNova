@@ -57,7 +57,9 @@ The service role bypasses row-level policies and must never reach the browser. T
 
 Regenerate the app's database types after a schema change with `npm run db:types`. These reflect schema structure, not permission to perform writes; grants and RLS remain authoritative. The pinned CLI is v3, whose database commands target local by default; do not add `--remote` for this workflow.
 
-M2b now connects app sessions, existing-user sign-in/out, and owned profile reads. Run `npm run db:configure-app` after startup to create ignored browser-safe app configuration. Signup/confirmation UI and recovery follow it. App setup and the local integration checks are described in [apps/web/README.md](../apps/web/README.md); root `.env` remains for the video prototype.
+The app now connects sessions, signup/confirmation, sign-in/out, recovery, and owned profile reads. Run `npm run db:configure-app` after startup to create ignored browser-safe app configuration. App setup and local integration checks are described in [apps/web/README.md](../apps/web/README.md); root `.env` remains for the video prototype.
+
+The local templates at `templates/confirmation.html` and `templates/recovery.html` direct users through Explainova's clean confirmation/reset pages. Email confirmation and secure password changes remain enabled. The local hourly email allowance is 30 for repeatable Mailpit testing; this does not change hosted provider limits or enable external mail delivery. After changing local email configuration/templates, stop/start this stack to reload them; preserve the database volumes.
 
 ## References
 

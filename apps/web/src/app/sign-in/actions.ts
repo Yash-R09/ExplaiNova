@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { safeReturnTo } from '@/lib/auth-policy';
+import { authErrorMessage } from '@/lib/auth-errors';
 
 export async function signIn(_previous: { message: string; email: string }, form: FormData): Promise<{ message: string; email: string }> {
   const email = String(form.get('email') ?? '').trim();
@@ -13,7 +14,7 @@ export async function signIn(_previous: { message: string; email: string }, form
   if (!client) return failure('Sign-in is temporarily unavailable. Please try again later.');
   try {
     const { error } = await client.auth.signInWithPassword({ email, password });
-    if (error) return failure(error.status === 429 ? 'Too many attempts. Please wait before trying again.' : 'Unable to sign in. Check your credentials and email confirmation.');
+    if (error) return failure(authErrorMessage(error, 'sign-in'));
   } catch { return failure('Sign-in is temporarily unavailable. Please try again later.'); }
   redirect(safeReturnTo(form.get('next')));
 }

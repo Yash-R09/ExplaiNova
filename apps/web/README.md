@@ -1,6 +1,6 @@
 # Explainova web app
 
-M2b: responsive studio foundation with verified Supabase sessions and sign-in/out. The local video prototype stays in the repository root and runs independently.
+M2a–M2d: responsive studio foundation with verified Supabase sessions, signup/email confirmation, sign-in/out, and password recovery. Independent auth review/QA is pending. The local video prototype stays in the repository root and runs independently.
 
 ## Run locally
 
@@ -16,7 +16,9 @@ npm run app:dev
 
 Open http://127.0.0.1:3000. Studio routes redirect to `/sign-in` until authenticated. Docker Desktop must be running. `db:configure-app` creates ignored `apps/web/.env.local` using the local browser-safe key and preserves an existing file. No hosted Supabase account or paid provider keys are required.
 
-Existing confirmed local Supabase users can sign in. For testing before signup UI is built, create a confirmed local account through Studio at http://127.0.0.1:54323 (Authentication → Users). No permanent QA account is included. Signup/confirmation and password recovery follow as separate features.
+Create an account at `/sign-up`. Open its confirmation email in the local inbox at http://127.0.0.1:54324, follow the link, then select **Confirm email and enter studio**. The app stages the link in a short-lived HttpOnly cookie and uses a clean confirmation page; simply opening/scanning the link does not consume it. Missing/expired/used links lead back to `/check-email` for a replacement. Existing confirmed users can sign in normally. No permanent QA account is included.
+
+Use `/forgot-password` to request a recovery email. Follow its link to the clean `/reset-password` page, choose a new password, then sign in again. Recovery uses an isolated server-only session for the emailed account; an existing browser account stays unchanged. Validation does not consume the link, but a rejected update after verification requires a fresh link. An uncertain update explicitly recommends testing the new password or requesting a fresh link. Successful resets revoke refresh sessions where confirmed; access JWTs can live until provider expiry.
 
 ```powershell
 npm run app:typecheck
@@ -27,12 +29,19 @@ npm --prefix apps/web start
 
 With local Supabase and the app running, a separate terminal can run `npm run app:test:integration`. It creates disposable identities, exercises real session/profile checks, then deletes only those fixtures. Optional `AUTH_TEST_APP_URL` must point to `127.0.0.1`; default is port 3000. No credentials are printed or stored by this integration suite.
 
+`npm run app:test:signup` tests the real application Server Action forms, local email delivery, resend, confirmation, duplicate/reused/expired links, and unconfirmed access denial. It deletes only its disposable identities/profiles. Its expiry test uses Docker/SQL to backdate one generated fixture's confirmation timestamp. Test emails remain in local Mailpit with tokens for deleted fixtures. The application URL and Supabase `site_url` must match the test server (default port 3000).
+
+`npm run app:test:recovery` tests real reset forms/mail, validation, CSRF protection, mixed-account recovery isolation, password changes, refresh-session revocation, replay/expiry, and inactive profiles. It uses disposable local accounts and backdates one fixture's recovery timestamp, then removes its records. Review the full [auth handoff checklist](../../AUTH_REVIEW_CHECKLIST.md) before moving to M3.
+
 Stop a running dev server before starting the production server on the same port. Google Fonts are optional external styling; system fonts remain usable without them.
 
 ## Structure
 
 - `src/app/(studio)`: protected App Router pages with a verified-session layout.
 - `src/app/sign-in`: functional sign-in form and sign-in/out Server Actions.
+- `src/app/sign-up`, `check-email`, `confirm-email`: signup, resend, and explicit confirmation actions/UI.
+- `src/app/auth/confirm`: email-link landing that strips the token URL into a scoped HttpOnly cookie without consuming it.
+- `src/app/forgot-password`, `reset-password`, `auth/recovery`: request, clean landing, and single-action reset using an isolated in-memory recovery client.
 - `src/app/api/v1/me`: independently authorized, no-store identity/profile endpoint.
 - `src/lib/session.ts`: verified identity and owned active-profile checks; recheck here for each future API/action, not just navigation.
 - `src/lib/supabase`: typed browser/server clients and public configuration boundary.
@@ -43,7 +52,7 @@ Stop a running dev server before starting the production server on the same port
 
 ## Current scope
 
-Responsive navigation, existing-user sign-in/out, cookie session refresh, owned profile reads, and an empty projects view are implemented. Other routes describe planned features. Signup, password recovery, project persistence, provider integration, and publishing remain unimplemented. Development servers remain loopback-only; no deployment has been configured.
+Responsive navigation, signup/email confirmation, sign-in/out, password recovery, cookie session refresh, owned profile reads, and an empty projects view are implemented. Other routes describe planned features. Project persistence, provider integration, and publishing remain unimplemented. Development servers remain loopback-only; no deployment has been configured.
 
 The marketing homepage remains planned; `/` redirects to `/projects`, which requires sign-in. The original Stitch files are design references, not copied executable application code.
 
@@ -52,6 +61,8 @@ The marketing homepage remains planned; `/` redirects to `/projects`, which requ
 The repository root `.env` belongs to the prototype and is not loaded into this app. App configuration belongs in `apps/web/.env.local` (ignored). See `.env.example`: URL, publishable/legacy anon key, and app origin are browser-safe. A hosted app origin must use HTTPS so cookies use `Secure`; local HTTP is accepted only for loopback. Never prefix a provider/service secret with `NEXT_PUBLIC_`. The configuration rejects missing values, privileged keys, and insecure non-local endpoints. Restart/rebuild Next.js after changing public environment values. No provider calls occur in this milestone.
 
 Supabase SSR uses shared browser/server cookies with SameSite=Lax and the configured secure flag. Cookie user data is not an authorization source: the server validates the identity with Auth and checks the owned active profile. RLS is still required for future tables. Framework Server Actions handle sign-in/out origin checks; future mutations need their own identity/ownership validation. See [Supabase SSR guidance](https://supabase.com/docs/guides/auth/server-side/creating-a-client).
+
+Local mail uses `supabase/templates/confirmation.html` and `recovery.html`; the CLI configuration requires email confirmation and secure password changes. Before any hosted rollout, install both matching templates and set Supabase Site URL/allowed callbacks/auth settings to the deployed app origin. Local Mailpit tests do not establish external email deliverability. Temporary backend outages show retry guidance; SDK/provider internals are not displayed.
 
 ## Feature development
 

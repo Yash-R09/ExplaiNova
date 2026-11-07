@@ -51,3 +51,9 @@ Evidence: [outage screenshot](design/qa/m2b-auth-outage.png).
 - No provider calls, video generation, hosted services, deployment, commits, or pushes performed. Preexisting uncommitted changes preserved.
 
 Recommendation: correct QA-03 and retest outage/retry behavior before marking the error-state review complete. No access-control failure was observed in the checks performed.
+
+## QA-03 resolution — November 7, 2026
+
+Fixed during M2c. The sign-in action now classifies returned transport/retryable and server failures separately from invalid credentials. A regression test exercises the SDK's returned `AuthRetryableFetchError` shape, not just a thrown exception. Browser retest with local Supabase stopped showed **Sign-in is temporarily unavailable. Please try again later.** Email stayed populated, password cleared, and no access was granted. Credential/throttling messages remain generic and distinct.
+
+[Fixed-outage evidence](design/qa/m2c-outage-fixed.jpg). The finding above is retained as historical QA evidence and is now resolved.

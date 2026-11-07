@@ -14,6 +14,6 @@ export function getSupabaseConfig() {
       const payload = JSON.parse(atob(key.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
       if (payload.role !== 'anon') return null;
     }
-    return { url, key, cookieOptions: { path: '/', sameSite: 'lax' as const, secure: new URL(appUrl).protocol === 'https:' } };
+    return { url, key, appUrl: new URL(appUrl).origin, cookieOptions: { path: '/', sameSite: 'lax' as const, secure: new URL(appUrl).protocol === 'https:' } };
   } catch { return null; }
 }
