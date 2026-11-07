@@ -3,6 +3,8 @@ import path from 'node:path';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
+import {randomUUID} from 'node:crypto';
+import {setTimeout as delay} from 'node:timers/promises';
 import {bundle} from '@remotion/bundler';
 import {selectComposition, renderMedia, renderStill} from '@remotion/renderer';
 import {sample,validate,hash,timedCaptions,toSrt} from './lib.mjs';
@@ -11,7 +13,36 @@ const exec = promisify(execFile);
 export const root = path.dirname(fileURLToPath(import.meta.url));
 export const out = path.join(root,'outputs');
 const chrome = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-export async function writeJSON(file,data) { await fs.mkdir(path.dirname(file),{recursive:true}); await fs.writeFile(file+'.tmp',JSON.stringify(data,null,2)); await fs.rename(file+'.tmp',file); }
+const fileWrites=new Map(),projectOperations=new Map();
+function enqueue(queues,key,task) {
+  const operation=(queues.get(key)||Promise.resolve()).then(task);
+  const settled=operation.catch(()=>{});
+  queues.set(key,settled);
+  settled.then(()=>{if(queues.get(key)===settled)queues.delete(key);});
+  return operation;
+}
+export const withProjectLock=(project,task)=>enqueue(projectOperations,path.resolve(project),task);
+export function writeJSON(file,data) {
+  file=path.resolve(file);
+  // Capture at invocation, before waiting for earlier writes to finish.
+  const text=JSON.stringify(data,null,2);
+  return enqueue(fileWrites,file,async()=>{
+    const temporary=`${file}.${randomUUID()}.tmp`;
+    await fs.mkdir(path.dirname(file),{recursive:true});
+    try {
+      await fs.writeFile(temporary,text,{flag:'wx'});
+      for(let attempt=0;;attempt++){
+        try{await fs.rename(temporary,file);break;}
+        catch(e){
+          // Windows readers/indexers may briefly hold the destination open.
+          if(!['EPERM','EACCES','EBUSY'].includes(e.code)||attempt>=6)throw e;
+          await delay(15*2**attempt);
+        }
+      }
+    }
+    finally {await fs.rm(temporary,{force:true});}
+  });
+}
 export async function readJSON(file) { return JSON.parse(await fs.readFile(file,'utf8')); }
 export async function plan(idea,duration,voice,options={}) {
   if (!process.env.GEMINI_API_KEY) throw Error('No Gemini API key configured. Load the offline sample, or add GEMINI_API_KEY to .env and restart.');

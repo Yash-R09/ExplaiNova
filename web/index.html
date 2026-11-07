@@ -8,20 +8,88 @@
 <div id="notice" role="alert"></div><section id="story"><div class="tag">STORYBOARD REVIEW</div><label for="title">Video title</label><input id="title"><p class="muted" id="source"></p><p class="muted">Water-cycle scenes use custom animation. New topics currently use animated label diagrams. Edit narration and labels below; saving preserves local work.</p><div id="scenes"></div><label><input type="checkbox" id="approval">I reviewed this script and approve local video generation.</label><div class="actions"><button class="secondary" id="save">Save storyboard</button><button id="render">Create video</button></div><p id="saved" class="muted"></p><p id="status" aria-live="polite"></p></section>
 <section id="result"><h2>Your local video</h2><video controls id="video"></video><div class="actions"><a class="button" id="download" download>Download MP4</a><a class="button" id="srt" download>Download captions</a></div><p class="muted">Captions use Windows speech word-event timestamps. Animation is currently driven by scene type; automatic phrase-level visual actions remain future validation work.</p></section><footer>No login, payments, social publishing, or shared accounts. Inputs and artifacts stay in the local outputs folder. Gemini planning sends your idea to Google's API only when you request it.</footer>
 </main><script>
-let board=null,id=localStorage.getItem('explainova-project'),busy=false,timer;
+let board=null,project=null,busy=false,timer,pollTimer,saveQueue=Promise.resolve();
 const $=s=>document.getElementById(s);
 async function api(route,data){const r=await fetch(route,data?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}:{});const j=await r.json();if(!r.ok)throw Error(j.error||'Request failed');return j;}
 function message(e){$('notice').textContent=e.message||e;}
-function lock(value){busy=value;for(const n of ['generate','sample','save','render'])$(n).disabled=value;}
+function lock(value){busy=value;for(const el of document.querySelectorAll('button,input,textarea,select'))el.disabled=value;$('story').setAttribute('aria-busy',String(value));}
+function clearOutput(){
+ $('result').style.display='none';$('video').pause();$('video').removeAttribute('src');$('video').load();
+ $('download').removeAttribute('href');$('srt').removeAttribute('href');
+}
+function showStatus(status){
+ $('status').textContent=status.stage+(status.error?'\n'+status.error:'');
+ if(status.stage==='ready'){
+  if($('video').getAttribute('src')!==status.video)$('video').src=status.video;
+  $('download').href=status.video;$('srt').href=status.captions;$('result').style.display='block';
+ }else clearOutput();
+}
 function collect(){board.title=$('title').value;board.voice=$('voice').value;for(const el of document.querySelectorAll('.scene')){const i=Number(el.dataset.index);board.scenes[i].title=el.querySelector('input').value;board.scenes[i].narration=el.querySelector('textarea').value;board.scenes[i].labels=el.querySelector('[data-labels]').value.split('|').map(t=>t.trim()).filter(Boolean);}return board;}
-function show(b){board=b;$('story').style.display='block';$('title').value=b.title;$('voice').value=b.voice;$('source').textContent=b.source;$('approval').checked=false;$('scenes').replaceChildren();b.scenes.forEach((s,i)=>{const box=document.createElement('div');box.className='scene';box.dataset.index=i;const tag=document.createElement('p');tag.className='tag';tag.textContent=`SCENE ${i+1} / ${s.type}`;box.append(tag);for(const [label,value,type] of [['Scene title',s.title,'input'],['Narration',s.narration,'textarea'],['Labels (separate with |)',s.labels.join(' | '),'input']]){const l=document.createElement('label');l.textContent=label;const e=document.createElement(type);e.value=value;if(label.startsWith('Labels'))e.dataset.labels='true';box.append(l,e);}$('scenes').append(box);});}
-async function save(){if(!board)return;const result=await api('/api/save',{id,board:collect()});id=result.id;localStorage.setItem('explainova-project',id);$('saved').textContent='Saved locally · '+new Date().toLocaleTimeString();}
-async function poll(){if(!id)return;const p=await api('/api/project/'+id);$('status').textContent=p.status.stage+(p.status.error?'\n'+p.status.error:'');if(p.status.stage==='ready'){$('result').style.display='block';$('video').src=p.status.video;$('download').href=p.status.video;$('srt').href=p.status.captions;lock(false);}else if(['failed','interrupted'].includes(p.status.stage)){lock(false);}else if(p.status.stage!=='draft'){lock(true);setTimeout(()=>poll().catch(message),1800);}}
-$('sample').onclick=async()=>{try{id=null;show(await api('/api/sample'));await save();message('Offline authored sample loaded. Review it, select a voice, then approve rendering.');}catch(e){message(e);}};
-$('generate').onclick=async()=>{try{lock(true);message('Planning with Gemini…');const b=await api('/api/plan',{idea:$('idea').value,duration:Number($('duration').value),voice:$('voice').value});id=null;show(b);await save();message('Review the generated storyboard for factual accuracy.');}catch(e){message(e);}finally{lock(false);}};
-$('save').onclick=()=>save().catch(message);
-$('render').onclick=async()=>{try{if(!$('approval').checked)throw Error('Review and approve the storyboard first.');await save();lock(true);await api('/api/render',{id,approved:true});$('result').style.display='none';await poll();}catch(e){message(e);lock(false);}};
-$('story').addEventListener('input',e=>{if(e.target.id==='approval')return;$('approval').checked=false;clearTimeout(timer);timer=setTimeout(()=>save().catch(message),900);});
-$('voice').onchange=()=>{if(board){$('approval').checked=false;save().catch(message);}};
-(async()=>{const c=await api('/api/config');$('config').textContent=c.gemini?'Gemini key configured · local Windows narration':'No Gemini key configured. Offline sample works; add GEMINI_API_KEY to .env for new AI storyboards.';if(id){try{const p=await api('/api/project/'+id);show(p.board);await poll();}catch{localStorage.removeItem('explainova-project');id=null;}}})().catch(message);
+function show(b,id=null){
+ clearTimeout(timer);clearTimeout(pollTimer);clearOutput();$('status').textContent='draft';$('saved').textContent='';message('');
+ board=b;project={id,edits:0,saveNumber:0};
+ if(id)localStorage.setItem('explainova-project',id);else localStorage.removeItem('explainova-project');
+ $('story').style.display='block';$('title').value=b.title;$('voice').value=b.voice;$('source').textContent=b.source||'';$('approval').checked=false;$('scenes').replaceChildren();
+ b.scenes.forEach((s,i)=>{
+  const box=document.createElement('div');box.className='scene';box.dataset.index=i;
+  const tag=document.createElement('p');tag.className='tag';tag.textContent=`SCENE ${i+1} / ${s.type}`;box.append(tag);
+  for(const [label,value,type] of [['Scene title',s.title,'input'],['Narration',s.narration,'textarea'],['Labels (separate with |)',s.labels.join(' | '),'input']]){
+   const l=document.createElement('label');l.textContent=label;const el=document.createElement(type);el.id=`scene-${i}-${type==='textarea'?'narration':label.startsWith('Labels')?'labels':'title'}`;l.htmlFor=el.id;el.value=value;
+   if(label.startsWith('Labels'))el.dataset.labels='true';el.disabled=busy;box.append(l,el);
+  }
+  $('scenes').append(box);
+ });
+}
+function save(){
+ clearTimeout(timer);
+ if(!project)return Promise.resolve();
+ const current=project,snapshot=structuredClone(collect()),edits=current.edits,number=++current.saveNumber;
+ const work=saveQueue.catch(()=>{}).then(async()=>{
+  const result=await api('/api/save',{id:current.id,board:snapshot});current.id=result.id;
+  if(project===current){
+   localStorage.setItem('explainova-project',current.id);
+   if(current.edits===edits&&current.saveNumber===number){$('saved').textContent='Saved locally · '+new Date().toLocaleTimeString();message('');showStatus(result.status);}
+  }
+  return result;
+ });
+ saveQueue=work;
+ return work;
+}
+async function poll(current=project){
+ if(!current?.id||project!==current)return;
+ const edits=current.edits,p=await api('/api/project/'+current.id);
+ if(project!==current||current.edits!==edits)return;
+ showStatus(p.status);
+ if(['draft','stale','ready','failed','interrupted'].includes(p.status.stage)){lock(false);return;}
+ lock(true);pollTimer=setTimeout(()=>poll(current).catch(e=>{if(project===current)message(e);}),1800);
+}
+$('sample').onclick=async()=>{try{lock(true);show(await api('/api/sample'));await save();message('Offline authored sample loaded. Review it, select a voice, then approve rendering.');}catch(e){message(e);}finally{lock(false);}};
+$('generate').onclick=async()=>{try{lock(true);message('Planning with Gemini…');const b=await api('/api/plan',{idea:$('idea').value,duration:Number($('duration').value),voice:$('voice').value});show(b);await save();message('Review the generated storyboard for factual accuracy.');}catch(e){message(e);}finally{lock(false);}};
+$('save').onclick=()=>{if(!busy)save().catch(message);};
+$('render').onclick=async()=>{
+ if(busy)return;
+ try{
+  if(!$('approval').checked)throw Error('Review and approve the storyboard first.');
+  clearTimeout(timer);lock(true);await save();await api('/api/render',{id:project.id,approved:true});clearOutput();await poll();
+ }catch(e){message(e);lock(false);}
+};
+function edited(){
+ if(!project||busy)return;
+ project.edits++;$('approval').checked=false;$('saved').textContent='Unsaved changes';clearOutput();$('status').textContent='Draft changed · review and render again';
+ clearTimeout(timer);clearTimeout(pollTimer);timer=setTimeout(()=>save().catch(message),900);
+}
+$('story').addEventListener('input',e=>{if(e.target.id!=='approval')edited();});
+$('voice').onchange=()=>{edited();if(project&&!busy)save().catch(message);};
+(async()=>{
+ lock(true);
+ try{
+  const c=await api('/api/config');$('config').textContent=c.gemini?'Gemini key configured · local Windows narration':'No Gemini key configured. Offline sample works; add GEMINI_API_KEY to .env for new AI storyboards.';
+  const id=localStorage.getItem('explainova-project');
+  if(id){
+   let p;try{p=await api('/api/project/'+id);}catch{localStorage.removeItem('explainova-project');}
+   if(p){show(p.board,id);await poll();return;}
+  }
+  lock(false);
+ }catch(e){message(e);lock(false);}
+})().catch(message);
 </script></body></html>

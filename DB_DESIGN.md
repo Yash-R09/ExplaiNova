@@ -1,8 +1,10 @@
 # Explainova — Database and Media Data Design
 
 **Version:** 1.0 · **Date:** November 6, 2026  
-**Status:** Proposed logical/physical design; no migrations applied  
+**Status:** Full-app design; M2a profile migration applied locally, remaining schema planned  
 **Related:** [API design](API_DESIGN.md), [system design](SYSTEM_DESIGN.md), [PRD](PRD.md)
+
+Implementation note (M2a): executable local profile schema and isolation tests now live in [supabase/](supabase/README.md). The remaining tables and transactions below are planned. Local execution results are tracked in [project status](PROJECT_STATUS.md); no hosted database migration has been applied.
 
 ## 1. Storage responsibilities
 
@@ -308,4 +310,4 @@ Back up Postgres under the selected Supabase plan and test restoration. Pilot re
 
 Validation must prove: cross-owner FKs fail; client roles cannot forge approvals/jobs/publication states; autosave conflicts preserve both drafts; idempotent commands do not duplicate work; expired worker fencing tokens cannot commit; queue rebuild works; deleted assets cannot gain new references; revoked connections cannot publish; and restored records reconcile with actual objects/platform states.
 
-No SQL schema in this document has been applied to Supabase. Implement and review executable migrations as a separate task before deployment.
+Only the M2a identity/profile migration has been implemented and applied to local Supabase. The other schema sections remain design guidance. No hosted database has been migrated; review each executable migration before shared deployment.

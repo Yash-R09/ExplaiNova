@@ -2,6 +2,8 @@
 
 The full application is now being built in small milestones alongside the working prototype. See [project status and delivery plan](PROJECT_STATUS.md), [web app setup](apps/web/README.md), and [UI design handoff](UI_DESIGN_SCREEN_MAP.md).
 
+Local database development: [Supabase setup, migrations, and isolation tests](supabase/README.md). Run `npm run db:start` with Docker Desktop running; this does not connect to a hosted database.
+
 ## New application scaffold
 
 ```powershell
@@ -29,6 +31,8 @@ npm start
 Open **http://127.0.0.1:4310**. Load the offline sample, review its narration and labels, select Male or Female, check approval, and select Create video. Keep the local runner and computer active while rendering. Generation runs independently of the browser tab.
 
 The UI saves the current storyboard locally and restores its project ID from browser storage. Inputs and generated artifacts live under `outputs/`. Do not expose this local server to the internet; there is intentionally no authentication.
+
+Autosave and manual Save are ordered within the tab and local server. Editing a rendered storyboard marks the previous output stale; active download links return only when the saved content matches its render version. Loading another draft clears old media links, and the editor is locked during rendering. These queues protect one runner process; concurrent runner processes or independent tabs still do not provide production-grade revision conflict resolution.
 
 ## Render the sample directly
 
@@ -94,6 +98,8 @@ npm test
 ```
 
 Tests cover input validation, voice-change cache invalidation, timestamp bounds, caption boundaries, local save/load, request-origin protection, and approval requirements.
+
+Regression tests also cover overlapping atomic writes, temporary-file cleanup, failed-save recovery, stale render links, render admission locks, and polling across job completion. HTTP tests use temporary output directories and injected renderers, so they do not consume provider quota or generate media.
 
 For a failed/interrupted job, reopen the local page, review, and render again. Unchanged audio is reused. The old successful output remains in its version folder. If a voice is unavailable, install an English Windows desktop voice or select an installed option. For Chrome errors set `CHROME_PATH` in `.env`. A new render needs no browser download when Chrome is installed.
 
