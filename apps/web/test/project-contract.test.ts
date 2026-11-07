@@ -1,6 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,duplicateProjectInput,lifecycleProjectInput,type IdeaProject} from '../src/lib/project-contract.ts';
+import {projectInput,commandKey,parseProjectCursor,makeProjectCursor,duplicateProjectInput,lifecycleProjectInput,projectSearch,projectLibraryHref,type IdeaProject} from '../src/lib/project-contract.ts';
+test('title search normalization is bounded and preserves literal search characters',()=>{
+ assert.equal(projectSearch(undefined),'');assert.equal(projectSearch('  solar  '),'solar');assert.equal(projectSearch('%_\\ + &'),'%_\\ + &');assert.equal(projectSearch('  '),'');
+ for(const value of ['x'.repeat(141),'😀'.repeat(71),'bad\nquery','bad\0query',['a','b'],{},42])assert.throws(()=>projectSearch(value));
+});
+test('searched cursors bind the exact normalized query and view while old unsearched cursors still work',()=>{
+ const p={id:'11111111-1111-4111-8111-111111111111',updatedAt:'2026-11-07T10:20:30.123456Z'},cursor=makeProjectCursor(p,'drafts','  solar  ');
+ assert.equal(parseProjectCursor(cursor,'drafts','solar')?.query,'solar');assert.throws(()=>parseProjectCursor(cursor,'drafts','moon'));assert.throws(()=>parseProjectCursor(cursor,'trash','solar'));assert.throws(()=>parseProjectCursor(cursor));
+ const old=makeProjectCursor(p);assert.equal(parseProjectCursor(old)?.filter,'drafts-v1');assert.throws(()=>parseProjectCursor(old,'drafts','solar'));
+});
+test('library links retain encoded search with pagination and switching views',()=>{
+ const href=projectLibraryHref('trash','solar & moon + 100%','opaque-cursor'),url=new URL(href,'http://127.0.0.1');
+ assert.equal(url.pathname,'/projects/trash');assert.equal(url.searchParams.get('q'),'solar & moon + 100%');assert.equal(url.searchParams.get('cursor'),'opaque-cursor');assert.equal(projectLibraryHref('drafts'),'/projects');
+});
 test('lifecycle commands require a revision with room for a transition',()=>{
  assert.deepEqual(lifecycleProjectInput({expectedRevision:2147483646}),{expectedRevision:2147483646});
  for(const value of [{},{expectedRevision:'1'},{expectedRevision:0},{expectedRevision:1.5},{expectedRevision:2147483647},{expectedRevision:1,ownerId:'other'},{expectedRevision:1,deletedAt:null},null,[]])assert.throws(()=>lifecycleProjectInput(value));

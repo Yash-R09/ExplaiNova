@@ -92,6 +92,9 @@ isOneToOne: false
 "save_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
                            },
+"search_idea_projects":
+{ Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number,"p_query": string,"p_trashed"?: boolean }; Returns: Json
+                           },
 "trash_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
                            }

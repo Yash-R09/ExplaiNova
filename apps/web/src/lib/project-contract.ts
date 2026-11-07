@@ -43,18 +43,31 @@ export function lifecycleProjectInput(value:unknown):{expectedRevision:number}{
   try{const result=duplicateProjectInput(value);if(result.expectedRevision>2147483646)throw Error();return result;}
   catch{throw new ProjectError('VALIDATION_FAILED',422,'Choose a valid saved draft revision.');}
 }
-export type ProjectCursor={updatedAt:string;id:string;filter:'drafts-v1'|'trash-v1'};
-export function parseProjectCursor(value: unknown,view:ProjectView='drafts'): ProjectCursor|null {
+export function projectSearch(value:unknown):string{
+  if(value===null||value===undefined)return '';
+  if(typeof value!=='string'||value.length>140)throw new ProjectError('VALIDATION_FAILED',400,'Search titles using up to 140 characters.');
+  const query=value.trim();if(/[\u0000-\u001f\u007f]/.test(query))throw new ProjectError('VALIDATION_FAILED',400,'Use a single line to search titles.');
+  return query;
+}
+export function projectLibraryHref(view:ProjectView,query='',cursor?:string){
+  const params=new URLSearchParams();if(query)params.set('q',query);if(cursor)params.set('cursor',cursor);
+  const base=view==='trash'?'/projects/trash':'/projects';return base+(params.size?'?'+params.toString():'');
+}
+export type ProjectCursor={updatedAt:string;id:string;filter:'drafts-v1'|'trash-v1'|'drafts-search-v1'|'trash-search-v1';query?:string};
+export function parseProjectCursor(value: unknown,view:ProjectView='drafts',search=''): ProjectCursor|null {
   if(value===undefined||value===null)return null;
   const fail=()=>{throw new ProjectError('INVALID_CURSOR',400,'The project page link is invalid. Open the first page again.');};
   if(typeof value!=='string'||value.length>1024||!/^[A-Za-z0-9_-]+$/.test(value))return fail();
+  const query=projectSearch(search);
   try{
     const cursor=JSON.parse(Buffer.from(value,'base64url').toString());
-    if(Object.keys(cursor).sort().join(',')!=='filter,id,updatedAt'||cursor.filter!==`${view}-v1`||typeof cursor.id!=='string'||!uuidPattern.test(cursor.id)||typeof cursor.updatedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(cursor.updatedAt)||!Number.isFinite(Date.parse(cursor.updatedAt))||new Date(cursor.updatedAt).toISOString().slice(0,19)!==cursor.updatedAt.slice(0,19))return fail();
+    if(Object.keys(cursor).sort().join(',')!==(query?'filter,id,query,updatedAt':'filter,id,updatedAt')||cursor.filter!==`${view}${query?'-search':''}-v1`||(query&&cursor.query!==query)||typeof cursor.id!=='string'||!uuidPattern.test(cursor.id)||typeof cursor.updatedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(cursor.updatedAt)||!Number.isFinite(Date.parse(cursor.updatedAt))||new Date(cursor.updatedAt).toISOString().slice(0,19)!==cursor.updatedAt.slice(0,19))return fail();
     return cursor;
   }catch{return fail();}
 }
-export function makeProjectCursor(project: Pick<IdeaProject,'updatedAt'|'id'>,view:ProjectView='drafts'){return Buffer.from(JSON.stringify({updatedAt:project.updatedAt,id:project.id,filter:`${view}-v1`})).toString('base64url');}
+export function makeProjectCursor(project: Pick<IdeaProject,'updatedAt'|'id'>,view:ProjectView='drafts',search=''){
+  const query=projectSearch(search);return Buffer.from(JSON.stringify({updatedAt:project.updatedAt,id:project.id,filter:`${view}${query?'-search':''}-v1`,...(query?{query}:{})})).toString('base64url');
+}
 export function asTrashedProject(value:unknown):TrashedProject{
   const p=value as TrashedProject;
   if(!p||!uuidPattern.test(p.id)||!Number.isInteger(p.revision)||typeof p.title!=='string'||typeof p.deletedAt!=='string'||typeof p.updatedAt!=='string')throw new ProjectError('TEMPORARILY_UNAVAILABLE',503,'Trash could not be loaded. Please try again.');

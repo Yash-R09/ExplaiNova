@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3c3 implemented — editable draft preferences**
+Last updated: November 7, 2026 · Current milestone: **M3d implemented — title search; M3 feature work complete, review pending**
 
 ## Working agreement
 
@@ -22,7 +22,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M3c1 implementation):** Duplicate draft from the library creates an independent revision-1 copy of saved creative inputs. Owned transactional copy, stale-source protection, safe idempotent retries and Unicode-safe title prefixing are implemented.
 - **Complete (M3c2 implementation):** confirmed Move to Trash, private paginated Trash, one-click restoration, preserved saved content/history, revision fencing across lifecycle transitions, and idempotent lifecycle commands. [Independent QA](QA_M3C2_REVIEW.md) passed within its scope with no new defects; separate source/security review remains pending.
 - **Complete (M3c3 implementation):** per-draft 30/60/90s, audience, tone and male/female narration preference, saved through autosave/recovery/conflicts and retained by duplication/Trash. Captions included and topic-adaptive 2D visuals are fixed V1 requirements. [Independent QA](QA_M3C3_REVIEW.md) passed within its scope with no new defects; source/security review remains pending. Named voice selection/preview and account-wide defaults remain later work.
-- **Not implemented in the SaaS app:** title search, provider calls, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
+- **Complete (M3d implementation):** private case-insensitive title search across Projects/Trash, query-bound pagination, literal special characters, distinct no-match states and search-preserving lifecycle navigation. Independent QA reported QA-05 (Back restored results but retained a later input); fixed and implementation-retested in Projects/Trash. Independent fix retest and source/security review remain pending. See [QA report](QA_M3D_REVIEW.md).
+- **Not implemented in the SaaS app:** provider calls, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -31,7 +32,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | --- | --- | --- | --- |
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
-| M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | M3a–M3c3 implemented; title search remains |
+| M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
@@ -55,6 +56,32 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M3d QA-05 repair and authorized commit · November 7, 2026
+
+- Fixed history restoration of edited native GET form values. Search input is now controlled, follows applied server query changes, and synchronizes to the URL on pageshow/popstate both immediately and on the next animation frame after browser form restoration. Direct DOM synchronization also covers restored values when React state already equals the correct query. Listeners/pending frames clean up on unmount; normal unsubmitted editing remains intact.
+- Added three event/timing regression tests: browser restoration after an event, unchanged ordinary edits, latest navigation/cleanup. **52 app tests**, **153 search HTTP/SSR assertions**, production build and strict typecheck pass. Whitespace checks pass. Independent pre-fix QA's 697 full-suite results remain historical; database/lint and unrelated backend suites were not rerun for this client-only repair.
+- Browser verified Ocean → Moon → Back gives Ocean input/status/results, persists after Tab, Forward gives Moon, and repeated Back remains correct. Unfiltered → Moon → Back restores an empty input. Trash Moon → Ocean → Back/Forward also matches query/results; mobile 390px Back restoration had no horizontal overflow. Unsubmitted typing and Clear search still pass. Evidence in `design/qa/m3d/back-query-fixed*.png`.
+- Disposable fixture account/seeded drafts removed; owned app/Supabase stopped, volumes retained, tab/viewport cleaned up. Founder explicitly requested fixing and committing this checkpoint; stage/publish checks exclude credentials/env files, rendered media, dependencies and build outputs. Independent repair retest/source review remains pending.
+
+### Independent M3d QA — November 7, 2026
+
+- Tested uncommitted title search against `b9b6947`; [independent QA report](QA_M3D_REVIEW.md). Found **QA-05 (P3)**: browser Back restores prior URL/results/status but leaves the subsequent query in the search field. Filtering remains correct; full reload resynchronizes it. No source fix made.
+- Passed browser 22 matching titles across 20+2 pages, case/trim normalization, title-only no-match, literal punctuation/emoji, new-query cursor reset, Clear search after unsubmitted edit, and filtered move/Trash/restore navigation.
+- Mobile search visually checked at actual 390 × 844 without horizontal overflow; basic keyboard progression passed. Broader accessibility/device/source-security review remains pending.
+- Passed 49 app tests, 13 prototype tests, 197 PostgreSQL tests, 153 search assertions, 124 project assertions, 109 Trash assertions, 42 preference assertions and 10 session checks (**697 total**), schema lint, production build, typecheck and whitespace checks.
+- Removed disposable browser/integration fixtures, reset viewport and stopped owned app/Supabase services with volumes retained. No provider calls or publication. Next: fix/retest QA-05, then complete review before M4. Commit and push reviewed M3d/QA changes to `dev` when approved.
+
+### M3d — Private title search · November 7, 2026
+
+- Added server-rendered GET search forms to Projects and Trash, with labelled input, Enter/Search submission, Clear search, applied-query status and separate no-match states. Empty search returns the full current view. Search is a case-insensitive literal title substring, not idea/reference search, fuzzy matching or wildcard syntax.
+- Search RPC derives active ownership, filters title and active/trashed status before ordering/limit, preserves newest-update ordering and returns ordinary active docs or summary-only Trash results. Existing no-query RPCs and v1 cursors remain compatible. Search adds `q` to list API and search-bound cursor fingerprints; changed query/view with an old cursor is rejected.
+- Pagination/first-page links and Projects↔Trash navigation retain the normalized query. Trash/restore returns to the filtered first page. A browser-discovered issue where Clear search kept an unsubmitted input edit was fixed by remounting the form on applied view/query changes; browser retest confirmed URL, input and results reset together.
+- **Checks:** 197 PostgreSQL tests (33 new), clean schema lint, 49 app unit tests (3 new), 153 real search HTTP assertions, 124 existing project assertions, 109 Trash assertions, 42 preference assertions, 10 session checks, 13 prototype tests, strict typecheck and production build passed. Whitespace checks passed. Existing project race may add one assertion by lock order.
+- Search tests include matches older than the unfiltered first page, literal percent/underscore/backslash/quotes, Unicode/emoji, title-only scope, two-owner isolation, inactive denial, matching-page traversal, cross-query/view cursor rejection, rename/Trash/restore updates and server-rendered pagination links.
+- Browser: 22 matches → first page 20 → older page 2 with query retained; new unmatched title resets pagination and shows honest no-match state; Clear search restores all drafts, including after an unsubmitted edit. Move matching draft to Trash, switch views, restore and move again retained the search, with refreshed lists verified. Desktop 1280px and mobile 390px had no horizontal overflow; inspected screenshots under `design/qa/m3d/`.
+- Migration `20261107000500_project_title_search.sql` applied locally and types regenerated. Disposable users/seeded drafts removed, owned app/Supabase stopped with volumes retained, QA tab/viewport cleaned up. No providers, video renders, cloud changes, publishing, or root prototype source edits.
+- M3 feature implementation is complete; independent M3d QA/source/security review is pending. [Handoff](QA_M3D_HANDOFF.md). Changes remain uncommitted; remind the founder to commit/push after review. Next milestone is M4 AI planning, delivered in small slices.
 
 ### Independent M3c3 QA — November 7, 2026
 
@@ -265,7 +292,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: complete remaining source/security review using [QA_M3C3_HANDOFF.md](QA_M3C3_HANDOFF.md), then **M3d — title search** from approved PRD §7.2. [Independent M3c3 QA](QA_M3C3_REVIEW.md) records 508 passing tests/assertions and no new reproducible defects within its scope. Active/Trash provide the currently relevant status views; generation-state filters arrive with those states. Keep M4 AI brainstorming/storyboard generation separate. Account-wide defaults and named free-tier voice catalog/samples remain later work. Earlier security/release coverage limits remain carried forward. The founder authorized committing/pushing this checkpoint.
+Next: independently retest QA-05 and complete remaining source/security checks with [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md), then **M4 — AI planning** in small slices, beginning with the planning request/persistence foundation and optional saved brainstorming before storyboard generation. All planned M3 feature slices are implemented. Founder authorized committing/pushing M3d plus the QA-05 fix. Generation-state filters, account-wide defaults and named voice catalog/samples remain later work. Earlier source/security/release limits remain carried forward.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -281,6 +308,10 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 - Preserve the original approved Stitch homepages. See [UI screen map](UI_DESIGN_SCREEN_MAP.md).
 
 ## Change log
+
+- November 7, 2026: Fixed QA-05 search history/input synchronization, added three regressions and verified browser Back/Forward in both libraries. Founder authorized committing/pushing M3d, repair and independent QA evidence to `dev`.
+
+- November 7, 2026: Implemented M3d title search, verified filtered pagination/lifecycle flows and fixed Clear search retaining an unsubmitted input. M3 feature implementation is complete; review/commit checkpoint precedes M4 AI planning.
 
 - November 7, 2026: Founder approved committing/pushing M3c3 and its independent QA report/evidence to `dev`. Independent QA reported 508 passing tests/assertions and no new defects. Publication checks exclude credentials/env files, rendered video/audio, dependencies and build outputs. Separate source/security review remains pending.
 
