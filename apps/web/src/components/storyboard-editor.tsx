@@ -5,6 +5,7 @@ import type { StoryboardDocument } from '@/lib/storyboard-contract';
 import type { StoryboardCandidate } from '@/lib/storyboard-candidate';
 import { useDraftNavigation } from './draft-navigation';
 import { StoryboardAutosave, type StoryboardAutosaveView } from '@/lib/storyboard-autosave';
+import { StoryboardSuggestions } from './storyboard-suggestions';
 
 type SceneField = 'title' | 'purpose' | 'narration' | 'motion';
 const sceneFields: { field: SceneField; label: string; maxLength: number }[] = [
@@ -76,7 +77,7 @@ export function StoryboardEditor({ initial, ownerId }: { initial: StoryboardDocu
     }));
   }
 
-  return <form className="draft-panel storyboard-editor" noValidate onSubmit={event => {
+  return <><form className="draft-panel storyboard-editor" noValidate onSubmit={event => {
     event.preventDefault();
     void controller.current?.flush();
   }}>
@@ -154,5 +155,10 @@ export function StoryboardEditor({ initial, ownerId }: { initial: StoryboardDocu
         {view?.status === 'error' ? 'Retry save' : 'Save storyboard'}
       </button>
     </div>
-  </form>;
+  </form>
+  <StoryboardSuggestions id={initial.id} projectId={initial.projectId} revision={saved.revision} savedContent={saved.content}
+    ready={view?.status === 'saved' && !view.dirty}
+    preview={proposal => <StoryboardCopy content={proposal} expanded />}
+    apply={(base, proposal) => void controller.current?.applyProposal(base, proposal)} />
+  </>;
 }

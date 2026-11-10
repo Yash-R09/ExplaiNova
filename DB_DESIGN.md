@@ -104,6 +104,8 @@ Content includes ordered stable scene IDs, narration, visual parameters, and phr
 
 M5a uses the generated candidate as revision 1 and appends edits to `storyboard_revisions` with a candidate-local revision number, UUID and content hash. The composite foreign key binds each revision to its owned candidate. The service-only save transaction locks the active project and candidate, validates the revision and records the original acknowledgement in the existing command store. Owner reads follow the candidate's RLS, including Trash visibility. Draft revisions are independent of storyboard revisions.
 
+M5c stores each prompt and proposed revision in the planning queue, with a composite foreign key to the owned storyboard candidate. Admission uses the same candidate lock as manual saves and snapshots the selected revision into the job. Proposals never advance the storyboard head. The existing save transaction controls application.
+
 Store exact voice/model/settings/component versions in snapshots, not just a catalog foreign key that can later change meaning. Sources are claims/reference metadata, not presumed factual certification.
 
 ## 5. Approvals and publication snapshots

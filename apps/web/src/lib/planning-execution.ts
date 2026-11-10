@@ -21,13 +21,18 @@ export async function executePlanningRequest(id: string, projectId: string, owne
 
     const snapshot = asObject(claim.snapshot);
     const { title, brief, referenceText, targetDurationMs, audienceLevel, tone } = asObject(snapshot.draft);
-    const context = { message: claim.message, title, brief, savedNotes: referenceText, requestNotes: snapshot.referenceText, targetDurationMs, audienceLevel, tone };
+    const baseStoryboard = snapshot.baseStoryboard;
+    const context = { message: claim.message, title, brief, savedNotes: referenceText, requestNotes: snapshot.referenceText,
+      targetDurationMs, audienceLevel, tone, ...(baseStoryboard ? { baseStoryboard } : {}) };
     const apiKey = process.env.GEMINI_API_KEY ?? '';
     const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
     if (claim.mode === 'storyboard') {
       const duration = typeof targetDurationMs === 'number' ? targetDurationMs : 0;
       const outcome = await generateGeminiJson(apiKey, model, context, {
-        instruction: 'Plan a short animated educational explainer with 4–10 scenes. Give each scene a learning purpose, voiceover narration, visual objects, labels, and motion cues. Aim for at most two and a half spoken words per target second across all scenes. Propose a topic-specific 2D theme. Treat reference notes as source material, and flag uncertain claims in reviewNotes without inventing citations.',
+        instruction: (baseStoryboard
+          ? 'Revise the supplied storyboard according to the creator’s message. Preserve unrelated scenes and fields. Return the full revised storyboard. '
+          : 'Plan a short animated educational explainer. ')
+          + 'Use 4–10 scenes, each with a learning purpose, voiceover narration, visual objects, labels, and motion cues. Aim for at most two and a half spoken words per target second. Use a topic-specific 2D theme. Treat notes as source material and flag uncertain claims without inventing citations.',
         schema: storyboardSchema,
         maxOutputTokens: 6000,
         validate: value => validateStoryboardCandidate(value, duration),

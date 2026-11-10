@@ -7,17 +7,23 @@ export type Database = {
           Tables: {
             "planning_requests": {
                   Row: {
-                    "attempt_id": string | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"mode": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string,"storyboard": Json | null
+                    "attempt_id": string | null,"base_storyboard_id": string | null,"base_storyboard_revision": number | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"mode": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string,"storyboard": Json | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot": NonNullable<Json>,"lease_until"?: string | null,"message": string,"mode"?: string,"owner_id": string,"project_id": string,"project_revision": number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
+                    "attempt_id"?: string | null,"base_storyboard_id"?: string | null,"base_storyboard_revision"?: number | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot": NonNullable<Json>,"lease_until"?: string | null,"message": string,"mode"?: string,"owner_id": string,"project_id": string,"project_revision": number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
                   }
                   Update: {
-                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot"?: NonNullable<Json>,"lease_until"?: string | null,"message"?: string,"mode"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
+                    "attempt_id"?: string | null,"base_storyboard_id"?: string | null,"base_storyboard_revision"?: number | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot"?: NonNullable<Json>,"lease_until"?: string | null,"message"?: string,"mode"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
                   }
                   Relationships: [
                     {
+      foreignKeyName: "planning_requests_owner_id_project_id_base_storyboard_id_fkey"
+      columns: ["owner_id","project_id","base_storyboard_id"]
+isOneToOne: false
+      referencedRelation: "planning_requests"
+      referencedColumns: ["owner_id","project_id","id"]
+    },{
       foreignKeyName: "planning_requests_owner_id_project_id_project_revision_fkey"
       columns: ["owner_id","project_id","project_revision"]
 isOneToOne: false
@@ -149,6 +155,9 @@ isOneToOne: false
                            },
 "submit_brainstorm_request":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
+"submit_storyboard_suggestion":
+{ Args: { "p_command_key": string,"p_expected_revision": number,"p_id": string,"p_message": string }; Returns: Json
                            },
 "trash_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json

@@ -165,6 +165,29 @@ try {
     assert.equal(latest.revision, 3);
     assert.equal(latest.content.title, nextEdit.content.title);
 
+    const suggestionsPath = `${storyboardPath}/suggestions`;
+    const suggestion = { expectedRevision: 3, message: 'Use a simple analogy in the opening scene.' };
+    assert.equal((await post(suggestionsPath, owner.jar, suggestion)).status, 404);
+    assert.equal((await post(suggestionsPath, other.jar, { ...suggestion, expectedRevision: 2 })).status, 409);
+    const suggestionKey = randomUUID();
+    const suggestionResponse = await post(suggestionsPath, other.jar, suggestion, suggestionKey);
+    assert.equal(suggestionResponse.status, 202);
+    const { data: suggestionReceipt } = await suggestionResponse.json();
+    assert.equal(suggestionReceipt.baseRevision, 3);
+    assert.deepEqual((await (await post(suggestionsPath, other.jar, suggestion, suggestionKey)).json()).data, suggestionReceipt);
+    const proposal = await terminalRequest(suggestionsPath, other.jar, suggestionReceipt.id);
+    assert.equal(proposal.status, 'succeeded');
+    assert.equal(proposal.content.title, latest.content.title);
+    assert.match(proposal.content.scenes[0].narration, /throwing a ball/);
+    assert.equal((await (await request(storyboardPath, other.jar)).json()).data.revision, 3);
+    assert.equal((await request(`/api/v1/storyboards/${proposal.id}`, other.jar)).status, 404);
+    const initialPlanningRows = (await (await request(independentPath, other.jar)).json()).data;
+    assert.ok(initialPlanningRows.every(row => row.id !== proposal.id));
+    const applied = await saveEdit(other.jar, { expectedRevision: proposal.baseRevision, content: proposal.content });
+    assert.equal(applied.status, 201);
+    assert.equal((await applied.json()).data.revision, 4);
+    assert.equal((await saveEdit(other.jar, { expectedRevision: proposal.baseRevision, content: proposal.content })).status, 409);
+
     const malformed = await post(independentPath, other.jar, { ...storyboardCommand, message: 'Simulate invalid storyboard' });
     assert.equal(malformed.status, 202);
     const failed = await terminalRequest(independentPath, other.jar, (await malformed.json()).data.id);
@@ -209,6 +232,7 @@ try {
     });
     assert.equal(trashed.status, 202);
     assert.equal((await request(storyboardPath, other.jar)).status, 404);
+    assert.equal((await request(suggestionsPath, other.jar)).status, 404);
     assert.equal((await saveEdit(other.jar, edit, saveKeys[successfulIndex])).status, 404);
   }
   console.log('Planning API integration passed.');

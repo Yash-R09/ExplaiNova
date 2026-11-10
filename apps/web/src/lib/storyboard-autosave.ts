@@ -36,6 +36,10 @@ function snapshot(content: Content) {
     content.scenes.map(scene => [scene.title, scene.type, scene.purpose, scene.narration, scene.objects, scene.labels, scene.motion])]);
 }
 
+export function sameStoryboardContent(left: Content, right: Content) {
+  return snapshot(left) === snapshot(right);
+}
+
 function readBackup(raw: string, duration: number): Backup | null {
   try {
     if (raw.length > 150000) return null;
@@ -106,7 +110,7 @@ export class StoryboardAutosave {
     };
   }
 
-  private dirty() { return !!this.operation || snapshot(this.content) !== snapshot(this.saved.content); }
+  private dirty() { return !!this.operation || !sameStoryboardContent(this.content, this.saved.content); }
   private emit() { if (!this.disposed) this.options.notify(this.view()); }
   private cancel() { clearTimeout(this.timer); this.timer = undefined; }
   private schedule(delay = this.options.debounceMs ?? 900) {
@@ -145,6 +149,13 @@ export class StoryboardAutosave {
       else this.cancel();
     }
     this.emit();
+  }
+
+  async applyProposal(baseRevision: number, content: Content) {
+    if (this.disposed || this.status !== 'saved' || this.dirty() || baseRevision !== this.revision
+      || sameStoryboardContent(content, this.saved.content)) return;
+    this.change(() => content);
+    await this.flush();
   }
 
   connectivity(online: boolean) {

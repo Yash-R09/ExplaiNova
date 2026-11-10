@@ -125,6 +125,8 @@ All paths below are relative to `/api/v1`.
 | POST `/projects/:id/planning-jobs/:requestId/resume` | Resume an owned queued or interrupted request without a new submission | 202 |
 | GET `/storyboards/:id` | Read the latest immutable revision of an owned storyboard | 200 |
 | PATCH `/storyboards/:id` | Save edits as a new immutable storyboard | 201 |
+| POST `/storyboards/:id/suggestions` | Request an AI proposal against a saved storyboard revision | 202 |
+| GET `/storyboards/:id/suggestions` | Read recent owned revision requests and proposals | 200 |
 | POST `/storyboards/:id/approve` | Approve exact storyboard hash | 201 |
 | GET `/voices` | Allowed Male/Female voice catalog | 200 |
 | POST `/voice-samples` | Request cached/generated voice preview | 202 |
@@ -239,9 +241,11 @@ Return revision 4 and saved timestamp. Partial PATCH changes only allowed author
 }
 ```
 
-Modes: `brainstorm`, `storyboard`, `revise`. Revision mode requires an owned base storyboard. Store message and job atomically. Return job with `result: null`; later successful result references suggestions or a storyboard ID. If the project changed meanwhile, preserve the result as a candidate and do not silently replace the current draft.
+Project planning accepts `brainstorm` and `storyboard`. Conversational revision uses the storyboard suggestions route and requires an owned base storyboard. Store message and job atomically. If the project changed meanwhile, preserve the result as a candidate without replacing the current draft.
 
 ### Save storyboard edits
+
+M5c accepts `{expectedRevision, message}` with an `Idempotency-Key` at the storyboard suggestions endpoint. Here `expectedRevision` is the storyboard-local revision. Each proposal is a full validated storyboard. The client applies a selected proposal with the normal storyboard PATCH and its original base revision, so a newer save causes a conflict instead of being replaced. Revision proposals have their own history and share the planning rate limit and resume route.
 
 In M5a, PATCH the storyboard with `{expectedRevision, content}` and an `Idempotency-Key`. The storyboard ID identifies the candidate lineage. GET and PATCH return the latest or acknowledged `revisionId`, storyboard-local `revision`, source `projectRevision`, and full content. The server validates the candidate and recalculates estimated timings against its original duration. A save appends a revision and leaves the source draft and candidate unchanged. Concurrent stale edits receive 409, and an exact replay returns the original acknowledgement. Approval and voice samples arrive in later slices.
 

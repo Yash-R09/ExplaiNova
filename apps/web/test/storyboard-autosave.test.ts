@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { StoryboardAutosave } from '../src/lib/storyboard-autosave.ts';
+import { sameStoryboardContent, StoryboardAutosave } from '../src/lib/storyboard-autosave.ts';
 import { validateStoryboardCandidate } from '../src/lib/storyboard-candidate.ts';
 import type { StoryboardDocument } from '../src/lib/storyboard-contract.ts';
 
@@ -24,6 +24,31 @@ function editor(transport: typeof fetch, overrides: Partial<ConstructorParameter
   return new StoryboardAutosave({ initial, ownerId: 'owner', storage: storage(), online: true, transport,
     notify: () => {}, debounceMs: 60000, ...overrides });
 }
+
+test('applies a proposal only to its clean saved base revision', async () => {
+  const writes: RequestInit[] = [];
+  const story = editor(async (_url, init) => { writes.push(init!); return ack(init); });
+  const proposal = { ...content, title: 'AI proposal' };
+  try {
+    const unchanged = structuredClone(content);
+    unchanged.scenes[0].durationMs++;
+    assert.equal(sameStoryboardContent(unchanged, content), true);
+    await story.applyProposal(1, unchanged);
+    assert.equal(story.view().content, content);
+    assert.equal(story.view().revision, 1);
+    await story.applyProposal(2, proposal);
+    story.change(copy => ({ ...copy, title: 'Local edit' }));
+    await story.applyProposal(1, proposal);
+    assert.equal(writes.length, 0);
+    assert.equal(story.view().content.title, 'Local edit');
+    story.change(() => content);
+    await story.applyProposal(1, proposal);
+    assert.equal(writes.length, 1);
+    assert.equal(JSON.parse(String(writes[0].body)).expectedRevision, 1);
+    assert.equal(story.view().saved.content.title, 'AI proposal');
+    assert.equal(story.view().revision, 2);
+  } finally { story.dispose(); }
+});
 
 test('debounces edits and acknowledges only the snapshot sent', async () => {
   let complete!: (response: Response) => void;

@@ -10,7 +10,7 @@ type Client = NonNullable<Awaited<ReturnType<typeof createClient>>>;
 export async function storyboardSource(client: Client, id: string): Promise<StoryboardDocument> {
   const { data, error } = await client.from('planning_requests')
     .select('id, project_id, project_revision, storyboard')
-    .eq('id', id).eq('mode', 'storyboard').eq('status', 'succeeded').maybeSingle();
+    .eq('id', id).eq('mode', 'storyboard').eq('status', 'succeeded').is('base_storyboard_id', null).maybeSingle();
   if (error) databaseProjectError(error);
   if (!data?.storyboard) throw new ProjectError('RESOURCE_NOT_FOUND', 404, 'Storyboard not found.');
   return {

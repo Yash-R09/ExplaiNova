@@ -33,7 +33,7 @@ export async function GET(request: Request, { params }: Context) {
     const rows = await Promise.all(['brainstorm', 'storyboard'].map(async mode => {
       const { data, error } = await client.from('planning_requests')
         .select('id, project_id, project_revision, message, created_at, status, reply, storyboard, mode, failure_code, lease_until')
-        .eq('project_id', id).eq('mode', mode)
+        .eq('project_id', id).eq('mode', mode).is('base_storyboard_id', null)
         .order('created_at', { ascending: false }).order('id', { ascending: false }).limit(20);
       if (error) databaseProjectError(error);
       return data;

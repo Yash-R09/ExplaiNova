@@ -17,6 +17,11 @@ globalThis.fetch = (input, init) => {
     })),
   } : { reply: 'Open with a falling satellite.' };
   if (storyboard && context.message === 'Simulate invalid storyboard') value.scenes = [];
+  if (storyboard && context.baseStoryboard) {
+    value.title = context.baseStoryboard.title;
+    value.scenes = context.baseStoryboard.scenes.map((scene, index) => index === 0
+      ? { ...scene, narration: 'Imagine throwing a ball fast enough to circle Earth.' } : scene);
+  }
   return Promise.resolve(Response.json({
     candidates: [{
       finishReason: 'STOP',
