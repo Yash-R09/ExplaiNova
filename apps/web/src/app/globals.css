@@ -29,3 +29,7 @@
 .brainstorm-history li>p{margin-bottom:10px}
 .brainstorm-history button{white-space:normal}
 .brainstorm-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+.storyboard-preview summary{cursor:pointer;font-weight:750;margin-block:12px}
+.storyboard-preview p{margin-block:8px;overflow-wrap:anywhere}
+.storyboard-preview ol,.storyboard-preview ul{padding-inline-start:22px}
+.storyboard-preview ol>li{border-top:1px solid var(--line);padding-block:12px}

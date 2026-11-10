@@ -7,9 +7,10 @@ export function planningInput(value: unknown) {
   const allowed = ['expectedRevision', 'mode', 'message', 'referenceText', 'baseStoryboardId'];
   if (Object.keys(input).some(key => !allowed.includes(key))) throw invalid();
 
-  const { expectedRevision, mode, message, referenceText, baseStoryboardId } = input;
+  const { expectedRevision, mode, referenceText, baseStoryboardId } = input;
+  const message = mode === 'storyboard' && input.message === undefined ? 'Generate a storyboard.' : input.message;
   if (typeof expectedRevision !== 'number' || !Number.isInteger(expectedRevision) ||
-      expectedRevision < 1 || expectedRevision > 2147483647 || mode !== 'brainstorm' ||
+      expectedRevision < 1 || expectedRevision > 2147483647 || (mode !== 'brainstorm' && mode !== 'storyboard') ||
       typeof message !== 'string' || !message.trim() || message.length > 4000 ||
       (referenceText !== undefined && (typeof referenceText !== 'string' || referenceText.length > 20000)) ||
       (baseStoryboardId !== undefined && baseStoryboardId !== null)) throw invalid();

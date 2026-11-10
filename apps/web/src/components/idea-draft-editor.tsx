@@ -4,7 +4,7 @@ import type { IdeaProject } from '@/lib/project-contract';
 import { DraftAutosave,type AutosaveView } from '@/lib/draft-autosave';
 import type {DraftPreferences} from '@/lib/draft-preferences';
 import { useDraftNavigation } from './draft-navigation';
-import { BrainstormPanel } from './brainstorm-panel';
+import { PlanningPanel } from './planning-panel';
 
 function PreferenceSummary({value}:{value:DraftPreferences}){
   return <dl className="preference-summary"><div><dt>Target length</dt><dd>{value.targetDurationMs/1000}s</dd></div><div><dt>Audience</dt><dd>{value.audienceLevel}</dd></div><div><dt>Tone</dt><dd>{value.tone}</dd></div><div><dt>Voice</dt><dd>{value.settings.voice==='male'?'Male':'Female'}</dd></div><div><dt>Visuals</dt><dd>Topic-adaptive 2D</dd></div><div><dt>Captions</dt><dd>Included</dd></div></dl>;
@@ -50,5 +50,5 @@ export function IdeaDraftEditor({project,ownerId}:{project:IdeaProject;ownerId:s
     {view?.message?<p className="draft-error" role="alert">{view.message}</p>:null}
     {view?.status==='offline'?<p className="draft-error" role="status">You’re offline. Keep editing; saving will resume when the connection returns.</p>:null}
     {view?.status==='conflict'?<section className="draft-recovery" aria-labelledby="conflict-title"><h2 id="conflict-title">Keep the version you want.</h2><p>Your local text is still in the editor. Load the latest saved copy to compare before choosing.</p><button type="button" className="button secondary" disabled={view.comparing} onClick={()=>void controller.current?.compare()}>{view.comparing?'Loading…':'Load saved version to compare'}</button>{view.remote?<><div className="recovery-copy"><h3>Saved · revision {view.remote.revision}</h3><strong>{view.remote.title}</strong><p className="recovery-preview">{view.remote.brief}</p><p className="recovery-preview">{view.remote.referenceText}</p><PreferenceSummary value={view.remote} /></div><div className="draft-actions"><button type="button" className="button secondary" onClick={()=>controller.current?.resolve('remote')}>Discard my edits and use this saved version</button><button type="button" className="button primary" onClick={()=>controller.current?.resolve('local')}>Replace saved version with my edits</button></div></>:null}</section>:null}
-  </form><BrainstormPanel projectId={project.id} savedRevision={view?.status==='saved'&&!view.dirty?view.revision:null} /></>;
+  </form><PlanningPanel projectId={project.id} savedRevision={view?.status==='saved'&&!view.dirty?view.revision:null} /></>;
 }

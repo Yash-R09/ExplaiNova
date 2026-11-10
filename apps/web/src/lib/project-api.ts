@@ -7,6 +7,9 @@ import { ProjectError } from './project-contract';
 export const projectHeaders={'Cache-Control':'private, no-store'};
 export function projectSuccess(data:unknown,requestId:string,status=200,meta:Record<string,unknown>={},headers:Record<string,string>={}){return Response.json({data,meta:{requestId,...meta}},{status,headers:{...projectHeaders,...headers}});}
 export function databaseProjectError(error:{message:string;details?:string}):never {
+  if(error.message==='STORYBOARD_IDEA_REQUIRED'){
+    throw new ProjectError(error.message,422,'Add a topic or idea and save the draft before generating a storyboard.');
+  }
   if(error.message==='BRAINSTORM_RATE_LIMITED'){
     const retryAfterSeconds=/^[1-9][0-9]{0,3}$/.test(error.details??'')?Number(error.details):3600;
     throw new ProjectError(error.message,429,'You have reached the hourly brainstorming limit. Try again later.',{retryAfterSeconds});

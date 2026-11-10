@@ -130,6 +130,8 @@ In M4b the app starts execution after returning the admission receipt. Service-r
 
 The planning insert trigger serializes admission per owner and checks the last hour of requests using the owner and creation-time index. At most 10 new requests per owner are admitted in that window, including requests for trashed projects. Exact replays bypass insertion and do not spend another slot.
 
+M4d stores the first generated storyboard as an immutable candidate in the originating planning row. Its request ID identifies the candidate, and its project revision points to the input snapshot. The service-role completion RPC commits the candidate only for the current attempt. The editable storyboard version and approval records are part of M5.
+
 ### generation_jobs
 
 Unified job table used by API `/jobs` for all asynchronous creative work:

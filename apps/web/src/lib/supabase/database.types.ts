@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "planning_requests": {
                   Row: {
-                    "attempt_id": string | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string
+                    "attempt_id": string | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"mode": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string,"storyboard": Json | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot": NonNullable<Json>,"lease_until"?: string | null,"message": string,"owner_id": string,"project_id": string,"project_revision": number,"reply"?: string | null,"status"?: string
+                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot": NonNullable<Json>,"lease_until"?: string | null,"message": string,"mode"?: string,"owner_id": string,"project_id": string,"project_revision": number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
                   }
                   Update: {
-                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot"?: NonNullable<Json>,"lease_until"?: string | null,"message"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number,"reply"?: string | null,"status"?: string
+                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot"?: NonNullable<Json>,"lease_until"?: string | null,"message"?: string,"mode"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number,"reply"?: string | null,"status"?: string,"storyboard"?: Json | null
                   }
                   Relationships: [
                     {
@@ -102,6 +102,9 @@ isOneToOne: false
                            },
 "finish_brainstorm_request":
 { Args: { "p_attempt_id": string,"p_failure_code"?: string,"p_id": string,"p_reply"?: string }; Returns: boolean
+                           },
+"finish_storyboard_request":
+{ Args: { "p_attempt_id": string,"p_failure_code"?: string,"p_id": string,"p_storyboard"?: Json }; Returns: boolean
                            },
 "get_idea_project":
 { Args: { "p_id": string }; Returns: Json

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import { localAuthHarness } from './local-form-support.mjs';
@@ -43,7 +44,9 @@ try {
   const path = `/api/v1/projects/${project.id}/planning-jobs`;
   const workspace = await request(`/projects/${project.id}`, owner.jar);
   assert.equal(workspace.status, 200);
-  assert.match(await workspace.text(), /Brainstorm with AI/);
+  const workspaceHtml = await workspace.text();
+  assert.match(workspaceHtml, /Brainstorm with AI/);
+  assert.match(workspaceHtml, /Generate storyboard/);
   const command = { expectedRevision: 1, mode: 'brainstorm', message: 'Suggest two opening questions.' };
   const key = randomUUID();
   assert.equal((await post(path, owner.jar, { ...command, message: '\t\n\u00a0\ufeff' }, key)).status, 422);
@@ -56,7 +59,7 @@ try {
   assert.equal(first.data.result, null);
   assert.equal((await post(path, owner.jar, { ...command, message: 'Different' }, key)).status, 409);
   assert.equal((await post(path, owner.jar, { ...command, expectedRevision: 2 })).status, 409);
-  assert.equal((await post(path, owner.jar, { ...command, mode: 'storyboard' })).status, 422);
+  assert.equal((await post(path, owner.jar, { ...command, mode: 'revise' })).status, 422);
   assert.equal((await post(path, other.jar, command)).status, 404);
   assert.equal((await request(path, other.jar)).status, 404);
   const resumePath = `${path}/${first.data.id}/resume`;
@@ -99,8 +102,69 @@ try {
 
   const independent = await post('/api/v1/projects', other.jar, { title: 'Orbit' });
   assert.equal(independent.status, 201);
-  const independentPath = `/api/v1/projects/${(await independent.json()).data.id}/planning-jobs`;
+  const { data: independentProject } = await independent.json();
+  const independentPath = `/api/v1/projects/${independentProject.id}/planning-jobs`;
   assert.equal((await post(independentPath, other.jar, command)).status, 202);
+  if (exerciseExecution) {
+    const storyboardCommand = { expectedRevision: 1, mode: 'storyboard' };
+    const emptyDraft = await post('/api/v1/projects', other.jar, {});
+    assert.equal(emptyDraft.status, 201);
+    const emptyPath = `/api/v1/projects/${(await emptyDraft.json()).data.id}/planning-jobs`;
+    const emptyStoryboard = await post(emptyPath, other.jar, storyboardCommand);
+    assert.equal(emptyStoryboard.status, 422);
+    assert.equal((await emptyStoryboard.json()).error.code, 'STORYBOARD_IDEA_REQUIRED');
+    const storyboardKey = randomUUID();
+    const storyboardRequest = await post(independentPath, other.jar, storyboardCommand, storyboardKey);
+    assert.equal(storyboardRequest.status, 202);
+    const { data: storyboardReceipt } = await storyboardRequest.json();
+    assert.equal(storyboardReceipt.mode, 'storyboard');
+    const { data: storyboardReplay } = await (await post(independentPath, other.jar, storyboardCommand, storyboardKey)).json();
+    assert.deepEqual(storyboardReplay, storyboardReceipt);
+    const storyboard = await terminalRequest(independentPath, other.jar, storyboardReceipt.id);
+    assert.equal(storyboard.status, 'succeeded');
+    assert.equal(storyboard.result.storyboardId, storyboardReceipt.id);
+    assert.equal(storyboard.result.storyboard.scenes.length, 4);
+    assert.equal(storyboard.result.storyboard.scenes.reduce((sum, scene) => sum + scene.durationMs, 0), 60000);
+    assert.equal((await request(independentPath, owner.jar)).status, 404);
+
+    const malformed = await post(independentPath, other.jar, { ...storyboardCommand, message: 'Simulate invalid storyboard' });
+    assert.equal(malformed.status, 202);
+    const failed = await terminalRequest(independentPath, other.jar, (await malformed.json()).data.id);
+    assert.equal(failed.failureCode, 'INVALID_PROVIDER_OUTPUT');
+    assert.equal(failed.result, null);
+    const draft = await request(independentPath.replace('/planning-jobs', ''), other.jar);
+    assert.equal((await draft.json()).data.revision, 1);
+
+    // Simulate activity over several hours without bypassing the per-owner insert trigger.
+    const fixtureIds = [other.id, independentProject.id];
+    for (const id of fixtureIds) assert.match(id, /^[0-9a-f-]{36}$/i);
+    const [fixtureOwner, fixtureProject] = fixtureIds;
+    const backlogSql = `
+      begin;
+      update public.planning_requests set created_at = clock_timestamp() - interval '4 hours'
+        where owner_id = '${fixtureOwner}' and project_id = '${fixtureProject}';
+      insert into public.planning_requests(owner_id, project_id, project_revision, message, input_snapshot)
+        select '${fixtureOwner}', '${fixtureProject}', 1, 'History fixture ' || n, '{}'
+        from generate_series(1,10) n;
+      update public.planning_requests set created_at = clock_timestamp() - interval '2 hours'
+        where owner_id = '${fixtureOwner}' and project_id = '${fixtureProject}' and message like 'History fixture %';
+      insert into public.planning_requests(owner_id, project_id, project_revision, message, input_snapshot)
+        select '${fixtureOwner}', '${fixtureProject}', 1, 'History fixture ' || n, '{}'
+        from generate_series(11,20) n;
+      commit;
+    `;
+    execFileSync('docker', ['exec', '-i', 'supabase_db_explainova', 'psql', '-X', '-v', 'ON_ERROR_STOP=1', '-U', 'postgres', '-d', 'postgres'],
+      { input: backlogSql, stdio: ['pipe', 'pipe', 'pipe'] });
+    const backlog = await request(independentPath, other.jar);
+    assert.equal(backlog.status, 200);
+    const { data: visibleHistory } = await backlog.json();
+    const recentBrainstorms = visibleHistory.filter(row => row.mode === 'brainstorm');
+    const savedStoryboard = visibleHistory.find(row => row.id === storyboard.id);
+    assert.equal(recentBrainstorms.length, 20);
+    assert.ok(savedStoryboard);
+    assert.ok(recentBrainstorms.every(row => row.createdAt > savedStoryboard.createdAt));
+    assert.deepEqual(savedStoryboard.result, storyboard.result);
+  }
   console.log('Planning API integration passed.');
 } finally {
   for (const user of users) {
