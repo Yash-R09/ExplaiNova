@@ -127,6 +127,44 @@ try {
     assert.equal(storyboard.result.storyboard.scenes.reduce((sum, scene) => sum + scene.durationMs, 0), 60000);
     assert.equal((await request(independentPath, owner.jar)).status, 404);
 
+    const reviewPath = `/storyboards/${storyboard.id}`;
+    const storyboardPath = `/api/v1${reviewPath}`;
+    const reviewPage = await request(reviewPath, other.jar);
+    assert.equal(reviewPage.status, 200);
+    assert.match(await reviewPage.text(), /Save storyboard/);
+    assert.equal((await request(storyboardPath, owner.jar)).status, 404);
+    const initial = (await (await request(storyboardPath, other.jar)).json()).data;
+    assert.equal(initial.revision, 1);
+    assert.deepEqual(initial.content, storyboard.result.storyboard);
+
+    const edit = { expectedRevision: 1, content: structuredClone(initial.content) };
+    edit.content.scenes[0].narration = 'Gravity keeps a satellite moving around Earth.';
+    const saveEdit = (jar, body, key = randomUUID()) => request(storyboardPath, jar, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key },
+      body: JSON.stringify(body),
+    });
+    assert.equal((await saveEdit(owner.jar, edit)).status, 404);
+    const invalid = structuredClone(edit);
+    invalid.content.scenes[0].narration = '   ';
+    assert.equal((await saveEdit(other.jar, invalid)).status, 422);
+    const saveKeys = [randomUUID(), randomUUID()];
+    const saves = await Promise.all(saveKeys.map(key => saveEdit(other.jar, edit, key)));
+    assert.deepEqual(saves.map(response => response.status).sort(), [201, 409]);
+    const successfulIndex = saves.findIndex(response => response.status === 201);
+    const saved = (await saves[successfulIndex].json()).data;
+    assert.equal(saved.revision, 2);
+    assert.notEqual(saved.revisionId, initial.revisionId);
+    assert.equal(saved.content.scenes[0].narration, edit.content.scenes[0].narration);
+    assert.equal(saved.content.scenes.reduce((sum, scene) => sum + scene.durationMs, 0), 60000);
+    const nextEdit = { expectedRevision: 2, content: { ...saved.content, title: 'How a satellite stays in orbit' } };
+    assert.equal((await saveEdit(other.jar, nextEdit)).status, 201);
+    const savedAgain = await saveEdit(other.jar, edit, saveKeys[successfulIndex]);
+    assert.equal(savedAgain.status, 201);
+    assert.deepEqual((await savedAgain.json()).data, saved);
+    const latest = (await (await request(storyboardPath, other.jar)).json()).data;
+    assert.equal(latest.revision, 3);
+    assert.equal(latest.content.title, nextEdit.content.title);
+
     const malformed = await post(independentPath, other.jar, { ...storyboardCommand, message: 'Simulate invalid storyboard' });
     assert.equal(malformed.status, 202);
     const failed = await terminalRequest(independentPath, other.jar, (await malformed.json()).data.id);
@@ -164,6 +202,14 @@ try {
     assert.ok(savedStoryboard);
     assert.ok(recentBrainstorms.every(row => row.createdAt > savedStoryboard.createdAt));
     assert.deepEqual(savedStoryboard.result, storyboard.result);
+
+    const trashed = await request(independentPath.replace('/planning-jobs', ''), other.jar, {
+      method: 'DELETE', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() },
+      body: JSON.stringify({ expectedRevision: 1 }),
+    });
+    assert.equal(trashed.status, 202);
+    assert.equal((await request(storyboardPath, other.jar)).status, 404);
+    assert.equal((await saveEdit(other.jar, edit, saveKeys[successfulIndex])).status, 404);
   }
   console.log('Planning API integration passed.');
 } finally {

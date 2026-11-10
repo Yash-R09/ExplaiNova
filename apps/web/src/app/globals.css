@@ -33,3 +33,8 @@
 .storyboard-preview p{margin-block:8px;overflow-wrap:anywhere}
 .storyboard-preview ol,.storyboard-preview ul{padding-inline-start:22px}
 .storyboard-preview ol>li{border-top:1px solid var(--line);padding-block:12px}
+.storyboard-editor fieldset{margin-top:16px}
+.storyboard-scene-list{list-style:none;padding:0}
+.storyboard-editor .storyboard-scene-list textarea{min-height:120px}
+.storyboard-scene-list li>p{margin-top:10px}
+.storyboard-editor .storyboard-save{margin-top:24px}

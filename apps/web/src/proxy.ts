@@ -40,4 +40,4 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ['/sign-in', '/sign-up', '/check-email', '/confirm-email', '/forgot-password', '/reset-password', '/projects/:path*', '/create/:path*', '/publishing/:path*', '/connections/:path*', '/settings/:path*', '/api/v1/:path*'] };
+export const config = { matcher: ['/sign-in', '/sign-up', '/check-email', '/confirm-email', '/forgot-password', '/reset-password', '/projects/:path*', '/storyboards/:path*', '/create/:path*', '/publishing/:path*', '/connections/:path*', '/settings/:path*', '/api/v1/:path*'] };

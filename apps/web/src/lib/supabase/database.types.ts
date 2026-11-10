@@ -85,6 +85,26 @@ isOneToOne: false
       referencedColumns: ["owner_id"]
     }
                   ]
+                },"storyboard_revisions": {
+                  Row: {
+                    "content": NonNullable<Json>,"content_hash": string,"created_at": string,"id": string,"owner_id": string,"project_id": string,"revision": number,"storyboard_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content": NonNullable<Json>,"content_hash": string,"created_at"?: string,"id"?: string,"owner_id": string,"project_id": string,"revision": number,"storyboard_id": string
+                  }
+                  Update: {
+                    "content"?: NonNullable<Json>,"content_hash"?: string,"created_at"?: string,"id"?: string,"owner_id"?: string,"project_id"?: string,"revision"?: number,"storyboard_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "storyboard_revisions_owner_id_project_id_storyboard_id_fkey"
+      columns: ["owner_id","project_id","storyboard_id"]
+isOneToOne: false
+      referencedRelation: "planning_requests"
+      referencedColumns: ["owner_id","project_id","id"]
+    }
+                  ]
                 }
           }
           Views: {
@@ -120,6 +140,9 @@ isOneToOne: false
                            },
 "save_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
+"save_storyboard_revision":
+{ Args: { "p_command_key": string,"p_content": Json,"p_expected_revision": number,"p_id": string,"p_owner": string }; Returns: Json
                            },
 "search_idea_projects":
 { Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number,"p_query": string,"p_trashed"?: boolean }; Returns: Json

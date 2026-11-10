@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import type { StoryboardCandidate } from '@/lib/storyboard-candidate';
 
 type PlanningMode = 'brainstorm' | 'storyboard';
@@ -160,7 +161,10 @@ export function PlanningPanel({ projectId, savedRevision }: { projectId: string;
       {row.status === 'failed' && <p>{providerMessages[row.failureCode ?? ''] ?? 'Try generating again.'}</p>}
       {(row.status === 'queued' || row.canResume) &&
         <button className="button secondary" type="button" disabled={busy} onClick={() => void send(undefined, row)}>Resume storyboard</button>}
-      {row.result && 'storyboard' in row.result && <StoryboardPreview storyboard={row.result.storyboard} />}
+      {row.result && 'storyboard' in row.result && <>
+        <Link className="button secondary" href={`/storyboards/${row.result.storyboardId}`}>Review storyboard</Link>
+        <StoryboardPreview storyboard={row.result.storyboard} />
+      </>}
     </div>)}
   </section>
   <section className="draft-panel brainstorm-panel" aria-labelledby="brainstorm-title">
@@ -213,7 +217,8 @@ export function PlanningPanel({ projectId, savedRevision }: { projectId: string;
 
 function StoryboardPreview({ storyboard }: { storyboard: StoryboardCandidate }) {
   return <details className="storyboard-preview">
-    <summary>{storyboard.title} · {storyboard.scenes.length} scenes · {storyboard.targetDurationMs / 1000}s</summary>
+    <summary>Original AI draft · {storyboard.title} · {storyboard.scenes.length} scenes · {storyboard.targetDurationMs / 1000}s</summary>
+    <p className="muted">Open Review storyboard for the latest saved revision.</p>
     <p>{storyboard.theme}</p>
     {storyboard.reviewNotes.length > 0 && <><strong>Review notes</strong><ul>{storyboard.reviewNotes.map((note, index) => <li key={index}>{note}</li>)}</ul></>}
     <ol>{storyboard.scenes.map(scene => <li key={scene.startMs}>

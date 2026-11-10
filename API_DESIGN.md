@@ -123,7 +123,7 @@ All paths below are relative to `/api/v1`.
 | POST `/projects/:id/planning-jobs` | Submit user message and planning mode | 202 |
 | GET `/projects/:id/planning-jobs` | List the latest 20 requests per planning mode and their outcomes for an active owned project | 200 |
 | POST `/projects/:id/planning-jobs/:requestId/resume` | Resume an owned queued or interrupted request without a new submission | 202 |
-| GET `/storyboards/:id` | Read immutable storyboard | 200 |
+| GET `/storyboards/:id` | Read the latest immutable revision of an owned storyboard | 200 |
 | PATCH `/storyboards/:id` | Save edits as a new immutable storyboard | 201 |
 | POST `/storyboards/:id/approve` | Approve exact storyboard hash | 201 |
 | GET `/voices` | Allowed Male/Female voice catalog | 200 |
@@ -243,7 +243,7 @@ Modes: `brainstorm`, `storyboard`, `revise`. Revision mode requires an owned bas
 
 ### Save storyboard edits
 
-PATCH the base storyboard with `{expectedRevision, scenes, theme, voiceSelectionId, captionSettings}`. The server validates the complete proposed scene content, creates a new storyboard ID/hash, and advances the project edit version. Response includes new ID and project revision; the original remains immutable. Approval does not transfer to modified content.
+In M5a, PATCH the storyboard with `{expectedRevision, content}` and an `Idempotency-Key`. The storyboard ID identifies the candidate lineage. GET and PATCH return the latest or acknowledged `revisionId`, storyboard-local `revision`, source `projectRevision`, and full content. The server validates the candidate and recalculates estimated timings against its original duration. A save appends a revision and leaves the source draft and candidate unchanged. Concurrent stale edits receive 409, and an exact replay returns the original acknowledgement. Approval and voice samples arrive in later slices.
 
 ### Approve and generate
 

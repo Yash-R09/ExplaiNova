@@ -102,6 +102,8 @@ One row per message: `id`, owner/project, `sequence bigint`, `role` in user/assi
 
 Content includes ordered stable scene IDs, narration, visual parameters, and phrase cues; validate component-specific schemas before insert. CHECK at least JSON array/object types; application schema validation handles richer semantics. Once inserted, content/hash cannot change. A revision may be a candidate result without becoming current if the user edited the project during planning.
 
+M5a uses the generated candidate as revision 1 and appends edits to `storyboard_revisions` with a candidate-local revision number, UUID and content hash. The composite foreign key binds each revision to its owned candidate. The service-only save transaction locks the active project and candidate, validates the revision and records the original acknowledgement in the existing command store. Owner reads follow the candidate's RLS, including Trash visibility. Draft revisions are independent of storyboard revisions.
+
 Store exact voice/model/settings/component versions in snapshots, not just a catalog foreign key that can later change meaning. Sources are claims/reference metadata, not presumed factual certification.
 
 ## 5. Approvals and publication snapshots
