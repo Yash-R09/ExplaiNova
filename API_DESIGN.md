@@ -121,7 +121,7 @@ All paths below are relative to `/api/v1`.
 | POST `/projects/:id/restore` | Restore an owned trashed draft with expected revision | 200 |
 | GET `/projects/:id/messages` | Paginated saved planning conversation | 200 |
 | POST `/projects/:id/planning-jobs` | Submit user message and planning mode | 202 |
-| GET `/projects/:id/planning-jobs` | List the latest 20 saved brainstorm requests for an active owned project | 200 |
+| GET `/projects/:id/planning-jobs` | List the latest 20 saved brainstorm requests and outcomes for an active owned project | 200 |
 | GET `/storyboards/:id` | Read immutable storyboard | 200 |
 | PATCH `/storyboards/:id` | Save edits as a new immutable storyboard | 201 |
 | POST `/storyboards/:id/approve` | Approve exact storyboard hash | 201 |
@@ -156,7 +156,9 @@ All paths below are relative to `/api/v1`.
 
 ## 6. Authoring and planning examples
 
-M4a implements brainstorm admission and history. POST accepts `mode: "brainstorm"`, `expectedRevision`, `message`, optional `referenceText`, and an absent or null `baseStoryboardId`. It requires an `Idempotency-Key`. The response includes the request ID, project ID, project revision, mode, message, status, result and creation time. GET returns an array of these records newest first and accepts no query parameters. Requests report `queued` with a null result until the execution slice.
+POST accepts `mode: "brainstorm"`, `expectedRevision`, `message`, optional `referenceText`, and an absent or null `baseStoryboardId`. It requires an `Idempotency-Key` and returns a stable admission receipt with `queued` status and a null result. GET accepts no query parameters and returns current records newest first. A record can be `queued`, `running`, `succeeded` with `result: { reply }`, or `failed` with a null result and a sanitized `failureCode`. Submit with the same key and body within the replay window to restart an interrupted attempt after its lease expires. Use a new key for an intentional retry of a terminal failure.
+
+Each owner can submit 10 new brainstorm requests across all projects in a rolling hour. A submission over the limit returns HTTP 429 with `BRAINSTORM_RATE_LIMITED` and a `Retry-After` header in seconds. Exact replays reuse their original receipt without consuming a slot.
 
 ### Implemented M3a subset
 

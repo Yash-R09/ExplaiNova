@@ -124,7 +124,11 @@ Circular publication/current-revision/approval links are resolved with explicitl
 
 ## 6. Jobs, checkpoints, and provider calls
 
-M4a stores each accepted brainstorm request and its initial user message in `public.planning_requests`. The row references the owned project revision and captures the saved draft plus request reference text at submission. Authenticated owners can read rows for active projects. The admission RPC performs revision checking, insertion and idempotency recording in one transaction. Conversation turns and execution state are part of the later planning slices.
+Each accepted brainstorm request and its initial user message are stored in `public.planning_requests`. The row references the owned project revision and captures the saved draft plus request reference text at submission. Authenticated owners can read rows for active projects. The admission RPC performs revision checking, insertion and idempotency recording in one transaction.
+
+In M4b the app starts execution after returning the admission receipt. Service-role RPCs claim eligible requests for active accounts and projects, grant a two-minute lease and accept a reply or failure only from the current attempt. Replaying an accepted POST can reclaim an expired lease. An interruption after the provider accepted a call can lead to another provider call on replay. A separate worker, automatic recovery and multi-turn context are later work.
+
+The planning insert trigger serializes admission per owner and checks the last hour of requests using the owner and creation-time index. At most 10 new requests per owner are admitted in that window, including requests for trashed projects. Exact replays bypass insertion and do not spend another slot.
 
 ### generation_jobs
 

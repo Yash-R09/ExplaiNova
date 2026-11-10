@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "planning_requests": {
                   Row: {
-                    "created_at": string,"id": string,"input_snapshot": NonNullable<Json>,"message": string,"owner_id": string,"project_id": string,"project_revision": number
+                    "attempt_id": string | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"id"?: string,"input_snapshot": NonNullable<Json>,"message": string,"owner_id": string,"project_id": string,"project_revision": number
+                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot": NonNullable<Json>,"lease_until"?: string | null,"message": string,"owner_id": string,"project_id": string,"project_revision": number,"reply"?: string | null,"status"?: string
                   }
                   Update: {
-                    "created_at"?: string,"id"?: string,"input_snapshot"?: NonNullable<Json>,"message"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number
+                    "attempt_id"?: string | null,"created_at"?: string,"failure_code"?: string | null,"id"?: string,"input_snapshot"?: NonNullable<Json>,"lease_until"?: string | null,"message"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number,"reply"?: string | null,"status"?: string
                   }
                   Relationships: [
                     {
@@ -91,11 +91,17 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "create_idea_project":
+            "claim_brainstorm_request":
+{ Args: { "p_id": string,"p_owner_id": string,"p_project_id": string }; Returns: Json
+                           },
+"create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json
                            },
 "duplicate_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
+"finish_brainstorm_request":
+{ Args: { "p_attempt_id": string,"p_failure_code"?: string,"p_id": string,"p_reply"?: string }; Returns: boolean
                            },
 "get_idea_project":
 { Args: { "p_id": string }; Returns: Json

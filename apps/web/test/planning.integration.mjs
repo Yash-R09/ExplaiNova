@@ -1,9 +1,22 @@
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
+import { setTimeout as delay } from 'node:timers/promises';
 import { localAuthHarness } from './local-form-support.mjs';
 
 const { admin, request, browserSession } = localAuthHarness();
 const users = [];
+const exerciseExecution = process.env.PLANNING_TEST_EXECUTION === '1';
+
+async function terminalRequest(path, jar, id) {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const history = await request(path, jar);
+    assert.equal(history.status, 200);
+    const row = (await history.json()).data.find(entry => entry.id === id);
+    if (row?.status === 'succeeded' || row?.status === 'failed') return row;
+    await delay(100);
+  }
+  assert.fail('Brainstorm request did not reach a terminal state');
+}
 
 async function post(path, jar, data, key = randomUUID()) {
   return request(path, jar, {
@@ -46,7 +59,39 @@ try {
   const history = await request(path, owner.jar);
   assert.equal(history.status, 200);
   assert.match(history.headers.get('cache-control') ?? '', /no-store/);
-  assert.deepEqual((await history.json()).data, [first.data]);
+  const { data: historyRows } = await history.json();
+  assert.deepEqual(historyRows.map(row => row.id), [first.data.id]);
+  if (exerciseExecution) {
+    const completed = await terminalRequest(path, owner.jar, first.data.id);
+    assert.equal(completed.status, 'succeeded');
+    assert.deepEqual(completed.result, { reply: 'Open with a falling satellite.' });
+    const rejected = await post(path, owner.jar, { ...command, message: 'Simulate quota' });
+    assert.equal(rejected.status, 202);
+    const failed = await terminalRequest(path, owner.jar, (await rejected.json()).data.id);
+    assert.equal(failed.status, 'failed');
+    assert.equal(failed.failureCode, 'PROVIDER_RATE_LIMITED');
+    assert.equal(failed.result, null);
+  } else {
+    assert.deepEqual(historyRows, [first.data]);
+  }
+  const second = await post('/api/v1/projects', owner.jar, { title: 'Orbit' });
+  assert.equal(second.status, 201);
+  const secondPath = `/api/v1/projects/${(await second.json()).data.id}/planning-jobs`;
+  const acceptedBeforeBurst = exerciseExecution ? 2 : 1;
+  const burst = await Promise.all(Array.from({ length: 11 - acceptedBeforeBurst }, (_, index) =>
+    post(index % 2 ? secondPath : path, owner.jar, command)));
+  assert.equal(burst.filter(response => response.status === 202).length, 10 - acceptedBeforeBurst);
+  const limited = burst.filter(response => response.status === 429);
+  assert.equal(limited.length, 1);
+  const retryAfter = Number(limited[0].headers.get('retry-after'));
+  assert.ok(retryAfter > 0 && retryAfter <= 3600);
+  assert.equal((await limited[0].json()).error.code, 'BRAINSTORM_RATE_LIMITED');
+  assert.deepEqual((await (await post(path, owner.jar, command, key)).json()).data, first.data);
+
+  const independent = await post('/api/v1/projects', other.jar, { title: 'Orbit' });
+  assert.equal(independent.status, 201);
+  const independentPath = `/api/v1/projects/${(await independent.json()).data.id}/planning-jobs`;
+  assert.equal((await post(independentPath, other.jar, command)).status, 202);
   console.log('Planning API integration passed.');
 } finally {
   for (const user of users) {
