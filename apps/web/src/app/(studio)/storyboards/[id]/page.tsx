@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server';
 export const metadata = { title: 'Storyboard review' };
 
 export default async function StoryboardReviewPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireIdentity();
+  const { user } = await requireIdentity();
   const client = await createClient();
   if (!client) throw new Error('Storyboard service unavailable');
   const storyboard = await (async () => {
@@ -25,6 +25,6 @@ export default async function StoryboardReviewPage({ params }: { params: Promise
       <p className="subtitle">Review the scenes and refine the narration before moving to video.</p></div>
       <ol className="stepper" aria-label="Creation workflow"><li>1. Plan</li><li aria-current="step">2. Storyboard</li><li>3. Video</li></ol>
     </div>
-    <StoryboardEditor key={storyboard.id} initial={storyboard} />
+    <StoryboardEditor key={`${user.id}:${storyboard.id}`} initial={storyboard} ownerId={user.id} />
   </>;
 }

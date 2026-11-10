@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { StoryboardDocument } from '@/lib/storyboard-contract';
 import type { StoryboardCandidate } from '@/lib/storyboard-candidate';
 import { useDraftNavigation } from './draft-navigation';
+import { StoryboardAutosave, type StoryboardAutosaveView } from '@/lib/storyboard-autosave';
 
 type SceneField = 'title' | 'purpose' | 'narration' | 'motion';
 const sceneFields: { field: SceneField; label: string; maxLength: number }[] = [
@@ -12,109 +13,98 @@ const sceneFields: { field: SceneField; label: string; maxLength: number }[] = [
   { field: 'narration', label: 'Narration', maxLength: 600 },
   { field: 'motion', label: 'Motion cues', maxLength: 280 },
 ];
-type SaveRequest = { key: string; body: string };
+const statusLabels = {
+  saved: 'Saved', pending: 'Unsaved edits · autosave pending', saving: 'Saving…',
+  offline: 'Offline · edits pending', error: 'Save paused', conflict: 'Save paused · revision conflict',
+  recovery: 'Local edits available to recover',
+};
 
-export function StoryboardEditor({ initial }: { initial: StoryboardDocument }) {
-  const [saved, setSaved] = useState(initial);
-  const [content, setContent] = useState(initial.content);
-  const [busy, setBusy] = useState(false);
-  const [uncertain, setUncertain] = useState<SaveRequest | null>(null);
-  const [conflict, setConflict] = useState(false);
-  const [notice, setNotice] = useState('');
-  const inFlight = useRef(false);
+function StoryboardCopy({ content, expanded = false }: { content: StoryboardCandidate; expanded?: boolean }) {
+  return <details className="storyboard-preview" open={expanded}>
+    <summary>{content.title || 'Untitled storyboard'}</summary>
+    <p>{content.theme}</p>
+    {content.reviewNotes.length > 0 && <>
+      <strong>AI review notes</strong>
+      <ul>{content.reviewNotes.map((note, index) => <li key={index}>{note}</li>)}</ul>
+    </>}
+    <ol>{content.scenes.map((scene, index) => <li key={index}>
+      <strong>{scene.title || `Scene ${index + 1}`}</strong>
+      <p>Scene type: {scene.type}</p>
+      <p>{scene.purpose}</p>
+      <p className="brainstorm-text">{scene.narration || '(No narration)'}</p>
+      <p>{scene.motion}</p>
+      <p>Objects: {scene.objects.length ? scene.objects.join(', ') : 'None'}</p>
+      <p>Labels: {scene.labels.length ? scene.labels.join(', ') : 'None'}</p>
+    </li>)}</ol>
+  </details>;
+}
+
+export function StoryboardEditor({ initial, ownerId }: { initial: StoryboardDocument; ownerId: string }) {
+  const [view, setView] = useState<StoryboardAutosaveView | null>(null);
+  const controller = useRef<StoryboardAutosave | null>(null);
   const { setDirty } = useDraftNavigation();
-  const endpoint = `/api/v1/storyboards/${initial.id}`;
-  const dirty = JSON.stringify(content) !== JSON.stringify(saved.content);
 
   useEffect(() => {
-    setDirty(dirty || !!uncertain);
+    let storage: Storage | null = null;
+    try { storage = window.localStorage; } catch {}
+    const editor = new StoryboardAutosave({ initial, ownerId, storage, online: navigator.onLine,
+      transport: (input, init) => fetch(input, init), notify: setView });
+    controller.current = editor;
+    setView(editor.view());
+    const connectivity = () => editor.connectivity(navigator.onLine);
+    window.addEventListener('online', connectivity);
+    window.addEventListener('offline', connectivity);
+    return () => {
+      editor.dispose();
+      controller.current = null;
+      window.removeEventListener('online', connectivity);
+      window.removeEventListener('offline', connectivity);
+    };
+    // The server keys this editor by owner and storyboard. Preserve same-page local edits.
+  }, [ownerId, initial.id]);
+
+  useEffect(() => {
+    setDirty(!!view?.dirty);
     return () => setDirty(false);
-  }, [dirty, uncertain, setDirty]);
+  }, [view?.dirty, setDirty]);
 
-  function accept(document: StoryboardDocument) {
-    setSaved(document);
-    setContent(document.content);
-    setConflict(false);
-    setUncertain(null);
-  }
-
-  async function save(command: SaveRequest) {
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setBusy(true);
-    setNotice('');
-    try {
-      const response = await fetch(endpoint, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': command.key },
-        body: command.body,
-        signal: AbortSignal.timeout(15_000),
-      });
-      const payload = await response.json();
-      if (response.status >= 500) throw new Error();
-      if (!response.ok) {
-        setUncertain(null);
-        setConflict(payload.error?.code === 'REVISION_CONFLICT');
-        setNotice(payload.error?.message ?? 'Could not save the storyboard.');
-        return;
-      }
-      if (payload.data?.id !== initial.id || payload.data?.revision !== saved.revision + 1) throw new Error();
-      accept(payload.data);
-      setNotice('Storyboard saved.');
-    } catch {
-      setUncertain(command);
-      setNotice('Could not confirm the save. Retry it or dismiss the pending save and keep editing.');
-    } finally {
-      inFlight.current = false;
-      setBusy(false);
-    }
-  }
-
-  async function loadLatest() {
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setBusy(true);
-    setNotice('');
-    try {
-      const response = await fetch(endpoint, { cache: 'no-store', signal: AbortSignal.timeout(10_000) });
-      const payload = await response.json();
-      if (!response.ok || payload.data?.id !== initial.id) throw new Error();
-      accept(payload.data);
-      setNotice('Latest saved version loaded.');
-    } catch {
-      setNotice('Could not load the saved storyboard. Your edits are still here.');
-    } finally {
-      inFlight.current = false;
-      setBusy(false);
-    }
-  }
-
+  const saved = view?.saved ?? initial;
+  const content = view?.content ?? initial.content;
   function editScene(index: number, field: SceneField, value: string) {
-    setContent(current => ({
-      ...current,
-      scenes: current.scenes.map((scene, sceneIndex) => sceneIndex === index ? { ...scene, [field]: value } : scene),
+    controller.current?.change(current => ({
+      ...current, scenes: current.scenes.map((scene, sceneIndex) => sceneIndex === index ? { ...scene, [field]: value } : scene),
     }));
   }
 
-  return <form className="draft-panel storyboard-editor" onSubmit={event => {
+  return <form className="draft-panel storyboard-editor" noValidate onSubmit={event => {
     event.preventDefault();
-    if (dirty && !conflict && !uncertain) {
-      void save({ key: crypto.randomUUID(), body: JSON.stringify({ expectedRevision: saved.revision, content }) });
-    }
+    void controller.current?.flush();
   }}>
+    {view?.status === 'recovery' && <section className="draft-recovery" aria-labelledby="storyboard-recovery">
+      <h2 id="storyboard-recovery">Recover storyboard edits</h2>
+      <p>These copies were kept in this browser. Choose one before autosave resumes.</p>
+      {view.recoveries.map(source => <div className="recovery-copy" key={source.key}>
+        <p className="muted">Based on revision {source.backup.revision} · {new Date(source.backup.updatedAt).toLocaleString()}</p>
+        <StoryboardCopy content={source.backup.content} />
+        <button type="button" className="button secondary" onClick={() => controller.current?.restore(source.key)}>Restore this copy</button>
+      </div>)}
+      <button type="button" className="button secondary" onClick={() => controller.current?.discardRecoveries()}>
+        Discard listed copies and open the saved storyboard
+      </button>
+    </section>}
     <p className="muted">Source draft revision {saved.projectRevision} · {content.targetDurationMs / 1000}s target</p>
-    <fieldset disabled={busy || !!uncertain}>
+    <fieldset disabled={!view || view.status === 'recovery'}>
       <label htmlFor="storyboard-name">Storyboard title</label>
       <input id="storyboard-name" value={content.title} required maxLength={140}
-        onChange={event => setContent({ ...content, title: event.target.value })} />
+        onChange={event => controller.current?.change(current => ({ ...current, title: event.target.value }))} />
       <label htmlFor="storyboard-theme">Visual theme</label>
       <input id="storyboard-theme" value={content.theme} required maxLength={250}
-        onChange={event => setContent({ ...content, theme: event.target.value })} />
+        onChange={event => controller.current?.change(current => ({ ...current, theme: event.target.value }))} />
       <ol className="storyboard-scene-list">
         {content.scenes.map((scene: StoryboardCandidate['scenes'][number], index) => (
           <li key={index} className="recovery-copy">
             <h2>Scene {index + 1}</h2>
-            <p className="muted">{scene.type} · {(scene.durationMs / 1000).toFixed(1)}s estimated from the saved version</p>
+            <p className="muted">{scene.type} · {((saved.content.scenes[index]?.durationMs ?? scene.durationMs) / 1000).toFixed(1)}s estimated from the saved version</p>
             {sceneFields.map(({ field, label, maxLength }) => {
               const id = `storyboard-scene-${index}-${field}`;
               return <div key={field}>
@@ -134,21 +124,35 @@ export function StoryboardEditor({ initial }: { initial: StoryboardDocument }) {
     </fieldset>
     {content.reviewNotes.length > 0 && <details><summary>AI review notes</summary>
       <ul>{content.reviewNotes.map((note, index) => <li key={index}>{note}</li>)}</ul></details>}
+    {view?.status === 'conflict' && <section className="draft-recovery" aria-labelledby="storyboard-conflict">
+      <h2 id="storyboard-conflict">Compare storyboard versions</h2>
+      <p>Your local edits are still in the editor. Review the saved version before choosing.</p>
+      <button type="button" className="button secondary" disabled={view.comparing} onClick={() => void controller.current?.compare()}>
+        {view.comparing ? 'Loading…' : 'Load latest saved version'}
+      </button>
+      {view.remote && <div className="recovery-copy">
+        <p className="muted">Saved revision {view.remote.revision}</p>
+        <StoryboardCopy content={view.remote.content} expanded />
+        <div className="draft-actions">
+          <button type="button" className="button secondary" disabled={view.comparing} onClick={() => controller.current?.resolve('saved')}>
+            Discard my edits and use this version
+          </button>
+          <button type="button" className="button primary" disabled={view.comparing} onClick={() => controller.current?.resolve('local')}>
+            Save my edits over this version
+          </button>
+        </div>
+      </div>}
+    </section>}
     <div className="draft-save-bar storyboard-save">
-      <div><p role="status">{busy ? 'Working…' : dirty ? `Unsaved edits · based on revision ${saved.revision}` : `Saved · revision ${saved.revision}`}</p>
-        {notice && <p role="status">{notice}</p>}</div>
-      <div className="draft-actions">
-        {conflict ? <button type="button" className="button secondary" disabled={busy}
-          onClick={() => { if (window.confirm('Replace your unsaved edits with the latest saved storyboard?')) void loadLatest(); }}>
-          Load latest saved version
-        </button> : uncertain ? <>
-          <button type="button" className="button primary" disabled={busy} onClick={() => void save(uncertain)}>Retry save</button>
-          <button type="button" className="button secondary" disabled={busy} onClick={() => {
-            setUncertain(null);
-            setNotice('Pending save dismissed. Your edits are still here.');
-          }}>Dismiss and keep editing</button>
-        </> : <button className="button primary" type="submit" disabled={busy || !dirty}>Save storyboard</button>}
+      <div><p role="status">{!view ? 'Opening storyboard…' : view.status === 'saved' ? `Saved · revision ${view.revision}` : statusLabels[view.status]}</p>
+        <p className="muted">Autosave on · timing updates after each confirmed save.</p>
+        {view?.message && <p role="status">{view.message}</p>}
+        {view?.storageWarning && <p role="alert">Local recovery is unavailable. Keep this tab open until the save is confirmed.</p>}
       </div>
+      <button className="button primary" type="submit"
+        disabled={!view?.dirty || ['saving', 'conflict', 'recovery', 'offline'].includes(view.status)}>
+        {view?.status === 'error' ? 'Retry save' : 'Save storyboard'}
+      </button>
     </div>
   </form>;
 }
