@@ -31,7 +31,7 @@ export async function GET(request: Request, { params }: Context) {
     const { error: projectError } = await client.rpc('get_idea_project', { p_id: id });
     if (projectError) databaseProjectError(projectError);
     const { data, error } = await client.from('planning_requests')
-      .select('id, project_id, project_revision, message, created_at, status, reply, failure_code')
+      .select('id, project_id, project_revision, message, created_at, status, reply, failure_code, lease_until')
       .eq('project_id', id).order('created_at', { ascending: false }).order('id', { ascending: false }).limit(20);
     if (error) databaseProjectError(error);
     return projectSuccess(data.map(row => ({
@@ -39,6 +39,8 @@ export async function GET(request: Request, { params }: Context) {
       message: row.message, createdAt: row.created_at, mode: 'brainstorm', status: row.status,
       result: row.reply === null ? null : { reply: row.reply },
       ...(row.failure_code === null ? {} : { failureCode: row.failure_code }),
+      ...(row.status === 'running' && row.lease_until && Date.parse(row.lease_until) <= Date.now()
+        ? { canResume: true } : {}),
     })), requestId);
   });
 }

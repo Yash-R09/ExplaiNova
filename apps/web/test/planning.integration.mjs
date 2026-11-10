@@ -41,6 +41,9 @@ try {
   assert.equal(created.status, 201);
   const { data: project } = await created.json();
   const path = `/api/v1/projects/${project.id}/planning-jobs`;
+  const workspace = await request(`/projects/${project.id}`, owner.jar);
+  assert.equal(workspace.status, 200);
+  assert.match(await workspace.text(), /Brainstorm with AI/);
   const command = { expectedRevision: 1, mode: 'brainstorm', message: 'Suggest two opening questions.' };
   const key = randomUUID();
   assert.equal((await post(path, owner.jar, { ...command, message: '\t\n\u00a0\ufeff' }, key)).status, 422);
@@ -56,6 +59,12 @@ try {
   assert.equal((await post(path, owner.jar, { ...command, mode: 'storyboard' })).status, 422);
   assert.equal((await post(path, other.jar, command)).status, 404);
   assert.equal((await request(path, other.jar)).status, 404);
+  const resumePath = `${path}/${first.data.id}/resume`;
+  assert.equal((await post(resumePath, other.jar, {})).status, 404);
+  assert.equal((await post(resumePath, owner.jar, { message: 'Unexpected' })).status, 422);
+  const resumed = await post(resumePath, owner.jar, {});
+  assert.equal(resumed.status, 202);
+  assert.equal((await resumed.json()).data.id, first.data.id);
   const history = await request(path, owner.jar);
   assert.equal(history.status, 200);
   assert.match(history.headers.get('cache-control') ?? '', /no-store/);

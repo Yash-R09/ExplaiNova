@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 10, 2026 · Current milestone: **M4b implemented — brainstorming execution**
+Last updated: November 10, 2026 · Current milestone: **M4c implemented — brainstorming workspace**
 
 ## Working agreement
 
@@ -25,7 +25,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M3d implementation):** private case-insensitive title search across Projects/Trash, query-bound pagination, literal special characters, distinct no-match states and search-preserving lifecycle navigation. Independent QA reported QA-05 (Back restored results but retained a later input); fixed and implementation-retested in Projects/Trash. Independent fix retest and source/security review remain pending. See [QA report](QA_M3D_REVIEW.md).
 - **Complete (M4a implementation):** authenticated brainstorming submission and recent history, with a durable request tied to the saved draft revision and protected against duplicate retries.
 - **Complete (M4b implementation):** server-side Gemini brainstorming, durable replies and failure codes, and guarded execution retries. The API exposes current outcomes in planning history.
-- **Not implemented in the SaaS app:** brainstorming controls in the idea workspace, storyboard generation, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
+- **Complete (M4c implementation):** optional brainstorming in the draft editor with save gating, saved replies, bounded progress polling, and retry controls.
+- **Not implemented in the SaaS app:** storyboard generation, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -35,7 +36,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
-| M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | In progress · M4b implemented |
+| M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | In progress · M4c implemented |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
@@ -58,6 +59,19 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M4c QA · November 10, 2026
+
+- Production browser checks passed for save gating, a mocked reply, history persistence after reload and prompt reuse after a quota failure. At 390px, document scroll width was 375px.
+- Planning HTTP integration passed with mocked Gemini, including owner-only resume and reuse of the original request ID. App and prototype tests, build, typecheck and whitespace validation passed. No reproducible defects surfaced in these checks.
+- Gemini was mocked for this pass. Disposable fixtures were removed. Next is storyboard planning. Commit and push the reviewed workspace slice to `dev` when ready.
+
+### M4c brainstorming workspace · November 10, 2026
+
+- Added an optional panel in the Plan stage. New prompts require a saved draft revision. Accepted prompts and replies reopen in history, ambiguous submissions can retry the same key within the current editor session, and the owner can resume a queued or expired request without spending another slot. A failed prompt can be reused for a new request.
+- Production build, typecheck, 54 app tests, 13 prototype tests and local planning HTTP integration passed. Browser QA with mocked Gemini verified save gating, a successful reply, reload persistence and reuse after a provider failure. The HTTP suite covered owner-only resume and confirmed the original request ID is reused.
+- Unsubmitted prompts are kept in the current editor session. Requests still use one prompt and the saved draft as context. Live Gemini and mobile-specific QA were outside this pass.
+- Review fix added **Dismiss and keep editing** for an unconfirmed submission. It preserves the prompt and unlocks the composer without a network request. Same-key retry remains available until dismissal. Production build, typecheck, 54 app tests and whitespace checks passed. Browser verification of the lost-response scenario remains pending.
 
 ### Independent M4b QA · November 10, 2026
 
@@ -329,7 +343,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **M4c — add optional brainstorming to the idea workspace.** Connect saved draft submission, visible progress, replies, history and retry controls before storyboard generation. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md). Generation-state filters, account-wide defaults and named voice catalog/samples remain later work.
+Next: **M4d — generate and persist the first structured storyboard from a saved draft.** Brainstorming remains optional. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md). Generation-state filters, account-wide defaults and named voice catalog/samples remain later work.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
