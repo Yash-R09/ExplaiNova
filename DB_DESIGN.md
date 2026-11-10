@@ -124,6 +124,8 @@ Circular publication/current-revision/approval links are resolved with explicitl
 
 ## 6. Jobs, checkpoints, and provider calls
 
+M4a stores each accepted brainstorm request and its initial user message in `public.planning_requests`. The row references the owned project revision and captures the saved draft plus request reference text at submission. Authenticated owners can read rows for active projects. The admission RPC performs revision checking, insertion and idempotency recording in one transaction. Conversation turns and execution state are part of the later planning slices.
+
 ### generation_jobs
 
 Unified job table used by API `/jobs` for all asynchronous creative work:

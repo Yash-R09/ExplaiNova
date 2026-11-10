@@ -121,6 +121,7 @@ All paths below are relative to `/api/v1`.
 | POST `/projects/:id/restore` | Restore an owned trashed draft with expected revision | 200 |
 | GET `/projects/:id/messages` | Paginated saved planning conversation | 200 |
 | POST `/projects/:id/planning-jobs` | Submit user message and planning mode | 202 |
+| GET `/projects/:id/planning-jobs` | List the latest 20 saved brainstorm requests for an active owned project | 200 |
 | GET `/storyboards/:id` | Read immutable storyboard | 200 |
 | PATCH `/storyboards/:id` | Save edits as a new immutable storyboard | 201 |
 | POST `/storyboards/:id/approve` | Approve exact storyboard hash | 201 |
@@ -154,6 +155,8 @@ All paths below are relative to `/api/v1`.
 **Refinement of earlier system overview:** signed asset access uses POST so GET/link-prefetch cannot mint a new capability; cancellation uses explicit command endpoints. These detailed contracts take precedence over abbreviated tables in the system design. Direct provider webhooks are not required initially; if added, use separate signature-verified routes with replay protection.
 
 ## 6. Authoring and planning examples
+
+M4a implements brainstorm admission and history. POST accepts `mode: "brainstorm"`, `expectedRevision`, `message`, optional `referenceText`, and an absent or null `baseStoryboardId`. It requires an `Idempotency-Key`. The response includes the request ID, project ID, project revision, mode, message, status, result and creation time. GET returns an array of these records newest first and accepts no query parameters. Requests report `queued` with a null result until the execution slice.
 
 ### Implemented M3a subset
 

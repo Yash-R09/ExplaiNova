@@ -5,7 +5,27 @@ export type Database = {
   
   "public": {
           Tables: {
-            "profiles": {
+            "planning_requests": {
+                  Row: {
+                    "created_at": string,"id": string,"input_snapshot": NonNullable<Json>,"message": string,"owner_id": string,"project_id": string,"project_revision": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"input_snapshot": NonNullable<Json>,"message": string,"owner_id": string,"project_id": string,"project_revision": number
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"input_snapshot"?: NonNullable<Json>,"message"?: string,"owner_id"?: string,"project_id"?: string,"project_revision"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "planning_requests_owner_id_project_id_project_revision_fkey"
+      columns: ["owner_id","project_id","project_revision"]
+isOneToOne: false
+      referencedRelation: "project_revisions"
+      referencedColumns: ["owner_id","project_id","revision"]
+    }
+                  ]
+                },"profiles": {
                   Row: {
                     "created_at": string,"deletion_status": string,"owner_id": string,"preferences": NonNullable<Json>,"updated_at": string,"version": number
                   }
@@ -94,6 +114,9 @@ isOneToOne: false
                            },
 "search_idea_projects":
 { Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number,"p_query": string,"p_trashed"?: boolean }; Returns: Json
+                           },
+"submit_brainstorm_request":
+{ Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
                            },
 "trash_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json

@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 7, 2026 · Current milestone: **M3d implemented — title search; M3 feature work complete, review pending**
+Last updated: November 10, 2026 · Current milestone: **M4a implemented — planning request persistence**
 
 ## Working agreement
 
@@ -23,6 +23,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M3c2 implementation):** confirmed Move to Trash, private paginated Trash, one-click restoration, preserved saved content/history, revision fencing across lifecycle transitions, and idempotent lifecycle commands. [Independent QA](QA_M3C2_REVIEW.md) passed within its scope with no new defects; separate source/security review remains pending.
 - **Complete (M3c3 implementation):** per-draft 30/60/90s, audience, tone and male/female narration preference, saved through autosave/recovery/conflicts and retained by duplication/Trash. Captions included and topic-adaptive 2D visuals are fixed V1 requirements. [Independent QA](QA_M3C3_REVIEW.md) passed within its scope with no new defects; source/security review remains pending. Named voice selection/preview and account-wide defaults remain later work.
 - **Complete (M3d implementation):** private case-insensitive title search across Projects/Trash, query-bound pagination, literal special characters, distinct no-match states and search-preserving lifecycle navigation. Independent QA reported QA-05 (Back restored results but retained a later input); fixed and implementation-retested in Projects/Trash. Independent fix retest and source/security review remain pending. See [QA report](QA_M3D_REVIEW.md).
+- **Complete (M4a implementation):** authenticated brainstorming submission and recent history, with a durable request tied to the saved draft revision and protected against duplicate retries.
 - **Not implemented in the SaaS app:** provider calls, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
@@ -33,7 +34,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M1 · Foundation | Independent Next.js app, design tokens, responsive shell, routes, local setup, status tracking | Build/typecheck; desktop/mobile and navigation checks; prototype tests | Complete — ready for review |
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
-| M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | Planned |
+| M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | In progress · M4a implemented |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, explicit revision approval | Editing invalidates approval; stale-tab conflicts; restore/reload | Planned |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
@@ -56,6 +57,23 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### Independent M4a QA · November 10, 2026
+
+- Passed app unit tests, 13 prototype regressions, 207 PostgreSQL assertions, schema lint, production build and typecheck. Live planning, project, Trash, preference, search and session suites passed.
+- Additional live checks confirmed the saved draft and request notes are stored separately in the snapshot, history returns the newest 20 requests in order, and a retry after a draft revision change returns the original acknowledgement. Disposable fixtures were removed.
+- No reproducible defects found in this pass. Next is M4b execution and provider failure handling. Commit and push the reviewed M4a slice to `dev` when ready.
+
+### M4a planning request persistence · November 10, 2026
+
+- Added authenticated brainstorm submission and recent request history. Each request stores the initial message and a snapshot of the saved draft and request reference text. Submission atomically checks the current revision and deduplicates retries within 24 hours.
+- Production build, 52 app tests, 207 pgTAP assertions, database lint and live planning HTTP integration passed. HTTP coverage includes simultaneous retries, changed payloads, stale revisions and two-account isolation.
+- This slice covers the API and persistence. Requests remain queued until M4b adds execution. Next, connect Gemini to saved brainstorming requests, persist validated replies and handle provider failures. Commit and push this slice after review.
+
+### M4a whitespace validation review
+
+- Matched PostgreSQL message trimming to JavaScript `trim()` in the RPC and table constraint. Direct RPC tests reproduced the bug before the fix and cover tabs, newlines, Unicode whitespace and valid messages with whitespace at their edges.
+- Reran all 211 pgTAP assertions, database lint, the production build, typecheck, 52 app tests, 13 prototype tests and the live planning HTTP integration. The HTTP test confirms a blank request returns 422 without consuming the retry key. The next feature remains M4b brainstorming execution.
 
 ### M3d QA-05 repair and authorized commit · November 7, 2026
 
@@ -292,7 +310,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: independently retest QA-05 and complete remaining source/security checks with [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md), then **M4 — AI planning** in small slices, beginning with the planning request/persistence foundation and optional saved brainstorming before storyboard generation. All planned M3 feature slices are implemented. Founder authorized committing/pushing M3d plus the QA-05 fix. Generation-state filters, account-wide defaults and named voice catalog/samples remain later work. Earlier source/security/release limits remain carried forward.
+Next: **M4b — execute saved brainstorming requests and persist validated replies and failures.** Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md). Generation-state filters, account-wide defaults and named voice catalog/samples remain later work.
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 

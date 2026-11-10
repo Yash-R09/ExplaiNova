@@ -9,6 +9,7 @@
     "test:signup": "node test/signup.integration.mjs",
     "test:recovery": "node test/recovery.integration.mjs",
     "test:projects": "node test/projects.integration.mjs",
+    "test:planning": "node test/planning.integration.mjs",
     "test:trash": "node test/project-trash.integration.mjs",
     "test:preferences": "node test/project-preferences.integration.mjs",
     "test:search": "node test/project-search.integration.mjs",

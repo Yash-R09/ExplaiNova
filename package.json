@@ -19,6 +19,7 @@
     "app:test:signup": "npm --prefix apps/web run test:signup",
     "app:test:recovery": "npm --prefix apps/web run test:recovery",
     "app:test:projects": "npm --prefix apps/web run test:projects",
+    "app:test:planning": "npm --prefix apps/web run test:planning",
     "app:test:trash": "npm --prefix apps/web run test:trash",
     "app:test:preferences": "npm --prefix apps/web run test:preferences",
     "app:test:search": "npm --prefix apps/web run test:search",
