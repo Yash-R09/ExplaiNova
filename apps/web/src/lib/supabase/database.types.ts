@@ -91,6 +91,26 @@ isOneToOne: false
       referencedColumns: ["owner_id"]
     }
                   ]
+                },"storyboard_approvals": {
+                  Row: {
+                    "approved_at": string,"content_hash": string,"id": string,"owner_id": string,"project_id": string,"revision": number,"revision_id": string,"settings_snapshot": NonNullable<Json>,"storyboard_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "approved_at"?: string,"content_hash": string,"id"?: string,"owner_id": string,"project_id": string,"revision": number,"revision_id": string,"settings_snapshot": NonNullable<Json>,"storyboard_id": string
+                  }
+                  Update: {
+                    "approved_at"?: string,"content_hash"?: string,"id"?: string,"owner_id"?: string,"project_id"?: string,"revision"?: number,"revision_id"?: string,"settings_snapshot"?: NonNullable<Json>,"storyboard_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "storyboard_approvals_owner_id_project_id_storyboard_id_fkey"
+      columns: ["owner_id","project_id","storyboard_id"]
+isOneToOne: false
+      referencedRelation: "planning_requests"
+      referencedColumns: ["owner_id","project_id","id"]
+    }
+                  ]
                 },"storyboard_revisions": {
                   Row: {
                     "content": NonNullable<Json>,"content_hash": string,"created_at": string,"id": string,"owner_id": string,"project_id": string,"revision": number,"storyboard_id": string
@@ -117,7 +137,10 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "claim_brainstorm_request":
+            "approve_storyboard_revision":
+{ Args: { "p_command_key": string,"p_expected_revision": number,"p_id": string,"p_revision_id": string }; Returns: Json
+                           },
+"claim_brainstorm_request":
 { Args: { "p_id": string,"p_owner_id": string,"p_project_id": string }; Returns: Json
                            },
 "create_idea_project":

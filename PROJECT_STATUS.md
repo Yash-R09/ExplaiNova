@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 10, 2026 · Current milestone: **M5c implemented — conversational storyboard revisions**
+Last updated: November 10, 2026 · Current milestone: **M5d implemented — explicit storyboard approval**
 
 ## Working agreement
 
@@ -30,7 +30,8 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 - **Complete (M5a implementation):** review generated scenes and manually save edits as immutable storyboard revisions with stale-write protection.
 - **Complete (M5b implementation):** debounced storyboard autosave, manual save, same-browser edit recovery, and explicit stale-revision comparison.
 - **Complete (M5c implementation):** request an AI revision from a saved storyboard, reopen proposals, and apply a selected proposal through revision-checked saving.
-- **Not implemented in the SaaS app:** storyboard approval, named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
+- **Complete (M5d implementation):** explicit approval of a saved storyboard revision, stored with its content hash and source settings. A later edit or applied AI proposal needs its own approval.
+- **Not implemented in the SaaS app:** named voice catalog/samples, account-wide preference defaults, workers, R2, downloads, social connections, scheduling, and publishing. Permanent deletion/purge is not implemented.
 - No cloud resources provisioned, no app deployed, and no billing implemented.
 
 ## Delivery plan
@@ -41,7 +42,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M2 · Identity | Supabase setup/migrations for profiles, sign-up/in/out, verification, reset, session guards | Two-account isolation and expired/session recovery checks | Implemented — scoped independent QA passed; source/security review pending |
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
-| M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | In progress · M5c implemented |
+| M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
 | M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
@@ -63,6 +64,15 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M5d explicit storyboard approval · November 10, 2026
+
+- Independent QA passed the local browser flow. Revision 1 approval survived reload. Editing showed that new edits need approval, and the saved revision 2 required a separate approval that also survived reload. Planning HTTP integration, 65 app tests, 13 prototype tests, 228 database assertions, database lint, build, typecheck and diff whitespace checks passed. Gemini was mocked.
+
+- Added approval in the review screen. The owner can approve only a saved storyboard revision. The transaction verifies the revision number and immutable ID, records the server-side content hash and source settings, and keeps prior approvals as history. New revisions start without approval.
+- Production build, typecheck, 65 app tests, 13 prototype tests, 228 database assertions, schema lint and live planning HTTP integration with mocked Gemini passed. HTTP coverage includes ownership, concurrent duplicate approval, stale approval rejection, replay, rendered approval status and approval invalidation after manual and AI edits.
+- Approval records the saved voice preference and caption settings. Video generation and provider voice resolution are part of M6. Browser QA remains pending. M5d is uncommitted for review.
+- Review fix shows the exact source draft revision, voice preference, captions and visual style before approval. The HTTP regression switches the draft voice to Male after generation and confirms the review page still shows Female and the approval stores that same source snapshot. Build, typecheck and 65 app tests passed.
 
 ### M5c conversational storyboard revisions · November 10, 2026
 
@@ -397,7 +407,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **M5d — explicit storyboard revision approval.** Hosted Supabase staging starts in M6. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **M6a — hosted Supabase staging and the durable generation job foundation.** Verify staged authentication and ownership, then admit jobs only against a matching approval and saved storyboard revision. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 

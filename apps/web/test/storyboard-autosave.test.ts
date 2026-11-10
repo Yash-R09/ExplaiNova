@@ -9,7 +9,8 @@ const scene = { title: 'Orbit', type: 'illustration', purpose: 'Introduce gravit
 const content = validateStoryboardCandidate({
   title: 'Orbits', theme: 'Indigo diagrams', reviewNotes: [], scenes: Array.from({ length: 4 }, () => scene),
 }, 60000)!;
-const initial: StoryboardDocument = { id: 'story', projectId: 'project', projectRevision: 3, revisionId: 'story', revision: 1, content };
+const initial: StoryboardDocument = { id: 'story', projectId: 'project', projectRevision: 3, revisionId: 'story', revision: 1,
+  content, sourceSettings: { voice: 'female', captions: true, theme: 'topic' } };
 function storage() {
   const values = new Map<string, string>();
   return { get length() { return values.size; }, key: (index: number) => [...values.keys()][index] ?? null,

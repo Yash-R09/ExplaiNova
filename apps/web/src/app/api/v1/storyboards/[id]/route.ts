@@ -25,6 +25,9 @@ export async function PATCH(request: Request, { params }: Context) {
       p_content: edit.content, p_command_key: key,
     });
     if (error) databaseProjectError(error);
-    return projectSuccess(data, requestId, 201);
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      throw new ProjectError('TEMPORARILY_UNAVAILABLE', 503, 'Storyboard saving could not be confirmed.');
+    }
+    return projectSuccess({ ...data, sourceSettings: source.sourceSettings }, requestId, 201);
   });
 }

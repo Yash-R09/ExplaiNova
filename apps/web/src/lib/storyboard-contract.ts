@@ -1,5 +1,6 @@
 import { ProjectError } from './project-contract.ts';
 import { validateStoryboardCandidate, type StoryboardCandidate } from './storyboard-candidate.ts';
+import type { DraftSettings } from './draft-preferences.ts';
 
 export type StoryboardDocument = {
   id: string;
@@ -8,6 +9,12 @@ export type StoryboardDocument = {
   revisionId: string;
   revision: number;
   content: StoryboardCandidate;
+  sourceSettings: DraftSettings | null;
+  approval?: StoryboardApproval;
+};
+
+export type StoryboardApproval = {
+  id: string; revisionId: string; revision: number; contentHash: string; approvedAt: string;
 };
 
 export function storyboardEdit(value: unknown, targetDurationMs: number) {

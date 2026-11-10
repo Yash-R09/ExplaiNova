@@ -129,13 +129,41 @@ try {
 
     const reviewPath = `/storyboards/${storyboard.id}`;
     const storyboardPath = `/api/v1${reviewPath}`;
+    const changedDraft = await request(independentPath.replace('/planning-jobs', ''), other.jar, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() },
+      body: JSON.stringify({ expectedRevision: 1, settings: { voice: 'male' } }),
+    });
+    assert.equal(changedDraft.status, 200);
+    assert.equal((await changedDraft.json()).data.settings.voice, 'male');
     const reviewPage = await request(reviewPath, other.jar);
     assert.equal(reviewPage.status, 200);
-    assert.match(await reviewPage.text(), /Save storyboard/);
+    const reviewHtml = await reviewPage.text();
+    assert.match(reviewHtml, /Save storyboard/);
+    assert.match(reviewHtml, /Narration voice preference<\/dt><dd>Female<\/dd>/);
     assert.equal((await request(storyboardPath, owner.jar)).status, 404);
     const initial = (await (await request(storyboardPath, other.jar)).json()).data;
     assert.equal(initial.revision, 1);
     assert.deepEqual(initial.content, storyboard.result.storyboard);
+    assert.deepEqual(initial.sourceSettings, { voice: 'female', captions: true, theme: 'topic' });
+
+    const approvalPath = `${storyboardPath}/approve`;
+    const initialApproval = { expectedRevision: 1, revisionId: initial.revisionId };
+    const approvalKey = randomUUID();
+    assert.equal((await post(approvalPath, owner.jar, initialApproval)).status, 404);
+    const approvals = await Promise.all([
+      post(approvalPath, other.jar, initialApproval, approvalKey), post(approvalPath, other.jar, initialApproval),
+    ]);
+    for (const response of approvals) assert.equal(response.status, 201);
+    const [approval, repeatedApproval] = await Promise.all(approvals.map(async response => (await response.json()).data));
+    assert.deepEqual(repeatedApproval, approval);
+    assert.equal(approval.revisionId, initial.revisionId);
+    assert.match(approval.contentHash, /^[0-9a-f]{64}$/);
+    assert.match(approval.id, /^[0-9a-f-]{36}$/i);
+    const lockedSettings = execFileSync('docker', ['exec', 'supabase_db_explainova', 'psql', '-X', '-At', '-U', 'postgres', '-d', 'postgres',
+      '-c', `select settings_snapshot from public.storyboard_approvals where id = '${approval.id}'`], { encoding: 'utf8' });
+    assert.deepEqual(JSON.parse(lockedSettings), initial.sourceSettings);
+    assert.deepEqual((await (await request(storyboardPath, other.jar)).json()).data.approval, approval);
+    assert.match(await (await request(reviewPath, other.jar)).text(), /Revision 1 approved\./);
 
     const edit = { expectedRevision: 1, content: structuredClone(initial.content) };
     edit.content.scenes[0].narration = 'Gravity keeps a satellite moving around Earth.';
@@ -155,6 +183,7 @@ try {
     assert.equal(saved.revision, 2);
     assert.notEqual(saved.revisionId, initial.revisionId);
     assert.equal(saved.content.scenes[0].narration, edit.content.scenes[0].narration);
+    assert.deepEqual(saved.sourceSettings, initial.sourceSettings);
     assert.equal(saved.content.scenes.reduce((sum, scene) => sum + scene.durationMs, 0), 60000);
     const nextEdit = { expectedRevision: 2, content: { ...saved.content, title: 'How a satellite stays in orbit' } };
     assert.equal((await saveEdit(other.jar, nextEdit)).status, 201);
@@ -164,6 +193,13 @@ try {
     const latest = (await (await request(storyboardPath, other.jar)).json()).data;
     assert.equal(latest.revision, 3);
     assert.equal(latest.content.title, nextEdit.content.title);
+    assert.equal(latest.approval, undefined);
+    assert.equal((await post(approvalPath, other.jar, initialApproval)).status, 409);
+    assert.equal((await post(approvalPath, other.jar, { expectedRevision: 3, revisionId: initial.revisionId })).status, 409);
+    assert.deepEqual((await (await post(approvalPath, other.jar, initialApproval, approvalKey)).json()).data, approval);
+    const approvedLatest = await post(approvalPath, other.jar, { expectedRevision: 3, revisionId: latest.revisionId });
+    assert.equal(approvedLatest.status, 201);
+    assert.notEqual((await approvedLatest.json()).data.contentHash, approval.contentHash);
 
     const suggestionsPath = `${storyboardPath}/suggestions`;
     const suggestion = { expectedRevision: 3, message: 'Use a simple analogy in the opening scene.' };
@@ -186,15 +222,16 @@ try {
     const applied = await saveEdit(other.jar, { expectedRevision: proposal.baseRevision, content: proposal.content });
     assert.equal(applied.status, 201);
     assert.equal((await applied.json()).data.revision, 4);
+    assert.equal((await (await request(storyboardPath, other.jar)).json()).data.approval, undefined);
     assert.equal((await saveEdit(other.jar, { expectedRevision: proposal.baseRevision, content: proposal.content })).status, 409);
 
-    const malformed = await post(independentPath, other.jar, { ...storyboardCommand, message: 'Simulate invalid storyboard' });
+    const malformed = await post(independentPath, other.jar, { ...storyboardCommand, expectedRevision: 2, message: 'Simulate invalid storyboard' });
     assert.equal(malformed.status, 202);
     const failed = await terminalRequest(independentPath, other.jar, (await malformed.json()).data.id);
     assert.equal(failed.failureCode, 'INVALID_PROVIDER_OUTPUT');
     assert.equal(failed.result, null);
     const draft = await request(independentPath.replace('/planning-jobs', ''), other.jar);
-    assert.equal((await draft.json()).data.revision, 1);
+    assert.equal((await draft.json()).data.revision, 2);
 
     // Simulate activity over several hours without bypassing the per-owner insert trigger.
     const fixtureIds = [other.id, independentProject.id];
@@ -228,10 +265,11 @@ try {
 
     const trashed = await request(independentPath.replace('/planning-jobs', ''), other.jar, {
       method: 'DELETE', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() },
-      body: JSON.stringify({ expectedRevision: 1 }),
+      body: JSON.stringify({ expectedRevision: 2 }),
     });
     assert.equal(trashed.status, 202);
     assert.equal((await request(storyboardPath, other.jar)).status, 404);
+    assert.equal((await post(approvalPath, other.jar, initialApproval, approvalKey)).status, 404);
     assert.equal((await request(suggestionsPath, other.jar)).status, 404);
     assert.equal((await saveEdit(other.jar, edit, saveKeys[successfulIndex])).status, 404);
   }

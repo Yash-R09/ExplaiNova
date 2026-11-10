@@ -6,6 +6,7 @@ import type { StoryboardCandidate } from '@/lib/storyboard-candidate';
 import { useDraftNavigation } from './draft-navigation';
 import { StoryboardAutosave, type StoryboardAutosaveView } from '@/lib/storyboard-autosave';
 import { StoryboardSuggestions } from './storyboard-suggestions';
+import { StoryboardApprovalPanel } from './storyboard-approval';
 
 type SceneField = 'title' | 'purpose' | 'narration' | 'motion';
 const sceneFields: { field: SceneField; label: string; maxLength: number }[] = [
@@ -156,6 +157,7 @@ export function StoryboardEditor({ initial, ownerId }: { initial: StoryboardDocu
       </button>
     </div>
   </form>
+  <StoryboardApprovalPanel key={saved.revisionId} document={saved} ready={view?.status === 'saved' && !view.dirty} dirty={!!view?.dirty} />
   <StoryboardSuggestions id={initial.id} projectId={initial.projectId} revision={saved.revision} savedContent={saved.content}
     ready={view?.status === 'saved' && !view.dirty}
     preview={proposal => <StoryboardCopy content={proposal} expanded />}

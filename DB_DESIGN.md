@@ -112,6 +112,8 @@ Store exact voice/model/settings/component versions in snapshots, not just a cat
 
 ### approvals
 
+M5d uses `storyboard_approvals` for owner-scoped records keyed by storyboard and revision. The approval transaction checks the revision number and immutable revision ID, then records the content hash and the source draft's voice and caption settings. A new storyboard revision leaves the old approval intact for history and has no approval of its own. Provider voice IDs are resolved and recorded when narration is connected.
+
 `id`, `owner_id`, `project_id`, `scope` in storyboard/publication, `storyboard_id nullable`, `publication_revision_id nullable`, `content_hash`, `actor_id`, `created_at`.
 
 Use two explicit nullable foreign keys plus a CHECK requiring exactly the target matching the scope. Avoid an unconstrained polymorphic `target_type,target_id` pair. Actor must equal owner in V1. Target scope/owner/project/hash must match at approval transaction time. Approval rows are immutable audit evidence, not a mutable approved boolean on creative content.

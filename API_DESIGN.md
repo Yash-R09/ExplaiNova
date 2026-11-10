@@ -251,7 +251,7 @@ In M5a, PATCH the storyboard with `{expectedRevision, content}` and an `Idempote
 
 ### Approve and generate
 
-POST `/storyboards/:id/approve` with `{expectedRevision, contentHash}`. Return an approval ID tied to owner, hash, and storyboard. POST `/generation-jobs`:
+POST `/storyboards/:id/approve` with `{expectedRevision, revisionId}` and an `Idempotency-Key`. The server verifies both identifiers against the latest saved storyboard under the same lock as edits, then records the content hash and saved settings. Storyboard GET and PATCH include `sourceSettings` from the original draft snapshot for review. GET includes approval only for the returned revision. Exact retries return the original receipt, and approving the same current revision with a fresh key returns the same approval. POST `/generation-jobs` is planned for M6:
 
 ```json
 {
