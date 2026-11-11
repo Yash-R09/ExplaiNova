@@ -265,6 +265,8 @@ Verify matching owners/project/hash and asset references. Atomically admit the j
 
 M6a accepts the storyboard lineage ID as `storyboardId`. The approval identifies the exact immutable revision. A new submission requires the latest approved revision and an available active-job slot. GET at the receipt's location returns the current status to the owner. Jobs are queued for a later worker slice.
 
+M6b adds service-role functions for job claiming, lease renewal, and failure reporting. The owner-facing job status includes a safe `errorCode` when a worker failure is recorded.
+
 Moving a project with an active video job to Trash returns HTTP 409 with `PROJECT_VIDEO_JOB_ACTIVE`. Once the job reaches a terminal state, the owner can retry the same Trash request.
 
 ## 7. Voices, generation, and revisions

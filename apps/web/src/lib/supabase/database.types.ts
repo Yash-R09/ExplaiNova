@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "generation_jobs": {
                   Row: {
-                    "approval_id": string,"created_at": string,"id": string,"owner_id": string,"project_id": string,"status": string
+                    "approval_id": string,"attempt": number,"created_at": string,"error_code": string | null,"id": string,"owner_id": string,"project_id": string,"status": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "approval_id": string,"created_at"?: string,"id"?: string,"owner_id": string,"project_id": string,"status"?: string
+                    "approval_id": string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"owner_id": string,"project_id": string,"status"?: string
                   }
                   Update: {
-                    "approval_id"?: string,"created_at"?: string,"id"?: string,"owner_id"?: string,"project_id"?: string,"status"?: string
+                    "approval_id"?: string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"owner_id"?: string,"project_id"?: string,"status"?: string
                   }
                   Relationships: [
                     {
@@ -163,6 +163,9 @@ isOneToOne: false
 "claim_brainstorm_request":
 { Args: { "p_id": string,"p_owner_id": string,"p_project_id": string }; Returns: Json
                            },
+"claim_video_job":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json
                            },
@@ -183,6 +186,12 @@ isOneToOne: false
                            },
 "list_trashed_idea_projects":
 { Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number }; Returns: Json
+                           },
+"renew_video_job_lease":
+{ Args: { "p_job_id": string,"p_lease_token": string }; Returns: string
+                           },
+"report_video_job_failure":
+{ Args: { "p_job_id": string,"p_lease_token": string,"p_retryable": boolean }; Returns: boolean
                            },
 "restore_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json

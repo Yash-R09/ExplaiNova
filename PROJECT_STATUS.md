@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 11, 2026 · Current milestone: **M6a video job admission and hosted Supabase staging verified**
+Last updated: November 11, 2026 · Current milestone: **M6b video worker leases verified locally**
 
 ## Working agreement
 
@@ -43,7 +43,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local job admission implemented |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · job admission and worker leases implemented |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
@@ -64,6 +64,15 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M6b video worker leases · November 11, 2026
+
+- Independent local QA ran two simultaneous worker claims and verified that exactly one received the job and its approved revision. The worker renewed its lease and reported a retryable failure. The owner’s HTTP status moved from `running` to `waiting_retry` with `VIDEO_WORKER_FAILED` and omitted the lease token. Planning integration, 242 database assertions, database lint, 65 app tests, 13 prototype tests, build, typecheck and whitespace checks passed. Gemini was mocked.
+
+- Added service-role functions to claim queued video jobs, renew leases, recover expired work, and report failures. The claim returns the approved storyboard and its saved settings. Old lease tokens cannot update recovered jobs. A retryable failure waits 30 seconds and the job can run at most three attempts.
+- Passed 242 PostgreSQL assertions and schema lint. The new tests cover privilege checks, exact approved inputs, lease renewal, delayed retry, and exhaustion. The migration is applied to local Supabase. The narration worker will be the first consumer of these functions.
+- Production build, typecheck, 65 app tests, 13 prototype tests, local HTTP integration with mocked Gemini, and whitespace checks passed. The worker lease changes are ready for review before commit and push.
+- Review fix makes a claim continue after failing an exhausted job. The regression reproduced the early null response and now verifies that the same claim returns the next ready job. All 243 database assertions and schema lint passed.
 
 ### M6a video job admission · November 11, 2026
 
@@ -419,7 +428,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **Connect a staging deployment of the app to hosted Supabase and verify the browser sign-in and email confirmation flows.** Follow with the outbox worker and narration. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Connect the worker to ElevenLabs narration and alignment.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
