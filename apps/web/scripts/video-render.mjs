@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { createReadStream } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,6 +12,12 @@ const fps = 30;
 const entryPoint = fileURLToPath(new URL('./render/Explainer.jsx', import.meta.url));
 const hash = /^[0-9a-f]{64}$/;
 
+async function hashVideo(path) {
+  const digest = createHash('sha256');
+  for await (const chunk of createReadStream(path)) digest.update(chunk);
+  return digest.digest('hex');
+}
+
 export async function renderVideoJob({ rpc, narrationRoot, renderRoot, jobId, browserExecutable, onProgress }) {
   if (!/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(jobId)) throw new Error('Provide a video job UUID.');
   jobId = jobId.toLowerCase();
@@ -18,22 +25,35 @@ export async function renderVideoJob({ rpc, narrationRoot, renderRoot, jobId, br
   const manifest = await rpc('read_video_render_inputs', { p_job_id: jobId });
   if (!manifest) throw new Error('This job is not ready to render.');
   if (manifest.version !== 1 || manifest.fps !== fps || ![900, 1800, 2700].includes(manifest.durationFrames)
-    || typeof manifest.theme !== 'string' || !Array.isArray(manifest.scenes)
+    || !hash.test(manifest.contentHash) || typeof manifest.theme !== 'string' || !Array.isArray(manifest.scenes)
     || manifest.scenes.length < 1 || manifest.scenes.length > 10) {
     throw new Error('Invalid assembly manifest.');
   }
 
   const destination = join(renderRoot, jobId);
-  async function hasOutputs() {
+  async function recordPublishedRender() {
     try {
-      const files = await Promise.all(['video.mp4', 'captions.srt'].map(file => stat(join(destination, file))));
-      return files.every(file => file.isFile() && file.size > 0);
+      await stat(destination);
     } catch (error) {
       if (error.code === 'ENOENT') return false;
       throw error;
     }
+    let receipt;
+    try {
+      receipt = JSON.parse(await readFile(join(destination, 'render.json'), 'utf8'));
+      if (receipt?.jobId !== jobId || receipt.contentHash !== manifest.contentHash || !hash.test(receipt.videoSha256)
+        || receipt.videoSha256 !== await hashVideo(join(destination, 'video.mp4'))) {
+        throw new Error('Render checkpoint mismatch.');
+      }
+    } catch (error) {
+      throw new Error('Existing render cannot be verified. Restore the original output, or move legacy output aside and rerender.', { cause: error });
+    }
+    if (!await rpc('record_video_render', {
+      p_job_id: jobId, p_content_hash: manifest.contentHash, p_video_sha256: receipt.videoSha256,
+    })) throw new Error('This job already has a different render checkpoint or is no longer queued.');
+    return true;
   }
-  if (await hasOutputs()) return destination;
+  if (await recordPublishedRender()) return destination;
 
   await mkdir(renderRoot, { recursive: true });
   const scratch = await mkdtemp(join(renderRoot, '.render-'));
@@ -80,13 +100,18 @@ export async function renderVideoJob({ rpc, narrationRoot, renderRoot, jobId, br
       concurrency: 2, outputLocation: join(output, 'video.mp4'), onProgress,
     });
     await writeFile(join(output, 'captions.srt'), toSrt(scenes.flatMap(scene => scene.captions)));
+    await writeFile(join(output, 'render.json'), JSON.stringify({
+      jobId, contentHash: manifest.contentHash, videoSha256: await hashVideo(join(output, 'video.mp4')),
+    }));
     try {
       await rename(output, destination);
     } catch (error) {
-      // Another run may have published both files while this one was rendering.
+      // Another run may have published the output and receipt while this one was rendering.
       if (!['EEXIST', 'ENOTEMPTY', 'EPERM'].includes(error.code)) throw error;
-      if (!await hasOutputs()) throw error;
+      if (!await recordPublishedRender()) throw error;
+      return destination;
     }
+    await recordPublishedRender();
     return destination;
   } finally {
     await rm(scratch, { recursive: true, force: true });
@@ -101,7 +126,7 @@ async function main() {
   const client = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
   const rpc = async (name, args) => {
     const { data, error } = await client.rpc(name, args);
-    if (error) throw new Error('Could not load the assembly manifest from local Supabase.');
+    if (error) throw new Error('Render checkpoint database request failed. Rerun the render worker to retry.');
     return data;
   };
   const outputs = fileURLToPath(new URL('../../../outputs/', import.meta.url));

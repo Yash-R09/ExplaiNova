@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
-select plan(30);
+select plan(44);
 
 insert into auth.users(id, email) values ('16161616-1616-4616-8616-161616161616', 'video-worker@example.test');
 set local role authenticated;
@@ -22,6 +22,12 @@ select set_config('test.job', public.submit_video_job(current_setting('test.proj
 select throws_ok($$select public.claim_video_job()$$,'42501',null,'authenticated callers cannot claim worker jobs');
 select throws_ok($$select public.read_video_render_inputs(current_setting('test.job')::uuid)$$,
   '42501',null,'authenticated callers cannot read private render inputs');
+select throws_ok($$select public.read_video_storage_inputs(current_setting('test.job')::uuid)$$,
+  '42501',null,'authenticated callers cannot read private storage inputs');
+select throws_ok($$select public.record_video_render(current_setting('test.job')::uuid,repeat('a',64),repeat('b',64))$$,
+  '42501',null,'authenticated callers cannot record a render');
+select throws_ok($$select public.complete_video_storage(current_setting('test.job')::uuid,'staging',repeat('a',64),10,repeat('b',64),4)$$,
+  '42501',null,'authenticated callers cannot finalize artifact storage');
 select throws_ok($$select public.report_video_job_failure(current_setting('test.job')::uuid,gen_random_uuid(),false)$$,
   '42501',null,'authenticated callers cannot change worker status');
 
@@ -81,7 +87,10 @@ select is(public.complete_video_narration(current_setting('test.next_job')::uuid
 select is(public.claim_video_job(),null::jsonb,'a completed narration event cannot be claimed again');
 select is(public.read_video_assembly_inputs(current_setting('test.next_job')::uuid)->'storyboard'->>'title',
   'Approved gravity','assembly reads the exact approved storyboard');
-select set_config('test.assembly',jsonb_build_object('contentHash',current_setting('test.next_claim')::jsonb->>'contentHash','version',1)::text,true);
+select set_config('test.assembly',jsonb_build_object('contentHash',current_setting('test.next_claim')::jsonb->>'contentHash',
+  'version',1,'durationFrames',1800,'srt','test')::text,true);
+select is(public.read_video_storage_inputs(current_setting('test.next_job')::uuid),null::jsonb,
+  'storage waits for scene assembly');
 select is(public.read_video_render_inputs(current_setting('test.next_job')::uuid),null::jsonb,
   'renderer cannot read inputs before assembly completes');
 select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,'{"version":1}'),false,
@@ -94,7 +103,27 @@ select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,
   'the same assembly can be replayed safely');
 select is(public.fail_video_assembly(current_setting('test.next_job')::uuid,'VIDEO_NARRATION_CHECKPOINT_INVALID'),false,
   'a late checkpoint failure cannot replace a completed assembly');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('a',64),10,encode(sha256('test'::bytea),'hex'),4),
+  false,'storage cannot complete without a recorded render');
+select is(public.record_video_render(current_setting('test.next_job')::uuid,'wrong',repeat('a',64)),
+  false,'the render checkpoint must match the saved assembly');
+select is(public.record_video_render(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb->>'contentHash',repeat('a',64)),
+  true,'the render checksum is bound to the job and assembly');
+select is(public.record_video_render(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb->>'contentHash',repeat('b',64)),
+  false,'a different render cannot replace the recorded checksum');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('b',64),10,encode(sha256('test'::bytea),'hex'),4),
+  false,'storage rejects an MP4 whose checksum differs from the recorded render');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('a',64),10,repeat('b',64),4),
+  false,'storage rejects captions that do not match assembly');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('a',64),10,encode(sha256('test'::bytea),'hex'),4),
+  true,'verified artifacts finalize the assembled job');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('a',64),10,encode(sha256('test'::bytea),'hex'),4),
+  true,'replaying the same artifact references is safe');
+select is(public.complete_video_storage(current_setting('test.next_job')::uuid,'staging',repeat('b',64),10,encode(sha256('test'::bytea),'hex'),4),
+  false,'different artifacts cannot replace a finished job');
 reset role;
+select is((select status from public.generation_jobs where id = current_setting('test.next_job')::uuid),
+  'succeeded','the completed job reports success and releases the active slot');
 select isnt((select narration_ready_at from public.generation_jobs where id = current_setting('test.next_job')::uuid),
   null::timestamptz,'the job exposes narration readiness');
 select is((select status || ':' || error_code from public.generation_jobs where id = current_setting('test.job')::uuid),

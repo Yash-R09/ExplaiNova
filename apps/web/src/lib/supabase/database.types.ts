@@ -172,6 +172,9 @@ isOneToOne: false
 "complete_video_narration":
 { Args: { "p_job_id": string,"p_lease_token": string,"p_manifest": Json }; Returns: boolean
                            },
+"complete_video_storage":
+{ Args: { "p_bucket": string,"p_job_id": string,"p_srt_bytes": number,"p_srt_sha256": string,"p_video_bytes": number,"p_video_sha256": string }; Returns: boolean
+                           },
 "create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json
                            },
@@ -201,6 +204,12 @@ isOneToOne: false
                            },
 "read_video_render_inputs":
 { Args: { "p_job_id": string }; Returns: Json
+                           },
+"read_video_storage_inputs":
+{ Args: { "p_job_id": string }; Returns: Json
+                           },
+"record_video_render":
+{ Args: { "p_content_hash": string,"p_job_id": string,"p_video_sha256": string }; Returns: boolean
                            },
 "renew_video_job_lease":
 { Args: { "p_job_id": string,"p_lease_token": string }; Returns: string

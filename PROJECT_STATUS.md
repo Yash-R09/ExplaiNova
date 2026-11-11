@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 11, 2026 · Current milestone: **M6e local video rendering**
+Last updated: November 11, 2026 · Current milestone: **M6f private render storage**
 
 ## Working agreement
 
@@ -43,7 +43,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local renderer implemented |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · R2 worker implemented, staging smoke test pending |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
@@ -64,6 +64,15 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M6f private render storage · November 11, 2026
+
+- Bound the MP4 checksum to the job and its assembly at render time. The storage worker and database both reject a different MP4. Verified a fresh 30-second synthetic render and checksum replay, the same-size file swap regression, 19 root tests, app typecheck, 272 local database assertions, and schema lint. Live staging R2 verification is next.
+
+- Independent local QA passed a real 60-second MP4 and its SRT through the storage worker with simulated R2 and a simulated finalization response. The worker verified both objects before requesting finalization. The production build, typecheck, 19 root tests, 65 app tests, 266 local database assertions, lint and whitespace checks passed. Live R2 remains pending.
+
+- Added `npm run worker:store -- <video-job-id>`. It checks the MP4 format and the SRT against the assembly, writes both to private R2 with conditional creation, then reads back and verifies the bytes. The database records both references and completes the job atomically. The local renderer stays usable before R2 setup.
+- Passed 19 root tests, 65 app tests, 266 local PostgreSQL assertions, schema lint, typecheck, and whitespace checks. Verified metadata on an actual 30-second renderer output and exercised interrupted upload and corrupted read-back against a simulated object store. A live staging R2 smoke test needs a private bucket and worker credentials. After that, continue with worker recovery and video review.
 
 ### M6e local video rendering · November 11, 2026
 
@@ -449,7 +458,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **Store rendered MP4 and SRT files in private staging R2 and finalize the job when both are verified.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Verify a complete job against private staging R2, then continue with worker recovery.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
