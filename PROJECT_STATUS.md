@@ -67,6 +67,8 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 
 ### M6e local video rendering · November 11, 2026
 
+- Independent local QA rendered an approved four-scene job with synthetic WAV checkpoints. FFprobe reported 1080 × 1920 H.264 at 30 fps, AAC audio, and a 60.011-second container for the 60-second timeline. The SRT contained timed cues, an extracted frame showed a burned-in caption, and rerunning the CLI preserved the MP4 timestamp. Planning integration, build, typecheck, 65 app tests, 18 root tests, database tests, lint, and whitespace checks passed. Gemini was mocked.
+
 - Fixed long label overflow by using two columns for dense scenes and reserving separate space for the title, cards, and captions. Visually inspected a frame from a 30-second render with six 80-character labels, a 100-character title, and an active caption. All 18 root tests, app typecheck, render syntax, and whitespace checks passed.
 
 - Added `npm run worker:render -- <video-job-id>`. Remotion uses the saved 30 fps timeline, verifies WAV checksums, and renders animated scene labels, narration, and burned-in captions to a vertical MP4 with a separate SRT. Local outputs are saved together in the ignored render directory.
@@ -74,6 +76,7 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 
 ### M6d scene and caption assembly · November 11, 2026
 
+- Local dashboard previews now skip email confirmation for new accounts. Restarted local Supabase and verified that signup returns a confirmed session. Existing test data was preserved. Re-enable `[auth.email].enable_confirmations` before final confirmation-flow QA. Video rendering remains the next feature.
 - Assembly now marks jobs with missing or invalid narration checkpoints as failed, releasing the owner's active job slot. A late failure cannot overwrite completed assembly. Verified with 18 root tests, 255 local database assertions and schema lint. Manual QA of the recovery path is pending. The next planned task is video rendering after M6d review.
 - Added `npm run worker:assemble -- <video-job-id>`. The worker checks the saved scene audio against the approved storyboard, builds a 30 fps timeline from actual audio lengths, and stores SRT captions and audio checksums in a private manifest. The job exposes `assemblyReadyAt`. Audio that exceeds the target fails without truncation and releases the active job slot.
 - Independent local QA ran the assembly CLI twice on a disposable approved job with four synthetic WAV checkpoints. Both runs reported a 60-second timeline. The owner’s API exposed `assemblyReadyAt` and another account received 404. Planning integration, production build, typecheck, 65 app tests, 17 root tests, 252 database assertions and schema lint passed. The run used mocked Gemini and synthetic narration.
