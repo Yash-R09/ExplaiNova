@@ -2,18 +2,21 @@ import { createHash } from 'node:crypto';
 import { open } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getVideoMetadata } from '@remotion/renderer';
 import { createClient } from '@supabase/supabase-js';
 
 const bucketPattern = /^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/;
+const hostedStorageOrigin = /^https:\/\/[a-z0-9]+\.supabase\.co$/;
+const localStorageOrigin = 'http://127.0.0.1:54321';
+const videoLimit = 50_000_000;
 
 async function readArtifact(path, limit) {
   const file = await open(path);
   try {
     const info = await file.stat();
     const { size } = info;
-    if (!info.isFile() || size < 1 || size > limit) throw new Error('Render artifact has an invalid size.');
+    if (!info.isFile() || size < 1) throw new Error('Render artifact is empty or unreadable.');
+    if (size > limit) throw new Error(`Render artifact exceeds the ${limit} byte storage limit.`);
     const bytes = Buffer.alloc(size + 1);
     let length = 0;
     while (length < bytes.length) {
@@ -28,43 +31,38 @@ async function readArtifact(path, limit) {
   }
 }
 
-async function storeArtifact(s3, bucket, jobId, extension, contentType, bytes) {
+async function storeArtifact(objects, jobId, extension, contentType, bytes) {
   const sha256 = createHash('sha256').update(bytes).digest('hex');
-  const object = { Bucket: bucket, Key: `video-jobs/${jobId}/${sha256}.${extension}` };
-  try {
-    await s3.send(new PutObjectCommand({
-      ...object, Body: bytes, ContentLength: bytes.length, ContentType: contentType, IfNoneMatch: '*',
-    }));
-  } catch (error) {
-    if (error.$metadata?.httpStatusCode !== 412) throw error;
-  }
+  const key = `video-jobs/${jobId}/${sha256}.${extension}`;
+  const { error: uploadError } = await objects.upload(key, bytes, { contentType, upsert: false });
+  if (uploadError && String(uploadError.statusCode) !== '409') throw uploadError;
 
-  const stored = await s3.send(new GetObjectCommand(object));
-  const checksum = createHash('sha256');
-  let size = 0;
-  try {
-    if (!stored.Body || stored.ContentLength !== bytes.length || stored.ContentType !== contentType) {
-      throw new Error('Stored artifact metadata does not match.');
-    }
-    for await (const chunk of stored.Body) {
-      size += chunk.length;
-      if (size > bytes.length) throw new Error('Stored artifact is larger than expected.');
-      checksum.update(chunk);
-    }
-    if (size !== bytes.length || checksum.digest('hex') !== sha256) throw new Error('Stored artifact bytes do not match.');
-  } finally {
-    stored.Body?.destroy();
+  const { data: stored, error } = await objects.download(key);
+  if (error) throw error;
+  if (!stored || stored.size !== bytes.length || stored.type !== contentType) {
+    throw new Error('Stored artifact metadata does not match.');
   }
-  return { sha256, size };
+  const checksum = createHash('sha256');
+  for await (const chunk of stored.stream()) checksum.update(chunk);
+  if (checksum.digest('hex') !== sha256) throw new Error('Stored artifact bytes do not match.');
+  return { sha256, size: stored.size };
 }
 
-export async function storeVideoJob({ rpc, s3, bucket, renderRoot, jobId, inspectVideo = getVideoMetadata }) {
+export async function storeVideoJob({ rpc, storage, storageOrigin, bucket, renderRoot, jobId, inspectVideo = getVideoMetadata }) {
   if (!/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(jobId)) throw new Error('Provide a video job UUID.');
-  if (!bucketPattern.test(bucket)) throw new Error('Provide a valid R2 bucket name.');
+  if (!bucketPattern.test(bucket)) throw new Error('Provide a valid Supabase Storage bucket name.');
+  if (storageOrigin !== localStorageOrigin && !hostedStorageOrigin.test(storageOrigin)) {
+    throw new Error('Provide a valid Supabase Storage origin.');
+  }
   jobId = jobId.toLowerCase();
   const manifest = await rpc('read_video_storage_inputs', { p_job_id: jobId });
   if (!manifest) throw new Error('This job is not ready for artifact storage.');
-  if (manifest.complete) return;
+  if (manifest.complete) {
+    if (manifest.storageOrigin !== storageOrigin || manifest.bucket !== bucket) {
+      throw new Error('This job was completed with a different or unrecorded storage destination.');
+    }
+    return;
+  }
   if (!/^[0-9a-f]{64}$/.test(manifest.videoSha256)) throw new Error('This job has no recorded render. Run the render worker first.');
 
   const videoPath = join(renderRoot, jobId, 'video.mp4');
@@ -72,7 +70,7 @@ export async function storeVideoJob({ rpc, s3, bucket, renderRoot, jobId, inspec
   if (captions.toString('utf8') !== manifest.srt || ![900, 1800, 2700].includes(manifest.durationFrames)) {
     throw new Error('Local captions or duration do not match the saved assembly.');
   }
-  const video = await readArtifact(videoPath, 268435456);
+  const video = await readArtifact(videoPath, videoLimit);
   if (createHash('sha256').update(video).digest('hex') !== manifest.videoSha256) {
     throw new Error('Local MP4 does not match the render recorded for this job.');
   }
@@ -85,46 +83,48 @@ export async function storeVideoJob({ rpc, s3, bucket, renderRoot, jobId, inspec
 
   let mp4;
   let srt;
+  const { data: bucketInfo, error: bucketError } = await storage.getBucket(bucket);
+  if (bucketError || bucketInfo?.public !== false) throw new Error('Configure an accessible private Supabase Storage bucket.');
+  const objects = storage.from(bucket);
   try {
-    mp4 = await storeArtifact(s3, bucket, jobId, 'mp4', 'video/mp4', video);
-    srt = await storeArtifact(s3, bucket, jobId, 'srt', 'application/x-subrip', captions);
+    mp4 = await storeArtifact(objects, jobId, 'mp4', 'video/mp4', video);
+    srt = await storeArtifact(objects, jobId, 'srt', 'application/x-subrip', captions);
   } catch (error) {
-    throw new Error('R2 upload or verification failed. Rerun the storage worker to retry.', { cause: error });
+    throw new Error('Supabase Storage upload or verification failed. Rerun the storage worker to retry.', { cause: error });
   }
   if (!await rpc('complete_video_storage', {
-    p_job_id: jobId, p_bucket: bucket, p_video_sha256: mp4.sha256, p_video_bytes: mp4.size,
+    p_job_id: jobId, p_storage_origin: storageOrigin, p_bucket: bucket,
+    p_video_sha256: mp4.sha256, p_video_bytes: mp4.size,
     p_srt_sha256: srt.sha256, p_srt_bytes: srt.size,
   })) throw new Error('The job changed before storage could be finalized.');
 }
 
 async function main() {
-  const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY } = process.env;
-  if (!SUPABASE_URL || new URL(SUPABASE_URL).origin !== 'http://127.0.0.1:54321' || !SUPABASE_SERVICE_ROLE_KEY) {
+  const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_STORAGE_URL, SUPABASE_STORAGE_SERVICE_ROLE_KEY } = process.env;
+  if (!SUPABASE_URL || new URL(SUPABASE_URL).origin !== localStorageOrigin || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('Local Supabase worker configuration is incomplete.');
   }
-  if (!R2_ACCOUNT_ID || !/^[a-f0-9]{32}$/i.test(R2_ACCOUNT_ID) || !R2_BUCKET || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) {
-    throw new Error('Private staging R2 worker configuration is incomplete.');
+  const options = { auth: { persistSession: false, autoRefreshToken: false } };
+  const client = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, options);
+  let storage = client.storage;
+  let storageOrigin = localStorageOrigin;
+  if (SUPABASE_STORAGE_URL || SUPABASE_STORAGE_SERVICE_ROLE_KEY) {
+    storageOrigin = SUPABASE_STORAGE_URL?.replace(/\/$/, '');
+    if (!hostedStorageOrigin.test(storageOrigin) || !SUPABASE_STORAGE_SERVICE_ROLE_KEY) {
+      throw new Error('Hosted Supabase Storage configuration is incomplete.');
+    }
+    storage = createClient(storageOrigin, SUPABASE_STORAGE_SERVICE_ROLE_KEY, options).storage;
   }
-  const s3 = new S3Client({
-    endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`, region: 'auto', forcePathStyle: true,
-    credentials: { accessKeyId: R2_ACCESS_KEY_ID, secretAccessKey: R2_SECRET_ACCESS_KEY },
-    requestChecksumCalculation: 'WHEN_REQUIRED', responseChecksumValidation: 'WHEN_REQUIRED',
+  await storeVideoJob({
+    storage, storageOrigin, bucket: 'explainova-videos', jobId: process.argv[2],
+    renderRoot: fileURLToPath(new URL('../../../outputs/render-worker/', import.meta.url)),
+    rpc: async (name, args) => {
+      const { data, error } = await client.rpc(name, args);
+      if (error) throw new Error('Worker database request failed. Rerun the storage worker to retry.');
+      return data;
+    },
   });
-  const client = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
-  try {
-    await storeVideoJob({
-      s3, bucket: R2_BUCKET, jobId: process.argv[2],
-      renderRoot: fileURLToPath(new URL('../../../outputs/render-worker/', import.meta.url)),
-      rpc: async (name, args) => {
-        const { data, error } = await client.rpc(name, args);
-        if (error) throw new Error('Worker database request failed. Rerun the storage worker to retry.');
-        return data;
-      },
-    });
-    console.log('Video job complete. MP4 and captions are stored in private R2.');
-  } finally {
-    s3.destroy();
-  }
+  console.log('Video job complete. MP4 and captions are stored in private Supabase Storage.');
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

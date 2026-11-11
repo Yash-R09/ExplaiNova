@@ -173,7 +173,7 @@ isOneToOne: false
 { Args: { "p_job_id": string,"p_lease_token": string,"p_manifest": Json }; Returns: boolean
                            },
 "complete_video_storage":
-{ Args: { "p_bucket": string,"p_job_id": string,"p_srt_bytes": number,"p_srt_sha256": string,"p_video_bytes": number,"p_video_sha256": string }; Returns: boolean
+{ Args: { "p_bucket": string,"p_job_id": string,"p_srt_bytes": number,"p_srt_sha256": string,"p_storage_origin": string,"p_video_bytes": number,"p_video_sha256": string }; Returns: boolean
                            },
 "create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json

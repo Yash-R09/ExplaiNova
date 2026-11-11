@@ -10,7 +10,7 @@ Implementation note (M2a): executable local profile schema and isolation tests n
 
 - **Supabase Auth:** identities, password/session management. Application records reference `auth.users(id)`; no duplicated password store.
 - **Supabase Postgres:** ownership, structured relationships, revisions, approvals, job checkpoints, schedules, connection metadata, and audit.
-- **Private Cloudflare R2:** media bytes. Postgres stores asset metadata and object keys, not MP4/audio blobs or permanent signed URLs.
+- **Private Supabase Storage for development and staging:** Postgres stores asset metadata and object keys. The storage service holds media bytes and issues temporary links.
 - **Redis/BullMQ:** transient dispatch and worker coordination. Durable job/publication truth remains in Postgres so queue loss is recoverable.
 - **Managed secrets/encryption:** platform keys outside application rows; social credentials encrypted in a restricted schema/table or secret store.
 
@@ -144,7 +144,7 @@ M6c adds a local narration worker. Each approved scene has a filesystem checkpoi
 
 M6d stores a private assembly manifest on the outbox record. It contains a 30 fps scene timeline, WAV checksums, and SRT captions based on narration word timings. Exact retries keep the original assembly. The job records `assembly_ready_at` and waits for rendering.
 
-M6f stores verified MP4 and SRT references in the private outbox record and marks the job succeeded in the same transaction. The renderer records the MP4 SHA-256 against the job and the saved assembly. Storage checks that checksum before upload. Keys are derived from the job ID and each file's SHA-256. The worker verifies object content type, byte count, and checksum after upload. Finalization requires the recorded MP4 checksum and the caption hash from the assembly, and preserves the first completed result. These references are the storage checkpoint for the later video version and download flow.
+M6f stores verified MP4 and SRT references in the private outbox record and marks the job succeeded in the same transaction. The renderer records the MP4 SHA-256 against the job and the saved assembly. Storage checks that checksum before upload. Keys are derived from the job ID and each file's SHA-256. The worker verifies object content type, byte count, and checksum after upload. Finalization requires the recorded MP4 checksum and the caption hash from the assembly, and preserves the first completed result. Each result records the Supabase origin, bucket, and object keys for later playback and downloads. Legacy references without an origin are retained without assigning them to a Supabase project.
 
 M6a admits video jobs and records `video.requested` in the private outbox in the same transaction. A composite foreign key binds each job to an owned approval. The approval identifies the immutable storyboard content and settings. A partial unique index enforces one active video job per owner, and the existing command store preserves the original receipt for retries.
 

@@ -43,13 +43,13 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · R2 worker implemented, staging smoke test pending |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private Supabase Storage artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · hosted storage smoke test pending |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
 | M10 · Release readiness | Approved homepage/auth polish, notifications, full responsive/accessibility pass, operational controls | End-to-end recovery/security/cleanup checks; staged deployment review | Planned |
 
-M6 is delivered as smaller slices: durable job skeleton → narration/alignment → scene assembly → renderer/R2 → recovery. M9 starts with one provider before adding the other. Platform approval and available account types may affect the social milestones.
+M6 is delivered as smaller slices: durable job skeleton → narration/alignment → scene assembly → renderer/private storage → recovery. M9 starts with one provider before adding the other. Platform approval and available account types may affect the social milestones.
 
 Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft is a private project that can remain in the Plan stage without generating a storyboard or video. M3 provides draft persistence/autosave; M4 provides the planning workspace and optional AI assistance on top of it. The workflow remains **Plan → Storyboard → Video**, with no extra required brainstorming step. Autosave continues through storyboard editing in M5.
 
@@ -66,6 +66,12 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 ## Verification log
 
 ### M6f private render storage · November 11, 2026
+
+- Persisted the Supabase project origin with each completed artifact set. A replay with the same destination succeeds, and a retry against another project or bucket cannot change the recorded location. Older references without an origin stay unresolved. A fresh 30-second local job verified origin persistence, duplicate upload recovery, and replay rejection for another project. Passed 19 root tests, 274 local database assertions, schema lint, typecheck, and whitespace checks. Hosted verification remains next.
+
+- Independent QA uploaded a real 60-second MP4 and SRT to local Supabase Storage, retried the same upload, verified read-back, and confirmed anonymous downloads failed for both objects. This probe simulated the job database response. Separately, 272 database assertions, 19 root tests, 65 app tests, build, typecheck, schema lint, and whitespace checks passed. Hosted Storage remains pending.
+
+- Switched development and staging to private Supabase Storage. The local migration provisions `explainova-videos`, and the worker preserves checksum verification and retry without overwrite. A disposable 30-second job used synthetic narration, a real Remotion render, and local Supabase Storage. Verified duplicate upload recovery, database completion, replay, and anonymous download denial. The MP4 was about 1.5 MB. All 19 root tests, 65 app tests, 272 database assertions, and typecheck passed. Hosted verification and testing the 50 MB limit with longer renders remain pending.
 
 - Bound the MP4 checksum to the job and its assembly at render time. The storage worker and database both reject a different MP4. Verified a fresh 30-second synthetic render and checksum replay, the same-size file swap regression, 19 root tests, app typecheck, 272 local database assertions, and schema lint. Live staging R2 verification is next.
 
@@ -458,7 +464,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **Verify a complete job against private staging R2, then continue with worker recovery.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Verify a new local job against a private bucket in hosted Supabase, then continue with worker recovery.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 
@@ -466,7 +472,7 @@ November 7, 2026: Founder approved committing/pushing M2c/M2d, the QA-03 fix, re
 
 ## Decisions and constraints to preserve
 
-- Next.js/React/TypeScript web/API; Supabase Auth/Postgres; R2 media; separate generation workers. API/database docs govern the implementation contracts.
+- Next.js/React/TypeScript web and API, Supabase Auth/Postgres/Storage, and separate generation workers. API and database docs govern the implementation contracts.
 - Plan → Storyboard → Video; narration lives in storyboard, no separate script step.
 - Educational English vertical videos, 30–90 seconds, topic-adaptive themes and captions. No children-directed mode, billing, credits, or revenue dashboard in V1.
 - Male/female narration; use only free-tier API-accessible ElevenLabs voices until explicitly changed. API entitlement and commercial rights are separate checks.
