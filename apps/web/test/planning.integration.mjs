@@ -199,7 +199,32 @@ try {
     assert.deepEqual((await (await post(approvalPath, other.jar, initialApproval, approvalKey)).json()).data, approval);
     const approvedLatest = await post(approvalPath, other.jar, { expectedRevision: 3, revisionId: latest.revisionId });
     assert.equal(approvedLatest.status, 201);
-    assert.notEqual((await approvedLatest.json()).data.contentHash, approval.contentHash);
+    const { data: latestApproval } = await approvedLatest.json();
+    assert.notEqual(latestApproval.contentHash, approval.contentHash);
+
+    const generationPath = '/api/v1/generation-jobs';
+    const jobInput = { projectId: independentProject.id, storyboardId: storyboard.id, approvalId: latestApproval.id };
+    assert.equal((await post(generationPath, owner.jar, jobInput)).status, 404);
+    const staleJob = await post(generationPath, other.jar, { ...jobInput, approvalId: approval.id });
+    assert.equal(staleJob.status, 409);
+    assert.equal((await staleJob.json()).error.code, 'VIDEO_APPROVAL_STALE');
+    const jobKey = randomUUID();
+    const submissions = await Promise.all([post(generationPath, other.jar, jobInput, jobKey), post(generationPath, other.jar, jobInput, jobKey)]);
+    for (const response of submissions) assert.equal(response.status, 202);
+    const [queued, replayed] = await Promise.all(submissions.map(async response => (await response.json()).data));
+    assert.deepEqual(replayed, queued);
+    assert.equal(queued.status, 'queued');
+    assert.equal(submissions[0].headers.get('location'), `/api/v1/jobs/${queued.id}`);
+    const jobPath = `/api/v1/jobs/${queued.id}`;
+    assert.deepEqual((await (await request(jobPath, other.jar)).json()).data, queued);
+    assert.equal((await request(jobPath, owner.jar)).status, 404);
+    const activeJob = await post(generationPath, other.jar, jobInput);
+    assert.equal(activeJob.status, 409);
+    assert.equal((await activeJob.json()).error.code, 'VIDEO_JOB_ACTIVE');
+    assert.match(queued.id, /^[0-9a-f-]{36}$/i);
+    const outboxCount = execFileSync('docker', ['exec', 'supabase_db_explainova', 'psql', '-X', '-At', '-U', 'postgres', '-d', 'postgres',
+      '-c', `select count(*) from private.outbox_events where job_id = '${queued.id}'`], { encoding: 'utf8' });
+    assert.equal(outboxCount.trim(), '1');
 
     const suggestionsPath = `${storyboardPath}/suggestions`;
     const suggestion = { expectedRevision: 3, message: 'Use a simple analogy in the opening scene.' };
@@ -263,12 +288,40 @@ try {
     assert.ok(recentBrainstorms.every(row => row.createdAt > savedStoryboard.createdAt));
     assert.deepEqual(savedStoryboard.result, storyboard.result);
 
-    const trashed = await request(independentPath.replace('/planning-jobs', ''), other.jar, {
-      method: 'DELETE', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() },
+    const trashKey = randomUUID();
+    const trashProject = () => request(independentPath.replace('/planning-jobs', ''), other.jar, {
+      method: 'DELETE', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': trashKey },
       body: JSON.stringify({ expectedRevision: 2 }),
     });
+    const blockedTrash = await trashProject();
+    assert.equal(blockedTrash.status, 409);
+    assert.equal((await blockedTrash.json()).error.code, 'PROJECT_VIDEO_JOB_ACTIVE');
+    assert.deepEqual((await (await request(jobPath, other.jar)).json()).data, queued);
+
+    const cancelFixtureJob = id => {
+      assert.match(id, /^[0-9a-f-]{36}$/i);
+      execFileSync('docker', ['exec', 'supabase_db_explainova', 'psql', '-X', '-v', 'ON_ERROR_STOP=1',
+        '-U', 'postgres', '-d', 'postgres', '-c', `update public.generation_jobs set status = 'cancelled' where id = '${id}'`],
+      { stdio: ['ignore', 'pipe', 'pipe'] });
+    };
+    cancelFixtureJob(queued.id);
+    const head = (await (await request(storyboardPath, other.jar)).json()).data;
+    const headApproval = await post(approvalPath, other.jar, { expectedRevision: head.revision, revisionId: head.revisionId });
+    assert.equal(headApproval.status, 201);
+    const raceInput = { ...jobInput, approvalId: (await headApproval.json()).data.id };
+    const [raceTrash, raceJob] = await Promise.all([trashProject(), post(generationPath, other.jar, raceInput)]);
+    if (raceTrash.status === 202) {
+      assert.equal(raceJob.status, 404);
+    } else {
+      assert.equal(raceTrash.status, 409);
+      assert.equal((await raceTrash.json()).error.code, 'PROJECT_VIDEO_JOB_ACTIVE');
+      assert.equal(raceJob.status, 202);
+      cancelFixtureJob((await raceJob.json()).data.id);
+    }
+    const trashed = await trashProject();
     assert.equal(trashed.status, 202);
     assert.equal((await request(storyboardPath, other.jar)).status, 404);
+    assert.equal((await request(jobPath, other.jar)).status, 404);
     assert.equal((await post(approvalPath, other.jar, initialApproval, approvalKey)).status, 404);
     assert.equal((await request(suggestionsPath, other.jar)).status, 404);
     assert.equal((await saveEdit(other.jar, edit, saveKeys[successfulIndex])).status, 404);

@@ -7,6 +7,15 @@ import { ProjectError } from './project-contract';
 export const projectHeaders={'Cache-Control':'private, no-store'};
 export function projectSuccess(data:unknown,requestId:string,status=200,meta:Record<string,unknown>={},headers:Record<string,string>={}){return Response.json({data,meta:{requestId,...meta}},{status,headers:{...projectHeaders,...headers}});}
 export function databaseProjectError(error:{message:string;details?:string}):never {
+  if (error.message === 'PROJECT_VIDEO_JOB_ACTIVE') {
+    throw new ProjectError(error.message, 409, 'This project has an active video job. Move it to Trash after the job finishes.');
+  }
+  if (error.message === 'VIDEO_APPROVAL_STALE') {
+    throw new ProjectError(error.message, 409, 'Approve the latest saved storyboard revision before queuing a video.');
+  }
+  if (error.message === 'VIDEO_JOB_ACTIVE') {
+    throw new ProjectError(error.message, 409, 'A video job is already active for your account.');
+  }
   if(error.message==='STORYBOARD_IDEA_REQUIRED'){
     throw new ProjectError(error.message,422,'Add a topic or idea and save the draft before generating a storyboard.');
   }

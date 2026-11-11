@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 10, 2026 · Current milestone: **M5d implemented — explicit storyboard approval**
+Last updated: November 11, 2026 · Current milestone: **M6a video job admission and hosted Supabase staging verified**
 
 ## Working agreement
 
@@ -43,7 +43,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | Planned |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local job admission implemented |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
@@ -64,6 +64,18 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M6a video job admission · November 11, 2026
+
+- Independent local QA verified that the browser keeps the draft in the library and shows the active-video-job message when Trash is blocked. Planning HTTP integration passed the concurrent admission and Trash check and confirmed Trash succeeds after the job is cancelled. The build, typecheck, 65 app tests, 13 prototype tests, 228 database assertions, database lint and whitespace checks passed. Gemini was mocked and this retest used local Supabase.
+
+- Independent local QA passed the planning HTTP suite and a separate race between two submissions with different request keys. One request returned 202, the other returned `VIDEO_JOB_ACTIVE`, the winning receipt replayed unchanged, and the job had exactly one outbox event. The build, typecheck, 65 app tests, 13 prototype tests, 228 database assertions, database lint and whitespace checks passed. Gemini was mocked. Hosted staging remains unverified.
+
+- Implemented API submission and owner-only status reads. Submission checks the latest storyboard revision against its saved approval. The transaction queues one job and one outbox event, preserves the original receipt on exact retries, and limits each account to one active video job.
+- Production build, typecheck, 65 app tests, 13 prototype tests, 228 database assertions, database lint, and local HTTP integration passed. HTTP coverage includes stale approvals, concurrent replay, the active-job limit, owner isolation, and Trash visibility. Gemini was mocked.
+- Jobs stay queued until the worker is connected. The change is ready for review before commit and push.
+- Review fix blocks Trash while the project has an active video job. The project and job remain visible, and the same Trash request can succeed once the job reaches a terminal state. Production build, typecheck, 65 app tests, 228 database assertions, database lint, and the local HTTP regression passed. The HTTP test covers concurrent Trash and job submission.
+- Linked Explainova Staging and applied all 15 migrations after a dry run. The local and hosted migration histories match. Two disposable accounts verified hosted password sign-in, profile creation, owner access, and cross-account draft isolation through Supabase. Removed both accounts and the test draft. Hosted app and email confirmation checks are pending.
 
 ### M5d explicit storyboard approval · November 10, 2026
 
@@ -407,7 +419,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **M6a — hosted Supabase staging and the durable generation job foundation.** Verify staged authentication and ownership, then admit jobs only against a matching approval and saved storyboard revision. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Connect a staging deployment of the app to hosted Supabase and verify the browser sign-in and email confirmation flows.** Follow with the outbox worker and narration. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 

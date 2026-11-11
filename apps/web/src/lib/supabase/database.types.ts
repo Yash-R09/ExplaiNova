@@ -5,7 +5,27 @@ export type Database = {
   
   "public": {
           Tables: {
-            "planning_requests": {
+            "generation_jobs": {
+                  Row: {
+                    "approval_id": string,"created_at": string,"id": string,"owner_id": string,"project_id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "approval_id": string,"created_at"?: string,"id"?: string,"owner_id": string,"project_id": string,"status"?: string
+                  }
+                  Update: {
+                    "approval_id"?: string,"created_at"?: string,"id"?: string,"owner_id"?: string,"project_id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "generation_jobs_owner_id_project_id_approval_id_fkey"
+      columns: ["owner_id","project_id","approval_id"]
+isOneToOne: false
+      referencedRelation: "storyboard_approvals"
+      referencedColumns: ["owner_id","project_id","id"]
+    }
+                  ]
+                },"planning_requests": {
                   Row: {
                     "attempt_id": string | null,"base_storyboard_id": string | null,"base_storyboard_revision": number | null,"created_at": string,"failure_code": string | null,"id": string,"input_snapshot": NonNullable<Json>,"lease_until": string | null,"message": string,"mode": string,"owner_id": string,"project_id": string,"project_revision": number,"reply": string | null,"status": string,"storyboard": Json | null
                   }
@@ -181,6 +201,9 @@ isOneToOne: false
                            },
 "submit_storyboard_suggestion":
 { Args: { "p_command_key": string,"p_expected_revision": number,"p_id": string,"p_message": string }; Returns: Json
+                           },
+"submit_video_job":
+{ Args: { "p_approval_id": string,"p_command_key": string,"p_project_id": string,"p_storyboard_id": string }; Returns: Json
                            },
 "trash_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json

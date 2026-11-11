@@ -263,6 +263,10 @@ POST `/storyboards/:id/approve` with `{expectedRevision, revisionId}` and an `Id
 
 Verify matching owners/project/hash and asset references. Atomically admit the job, enforce active-video limit, and create outbox work. Return 202 and `Location: /api/v1/jobs/<id>`. Repeated same request/key must not consume provider quota again by creating a duplicate job.
 
+M6a accepts the storyboard lineage ID as `storyboardId`. The approval identifies the exact immutable revision. A new submission requires the latest approved revision and an available active-job slot. GET at the receipt's location returns the current status to the owner. Jobs are queued for a later worker slice.
+
+Moving a project with an active video job to Trash returns HTTP 409 with `PROJECT_VIDEO_JOB_ACTIVE`. Once the job reaches a terminal state, the owner can retry the same Trash request.
+
 ## 7. Voices, generation, and revisions
 
 `GET /voices?presentation=female` returns safe catalog records: `selectionId, displayName, presentation, provider, availability, previewAssetId, verifiedAt`. Only available selections usable under the free-tier API voice policy are selectable; restricted/unknown voices cannot be silently substituted. Listing is not synthesis-access proof. Persist exact provider/model/voice settings server-side at approval.

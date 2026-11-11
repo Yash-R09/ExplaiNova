@@ -140,6 +140,10 @@ M4d stores the first generated storyboard as an immutable candidate in the origi
 
 ### generation_jobs
 
+M6a admits video jobs and records `video.requested` in the private outbox in the same transaction. A composite foreign key binds each job to an owned approval. The approval identifies the immutable storyboard content and settings. A partial unique index enforces one active video job per owner, and the existing command store preserves the original receipt for retries.
+
+The Trash transition takes the project row lock before checking for an active video job. Job admission holds a conflicting project lock through commit, so a concurrent submission and Trash transition cannot both succeed.
+
 Unified job table used by API `/jobs` for all asynchronous creative work:
 
 `id`, owner/project, `kind` planning/storyboard/video/voice_sample, `project_revision_id nullable`, `storyboard_id nullable`, `approval_id nullable`, `input_snapshot jsonb`, `input_hash`, `status`, `stage`, `version`, `attempt`, `progress_percent nullable`, `lease_token uuid nullable`, `lease_expires_at nullable`, `heartbeat_at nullable`, `cancel_requested_at nullable`, `result jsonb`, `error_code nullable`, `safe_error_message nullable`, timestamps.
