@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 11, 2026 · Current milestone: **M6b video worker leases verified locally**
+Last updated: November 11, 2026 · Current milestone: **M6c local narration worker**
 
 ## Working agreement
 
@@ -43,7 +43,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · job admission and worker leases implemented |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local narration worker implemented |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
@@ -64,6 +64,11 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M6c local narration worker · November 11, 2026
+
+- Added `npm run worker:narration` to process one local job. The worker uses the approved scene text and voice preference, validates ElevenLabs alignment, and checkpoints WAV audio and word timing per scene. A retry can reuse finished scenes. Only the current lease can save the final manifest, and job status exposes when narration is ready.
+- Production build, typecheck, 65 app tests, 15 root tests, 247 database assertions, database lint, and the planning HTTP integration passed. ElevenLabs and Gemini responses were mocked. Live voice entitlement and shared artifact storage remain pending.
 
 ### M6b video worker leases · November 11, 2026
 
@@ -428,7 +433,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **Connect the worker to ElevenLabs narration and alignment.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Assemble the video scenes and captions from the narration checkpoints.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Set up private staging R2 when the renderer is ready to persist outputs. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 

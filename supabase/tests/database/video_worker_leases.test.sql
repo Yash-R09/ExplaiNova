@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
-select plan(15);
+select plan(19);
 
 insert into auth.users(id, email) values ('16161616-1616-4616-8616-161616161616', 'video-worker@example.test');
 set local role authenticated;
@@ -67,9 +67,18 @@ select set_config('test.next_approval', public.approve_storyboard_revision(curre
 select set_config('test.next_job', public.submit_video_job(current_setting('test.next_project')::uuid,current_setting('test.next_storyboard')::uuid,
   current_setting('test.next_approval')::uuid,'worker-submit-002')->>'id', true);
 set local role service_role;
-select is(public.claim_video_job()->>'jobId',current_setting('test.next_job'),'claim skips exhausted work and returns the next ready job');
+select set_config('test.next_claim', public.claim_video_job()::text, true);
+select is(current_setting('test.next_claim')::jsonb->>'jobId',current_setting('test.next_job'),'claim skips exhausted work and returns the next ready job');
 select is(public.claim_video_job(),null::jsonb,'claim returns null once there are no eligible jobs');
+select is(public.complete_video_narration(current_setting('test.next_job')::uuid,gen_random_uuid(),'{}'),false,
+  'a different lease cannot publish a narration checkpoint');
+select is(public.complete_video_narration(current_setting('test.next_job')::uuid,
+  (current_setting('test.next_claim')::jsonb->>'leaseToken')::uuid,'{"version":1,"scenes":[{"scene":1}]}'),true,
+  'the current lease can checkpoint narration');
+select is(public.claim_video_job(),null::jsonb,'a completed narration event cannot be claimed again');
 reset role;
+select isnt((select narration_ready_at from public.generation_jobs where id = current_setting('test.next_job')::uuid),
+  null::timestamptz,'the job exposes narration readiness');
 select is((select status || ':' || error_code from public.generation_jobs where id = current_setting('test.job')::uuid),
   'failed:VIDEO_ATTEMPTS_EXHAUSTED','exhaustion releases the active-job slot');
 select * from finish();

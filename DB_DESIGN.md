@@ -140,6 +140,8 @@ M4d stores the first generated storyboard as an immutable candidate in the origi
 
 ### generation_jobs
 
+M6c adds a local narration worker. Each approved scene has a filesystem checkpoint with WAV audio, word start times and audio duration. The database records the completed manifest under the current lease and sets `narration_ready_at`. The job then waits for scene assembly. Shared artifact storage is planned with the renderer.
+
 M6a admits video jobs and records `video.requested` in the private outbox in the same transaction. A composite foreign key binds each job to an owned approval. The approval identifies the immutable storyboard content and settings. A partial unique index enforces one active video job per owner, and the existing command store preserves the original receipt for retries.
 
 M6b adds service-role functions for claiming, renewing, and reporting failure. The outbox supplies the claim order and holds the private lease token. The job records its attempt count and safe error code. Workers receive the storyboard and settings tied to the approval, even when a later revision exists. The lease lasts two minutes. A reported retryable failure waits 30 seconds, and an expired lease can be reclaimed. After three attempts, the job reaches a terminal failure and releases the owner's active slot. A claim that encounters an expired final attempt records the failure and continues looking for eligible work.

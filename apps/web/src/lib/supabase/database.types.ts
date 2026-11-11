@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "generation_jobs": {
                   Row: {
-                    "approval_id": string,"attempt": number,"created_at": string,"error_code": string | null,"id": string,"owner_id": string,"project_id": string,"status": string
+                    "approval_id": string,"attempt": number,"created_at": string,"error_code": string | null,"id": string,"narration_ready_at": string | null,"owner_id": string,"project_id": string,"status": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "approval_id": string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"owner_id": string,"project_id": string,"status"?: string
+                    "approval_id": string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id": string,"project_id": string,"status"?: string
                   }
                   Update: {
-                    "approval_id"?: string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"owner_id"?: string,"project_id"?: string,"status"?: string
+                    "approval_id"?: string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id"?: string,"project_id"?: string,"status"?: string
                   }
                   Relationships: [
                     {
@@ -165,6 +165,9 @@ isOneToOne: false
                            },
 "claim_video_job":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"complete_video_narration":
+{ Args: { "p_job_id": string,"p_lease_token": string,"p_manifest": Json }; Returns: boolean
                            },
 "create_idea_project":
 { Args: { "p_command": Json,"p_command_key": string }; Returns: Json

@@ -267,6 +267,8 @@ M6a accepts the storyboard lineage ID as `storyboardId`. The approval identifies
 
 M6b adds service-role functions for job claiming, lease renewal, and failure reporting. The owner-facing job status includes a safe `errorCode` when a worker failure is recorded.
 
+M6c adds `narrationReadyAt` to job status after the narration worker completes all scenes. The job stays queued for scene assembly.
+
 Moving a project with an active video job to Trash returns HTTP 409 with `PROJECT_VIDEO_JOB_ACTIVE`. Once the job reaches a terminal state, the owner can retry the same Trash request.
 
 ## 7. Voices, generation, and revisions
