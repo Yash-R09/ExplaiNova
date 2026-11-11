@@ -1,6 +1,6 @@
 # Explainova — Project status
 
-Last updated: November 11, 2026 · Current milestone: **M6d local scene and caption assembly**
+Last updated: November 11, 2026 · Current milestone: **M6e local video rendering**
 
 ## Working agreement
 
@@ -43,7 +43,7 @@ Repository: [Yash-R09/ExplaiNova](https://github.com/Yash-R09/ExplaiNova). Devel
 | M3 · Private projects and idea drafts | Private draft library, create/reopen/title search/rename/duplicate/delete drafts, active/Trash views, autosave, draft preferences, revisioned saving and conflict recovery | RLS isolation; saved idea/preferences survive reload; pending edits and revision conflicts handled honestly | Feature implementation complete through M3d — review pending |
 | M4 · Idea workspace and AI planning | Plan-stage workspace to write/refine an idea, optional AI brainstorming with saved conversation, saved reference notes, 30/60/90s, accessible male/female voices, topic theme, storyboard generation | Reopen saved planning work; brainstorm is optional; validated provider output and failure paths; no silent voice substitution | M4d implemented · review pending |
 | M5 · Storyboard review | Scene/narration editing, previews, autosave, conversational revisions, explicit revision approval | Editing invalidates approval, stale-tab conflicts, restore/reload | M5d implemented · review pending |
-| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local scene assembly implemented |
+| M6 · Generation | Durable jobs/outbox/queue, ElevenLabs audio+alignment, supported visuals, Remotion, private R2 artifacts | One end-to-end owned video; stage recovery; duplicate request protection | In progress · local renderer implemented |
 | M7 · Video review/export | Player, caption review, previous versions, authorized MP4/SRT downloads | Duration/technical QA; artifact ownership/expiry checks | Planned |
 | M8 · Social connections | Each user's own YouTube and eligible Instagram account, OAuth/reconnect/disconnect | State/PKCE/token protection and cross-user isolation | Planned |
 | M9 · Publishing | Explicit approved destination/metadata, publish now, schedule/calendar, post status/recovery | Duplicate/uncertain upload handling; due-time/timezone and token-revocation checks | Planned |
@@ -64,6 +64,13 @@ Idea drafts, autosave, and the idea workspace are confirmed V1 features. A draft
 - M1 intentionally implements the first-project state rather than a fictitious populated project list. The approved marketing homepage remains a later feature.
 
 ## Verification log
+
+### M6e local video rendering · November 11, 2026
+
+- Fixed long label overflow by using two columns for dense scenes and reserving separate space for the title, cards, and captions. Visually inspected a frame from a 30-second render with six 80-character labels, a 100-character title, and an active caption. All 18 root tests, app typecheck, render syntax, and whitespace checks passed.
+
+- Added `npm run worker:render -- <video-job-id>`. Remotion uses the saved 30 fps timeline, verifies WAV checksums, and renders animated scene labels, narration, and burned-in captions to a vertical MP4 with a separate SRT. Local outputs are saved together in the ignored render directory.
+- A 30-second synthetic render produced 1080 × 1920 H.264 video at 30 fps with AAC audio. The second audio segment and its SRT cue both started at 15 seconds. A changed WAV checksum was rejected and replay reused the completed output. Private manifest access requires the worker role. App tests, root tests, typecheck, 258 local PostgreSQL assertions, and schema lint passed. Live narration, R2 upload, job finalization, and owner downloads remain pending for this slice.
 
 ### M6d scene and caption assembly · November 11, 2026
 
@@ -439,7 +446,7 @@ November 6, 2026:
 
 ## Next session
 
-Next: **Connect Remotion rendering to the scene manifest and save private outputs to staging R2.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
+Next: **Store rendered MP4 and SRT files in private staging R2 and finalize the job when both are verified.** The hosted app deployment and browser sign-in and email confirmation checks remain pending. Independent QA-05 retest and source/security checks remain tracked in [QA_M3D_HANDOFF.md](QA_M3D_HANDOFF.md).
 
 Carry forward the separate source/security review of auth changes since `6a5b4b6` using [AUTH_REVIEW_CHECKLIST.md](AUTH_REVIEW_CHECKLIST.md), and review M3a using [QA_M3A_HANDOFF.md](QA_M3A_HANDOFF.md). Independent auth QA passed within its scope. The founder explicitly requested proceeding with the next feature; that request supersedes the earlier sequencing gate, but does not mark the pending review complete.
 

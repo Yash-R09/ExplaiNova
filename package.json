@@ -13,6 +13,7 @@
     "db:lint": "supabase db lint --schema public,private --level warning --fail-on warning",
     "worker:narration": "node --env-file-if-exists=.env.worker apps/web/scripts/video-narration.mjs",
     "worker:assemble": "node --env-file-if-exists=.env.worker apps/web/scripts/video-assembly.mjs",
+    "worker:render": "node --env-file-if-exists=.env.worker apps/web/scripts/video-render.mjs",
     "app:dev": "npm --prefix apps/web run dev",
     "app:build": "npm --prefix apps/web run build",
     "app:typecheck": "npm --prefix apps/web run typecheck",

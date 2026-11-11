@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
-select plan(27);
+select plan(30);
 
 insert into auth.users(id, email) values ('16161616-1616-4616-8616-161616161616', 'video-worker@example.test');
 set local role authenticated;
@@ -20,6 +20,8 @@ select set_config('test.approval', public.approve_storyboard_revision(current_se
 select set_config('test.job', public.submit_video_job(current_setting('test.project')::uuid,current_setting('test.storyboard')::uuid,
   current_setting('test.approval')::uuid,'worker-submit-001')->>'id', true);
 select throws_ok($$select public.claim_video_job()$$,'42501',null,'authenticated callers cannot claim worker jobs');
+select throws_ok($$select public.read_video_render_inputs(current_setting('test.job')::uuid)$$,
+  '42501',null,'authenticated callers cannot read private render inputs');
 select throws_ok($$select public.report_video_job_failure(current_setting('test.job')::uuid,gen_random_uuid(),false)$$,
   '42501',null,'authenticated callers cannot change worker status');
 
@@ -80,10 +82,14 @@ select is(public.claim_video_job(),null::jsonb,'a completed narration event cann
 select is(public.read_video_assembly_inputs(current_setting('test.next_job')::uuid)->'storyboard'->>'title',
   'Approved gravity','assembly reads the exact approved storyboard');
 select set_config('test.assembly',jsonb_build_object('contentHash',current_setting('test.next_claim')::jsonb->>'contentHash','version',1)::text,true);
+select is(public.read_video_render_inputs(current_setting('test.next_job')::uuid),null::jsonb,
+  'renderer cannot read inputs before assembly completes');
 select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,'{"version":1}'),false,
   'assembly rejects a missing content hash');
 select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb),true,
   'assembly stores a manifest bound to the narration checkpoint');
+select is(public.read_video_render_inputs(current_setting('test.next_job')::uuid),current_setting('test.assembly')::jsonb,
+  'renderer receives the exact private assembly manifest');
 select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb),true,
   'the same assembly can be replayed safely');
 select is(public.fail_video_assembly(current_setting('test.next_job')::uuid,'VIDEO_NARRATION_CHECKPOINT_INVALID'),false,

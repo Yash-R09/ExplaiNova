@@ -199,6 +199,9 @@ isOneToOne: false
 "read_video_assembly_inputs":
 { Args: { "p_job_id": string }; Returns: Json
                            },
+"read_video_render_inputs":
+{ Args: { "p_job_id": string }; Returns: Json
+                           },
 "renew_video_job_lease":
 { Args: { "p_job_id": string,"p_lease_token": string }; Returns: string
                            },
