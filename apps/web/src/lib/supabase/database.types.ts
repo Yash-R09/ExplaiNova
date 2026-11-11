@@ -7,14 +7,14 @@ export type Database = {
           Tables: {
             "generation_jobs": {
                   Row: {
-                    "approval_id": string,"attempt": number,"created_at": string,"error_code": string | null,"id": string,"narration_ready_at": string | null,"owner_id": string,"project_id": string,"status": string
+                    "approval_id": string,"assembly_ready_at": string | null,"attempt": number,"created_at": string,"error_code": string | null,"id": string,"narration_ready_at": string | null,"owner_id": string,"project_id": string,"status": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "approval_id": string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id": string,"project_id": string,"status"?: string
+                    "approval_id": string,"assembly_ready_at"?: string | null,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id": string,"project_id": string,"status"?: string
                   }
                   Update: {
-                    "approval_id"?: string,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id"?: string,"project_id"?: string,"status"?: string
+                    "approval_id"?: string,"assembly_ready_at"?: string | null,"attempt"?: number,"created_at"?: string,"error_code"?: string | null,"id"?: string,"narration_ready_at"?: string | null,"owner_id"?: string,"project_id"?: string,"status"?: string
                   }
                   Relationships: [
                     {
@@ -166,6 +166,9 @@ isOneToOne: false
 "claim_video_job":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"complete_video_assembly":
+{ Args: { "p_job_id": string,"p_manifest": Json }; Returns: boolean
+                           },
 "complete_video_narration":
 { Args: { "p_job_id": string,"p_lease_token": string,"p_manifest": Json }; Returns: boolean
                            },
@@ -174,6 +177,9 @@ isOneToOne: false
                            },
 "duplicate_idea_project":
 { Args: { "p_command": Json,"p_command_key": string,"p_id": string }; Returns: Json
+                           },
+"fail_video_assembly":
+{ Args: { "p_error_code": string,"p_job_id": string }; Returns: boolean
                            },
 "finish_brainstorm_request":
 { Args: { "p_attempt_id": string,"p_failure_code"?: string,"p_id": string,"p_reply"?: string }; Returns: boolean
@@ -189,6 +195,9 @@ isOneToOne: false
                            },
 "list_trashed_idea_projects":
 { Args: { "p_before_at"?: string,"p_before_id"?: string,"p_limit"?: number }; Returns: Json
+                           },
+"read_video_assembly_inputs":
+{ Args: { "p_job_id": string }; Returns: Json
                            },
 "renew_video_job_lease":
 { Args: { "p_job_id": string,"p_lease_token": string }; Returns: string

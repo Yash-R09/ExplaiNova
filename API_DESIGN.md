@@ -269,6 +269,8 @@ M6b adds service-role functions for job claiming, lease renewal, and failure rep
 
 M6c adds `narrationReadyAt` to job status after the narration worker completes all scenes. The job stays queued for scene assembly.
 
+M6d adds `assemblyReadyAt` after storing the timeline and captions. The job stays queued for rendering. A failed assembly reports `VIDEO_NARRATION_TOO_LONG` when narration exceeds the approved duration or `VIDEO_NARRATION_CHECKPOINT_INVALID` when a checkpoint is missing or corrupt. Either failure releases the active job slot.
+
 Moving a project with an active video job to Trash returns HTTP 409 with `PROJECT_VIDEO_JOB_ACTIVE`. Once the job reaches a terminal state, the owner can retry the same Trash request.
 
 ## 7. Voices, generation, and revisions

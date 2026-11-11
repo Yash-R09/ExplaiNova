@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
-select plan(19);
+select plan(27);
 
 insert into auth.users(id, email) values ('16161616-1616-4616-8616-161616161616', 'video-worker@example.test');
 set local role authenticated;
@@ -73,13 +73,40 @@ select is(public.claim_video_job(),null::jsonb,'claim returns null once there ar
 select is(public.complete_video_narration(current_setting('test.next_job')::uuid,gen_random_uuid(),'{}'),false,
   'a different lease cannot publish a narration checkpoint');
 select is(public.complete_video_narration(current_setting('test.next_job')::uuid,
-  (current_setting('test.next_claim')::jsonb->>'leaseToken')::uuid,'{"version":1,"scenes":[{"scene":1}]}'),true,
+  (current_setting('test.next_claim')::jsonb->>'leaseToken')::uuid,
+  jsonb_build_object('version',1,'scenes','[{"scene":1}]'::jsonb,'contentHash',current_setting('test.next_claim')::jsonb->>'contentHash')),true,
   'the current lease can checkpoint narration');
 select is(public.claim_video_job(),null::jsonb,'a completed narration event cannot be claimed again');
+select is(public.read_video_assembly_inputs(current_setting('test.next_job')::uuid)->'storyboard'->>'title',
+  'Approved gravity','assembly reads the exact approved storyboard');
+select set_config('test.assembly',jsonb_build_object('contentHash',current_setting('test.next_claim')::jsonb->>'contentHash','version',1)::text,true);
+select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,'{"version":1}'),false,
+  'assembly rejects a missing content hash');
+select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb),true,
+  'assembly stores a manifest bound to the narration checkpoint');
+select is(public.complete_video_assembly(current_setting('test.next_job')::uuid,current_setting('test.assembly')::jsonb),true,
+  'the same assembly can be replayed safely');
+select is(public.fail_video_assembly(current_setting('test.next_job')::uuid,'VIDEO_NARRATION_CHECKPOINT_INVALID'),false,
+  'a late checkpoint failure cannot replace a completed assembly');
 reset role;
 select isnt((select narration_ready_at from public.generation_jobs where id = current_setting('test.next_job')::uuid),
   null::timestamptz,'the job exposes narration readiness');
 select is((select status || ':' || error_code from public.generation_jobs where id = current_setting('test.job')::uuid),
   'failed:VIDEO_ATTEMPTS_EXHAUSTED','exhaustion releases the active-job slot');
+set local role authenticated;
+select set_config('request.jwt.claims', '{"sub":"16161616-1616-4616-8616-161616161616","role":"authenticated"}', true);
+select set_config('test.invalid_job', public.submit_video_job(current_setting('test.project')::uuid,
+  current_setting('test.storyboard')::uuid,current_setting('test.approval')::uuid,'worker-submit-003')->>'id', true);
+set local role service_role;
+select set_config('test.invalid_claim', public.claim_video_job()::text, true);
+select public.complete_video_narration(current_setting('test.invalid_job')::uuid,
+  (current_setting('test.invalid_claim')::jsonb->>'leaseToken')::uuid,'{}');
+select is(public.fail_video_assembly(current_setting('test.invalid_job')::uuid,'UNEXPECTED'),false,
+  'assembly rejects an unrecognized failure code');
+select is(public.fail_video_assembly(current_setting('test.invalid_job')::uuid,'VIDEO_NARRATION_CHECKPOINT_INVALID'),true,
+  'invalid narration can fail the queued assembly');
+set local role authenticated;
+select lives_ok($$select public.submit_video_job(current_setting('test.project')::uuid,current_setting('test.storyboard')::uuid,
+  current_setting('test.approval')::uuid,'worker-submit-004')$$,'checkpoint failure frees the slot for a new video job');
 select * from finish();
 rollback;

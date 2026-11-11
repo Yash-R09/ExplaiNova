@@ -5,7 +5,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   return projectApi(async (client, correlationId) => {
     const id = projectId((await params).id);
     const { data, error } = await client.from('generation_jobs')
-      .select('id, project_id, approval_id, status, created_at, error_code, narration_ready_at').eq('id', id).maybeSingle();
+      .select('id, project_id, approval_id, status, created_at, error_code, narration_ready_at, assembly_ready_at').eq('id', id).maybeSingle();
     if (error) databaseProjectError(error);
     if (!data) throw new ProjectError('RESOURCE_NOT_FOUND', 404, 'Video job not found.');
     return projectSuccess({
@@ -13,6 +13,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
       kind: 'video', status: data.status, createdAt: data.created_at,
       ...(data.error_code ? { errorCode: data.error_code } : {}),
       ...(data.narration_ready_at ? { narrationReadyAt: data.narration_ready_at } : {}),
+      ...(data.assembly_ready_at ? { assemblyReadyAt: data.assembly_ready_at } : {}),
     }, correlationId);
   });
 }
